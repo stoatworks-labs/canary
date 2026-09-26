@@ -1,0 +1,34 @@
+dbCANary is licensed in three parts. Full texts are in LICENSES/.
+
+  Board (hardware/*.kicad_*, hardware/lib/, hardware/fab/, hardware/scripts/
+  design outputs, docs/renders/)
+      CERN Open Hardware Licence Version 2 - Strongly Reciprocal
+      (CERN-OHL-S-2.0)                        LICENSES/CERN-OHL-S-2.0.txt
+
+  Enclosure (hardware/enclosure/: CAD, STEP, STL, 3MF print plates)
+      Creative Commons Attribution-ShareAlike 4.0 International
+      (CC-BY-SA-4.0)                          LICENSES/CC-BY-SA-4.0.txt
+
+  Firmware, host tools, tests and build scripts (firmware/, tools/,
+  run_tests.sh, and the Python/shell scripts under hardware/)
+      MIT                                     LICENSES/MIT.txt
+
+  Documentation (README.md, docs/, the Markdown under hardware/)
+      CC-BY-SA-4.0
+
+Exceptions:
+
+  - hardware/enclosure/lettering/Montserrat-*.ttf are the Montserrat fonts,
+    under the SIL Open Font License 1.1 (hardware/enclosure/lettering/OFL.txt).
+  - The Stoatworks Labs name and mark (including
+    hardware/enclosure/lettering/stoatworks-mark.geojson and the mark as
+    engraved on the case) are NOT licensed under any of the above. Remove or
+    replace them in anything you make and distribute yourself.
+  - Third-party components fetched at build time (ESP-IDF, esp_tinyusb,
+    TinyUSB) keep their own licences.
+
+Copyright (c) 2026 Stoatworks Labs
+
+"d&b audiotechnik", "R1", "R70" and "dbCAN" are trademarks of d&b audiotechnik
+GmbH & Co. KG, used here only to describe compatibility. This project is not
+affiliated with, endorsed by, or supported by d&b audiotechnik or Proemion.

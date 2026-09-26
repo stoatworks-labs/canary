@@ -1,0 +1,77 @@
+(kicad_sch
+  (version 20250610)
+  (generator "konnect")
+  (generator_version "10.0")
+  (uuid "8c8f16f0-3255-4090-93bc-62801db39490")
+  (paper "A4")
+
+  (lib_symbols)
+
+  (sheet
+    (at 30 30)
+    (size 65 40)
+    (fields_autoplaced)
+    (stroke
+      (width 0.1524)
+      (type solid))
+    (fill
+      (color 0 0 0 0.0))
+    (uuid "ccf7f0f1-da33-4f11-915d-979360e72030")
+    (property "Sheetname" "Power — PoE + USB-C PD, 5V and 3V3")
+    (property "Sheetfile" "power.kicad_sch")
+    (instances
+      (project "dbcanary"
+        (path "/8c8f16f0-3255-4090-93bc-62801db39490"
+          (page "2")))))
+
+  (sheet
+    (at 115 30)
+    (size 65 40)
+    (fields_autoplaced)
+    (stroke
+      (width 0.1524)
+      (type solid))
+    (fill
+      (color 0 0 0 0.0))
+    (uuid "1df634bf-3d1c-42dc-ab86-f7571c49f4ba")
+    (property "Sheetname" "MCU — ESP32-S3-WROOM-1, USB, LEDs")
+    (property "Sheetfile" "mcu.kicad_sch")
+    (instances
+      (project "dbcanary"
+        (path "/8c8f16f0-3255-4090-93bc-62801db39490"
+          (page "3")))))
+
+  (sheet
+    (at 30 95)
+    (size 65 40)
+    (fields_autoplaced)
+    (stroke
+      (width 0.1524)
+      (type solid))
+    (fill
+      (color 0 0 0 0.0))
+    (uuid "8b9821dc-f3c0-4d3e-84d7-396de4186a1e")
+    (property "Sheetname" "Ethernet — W5500 SPI, PoE magjack, etherCON")
+    (property "Sheetfile" "ethernet.kicad_sch")
+    (instances
+      (project "dbcanary"
+        (path "/8c8f16f0-3255-4090-93bc-62801db39490"
+          (page "4")))))
+
+  (sheet
+    (at 115 95)
+    (size 65 40)
+    (fields_autoplaced)
+    (stroke
+      (width 0.1524)
+      (type solid))
+    (fill
+      (color 0 0 0 0.0))
+    (uuid "76f99759-9a36-4ed6-96f6-ee189c7f4eea")
+    (property "Sheetname" "dbCAN — ADM3053 isolated, 2x etherCON")
+    (property "Sheetfile" "can.kicad_sch")
+    (instances
+      (project "dbcanary"
+        (path "/8c8f16f0-3255-4090-93bc-62801db39490"
+          (page "5")))))
+)

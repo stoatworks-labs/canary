@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<!--
+  dbCANary configuration UI.
+
+  ONE FILE, NO EXTERNAL REFERENCES. The unit is at the end of a USB cable with
+  no route to the internet, so a stylesheet, a font or a script from a CDN
+  would simply never load and the page would arrive unstyled and dead. Keep it
+  that way: everything here must be inline.
+
+  It is embedded in the firmware binary (components/webui/CMakeLists.txt), so
+  it costs flash. Keep it small and plain.
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>dbCANary</title>
+<style>
+:root{--bg:#fff;--fg:#14171a;--dim:#5b6570;--line:#dfe3e8;--card:#f7f8fa;
+      --ok:#1a7f45;--warn:#a8630a;--bad:#b3261e;--accent:#1f6feb}
+@media (prefers-color-scheme:dark){
+  :root{--bg:#14171a;--fg:#e8eaed;--dim:#9aa4af;--line:#2b3138;--card:#1b1f24;
+        --ok:#3fb96b;--warn:#e0a33a;--bad:#f06a60;--accent:#58a6ff}}
+*{box-sizing:border-box}
+body{margin:0;padding:16px;background:var(--bg);color:var(--fg);
+     font:15px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-serif}
+main{max-width:640px;margin:0 auto}
+h1{font-size:20px;margin:0 0 2px}
+h2{font-size:14px;text-transform:uppercase;letter-spacing:.06em;color:var(--dim);
+   margin:24px 0 8px;font-weight:600}
+.sub{color:var(--dim);font-size:13px;margin:0 0 8px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:14px}
+table{width:100%;border-collapse:collapse}
+td{padding:4px 0;vertical-align:top}
+td:first-child{color:var(--dim);width:42%}
+td:last-child{text-align:right;font-variant-numeric:tabular-nums}
+.ok{color:var(--ok)}.warn{color:var(--warn)}.bad{color:var(--bad)}
+label{display:block;margin:10px 0 3px;font-size:13px;color:var(--dim)}
+input,select{width:100%;padding:8px;border:1px solid var(--line);border-radius:6px;
+             background:var(--bg);color:var(--fg);font:inherit}
+input:disabled{opacity:.45}
+button{padding:9px 14px;border:1px solid var(--line);border-radius:6px;cursor:pointer;
+       background:var(--accent);color:#fff;font:inherit;font-weight:600;border-color:transparent}
+button.sec{background:transparent;color:var(--fg);border-color:var(--line);font-weight:400}
+button.danger{background:transparent;color:var(--bad);border-color:var(--bad);font-weight:400}
+button:disabled{opacity:.5;cursor:default}
+.row{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+.msg{margin-top:12px;padding:9px 11px;border-radius:6px;font-size:14px;display:none}
+.msg.show{display:block}
+.msg.good{background:rgba(63,185,107,.13);color:var(--ok)}
+.msg.bad{background:rgba(240,106,96,.13);color:var(--bad)}
+.msg.info{background:rgba(88,166,255,.13);color:var(--accent)}
+progress{width:100%;margin-top:10px;display:none}
+.foot{color:var(--dim);font-size:12px;margin-top:28px;text-align:center}
+a{color:var(--accent)}
+</style>
+</head>
+<body>
+<main>
+  <h1>dbCANary</h1>
+  <p class="sub" id="ident">&nbsp;</p>
+
+  <h2>Status</h2>
+  <div class="card">
+    <table id="status"><tr><td>Loading…</td><td></td></tr></table>
+  </div>
+
+  <h2>Settings</h2>
+  <div class="card">
+    <label for="hostname">Name shown in R1</label>
+    <!-- maxlength is replaced from the device's own hostname_max on load; this
+         is the same number (R70_DDT_HOSTNAME_MAX) so the field is never briefly
+         wrong before the fetch lands. -->
+    <input id="hostname" maxlength="27" autocapitalize="off" autocorrect="off" spellcheck="false">
+
+    <label for="base_port">Data port (socket 1)</label>
+    <input id="base_port" type="number" min="1024" max="65535">
+
+    <label for="socket_count">Sockets advertised</label>
+    <select id="socket_count">
+      <option value="2">2</option><option value="3">3</option><option value="4">4</option>
+    </select>
+
+    <label for="eth_mode">LAN jack address</label>
+    <select id="eth_mode">
+      <option value="dhcp">Automatic (DHCP, then link-local)</option>
+      <option value="static">Static</option>
+    </select>
+
+    <label for="eth_ip">IP address</label>
+    <input id="eth_ip" placeholder="192.0.2.90" autocapitalize="off" spellcheck="false">
+    <label for="eth_netmask">Subnet mask</label>
+    <input id="eth_netmask" placeholder="255.255.255.0" autocapitalize="off" spellcheck="false">
+    <label for="eth_gw">Gateway (optional)</label>
+    <input id="eth_gw" placeholder="leave empty on a show network" autocapitalize="off" spellcheck="false">
+
+    <div class="row">
+      <button id="save">Save</button>
+      <button id="reboot" class="sec">Reboot</button>
+      <button id="reset" class="danger">Factory settings</button>
+    </div>
+    <div class="msg" id="cfgmsg"></div>
+  </div>
+
+  <h2>Firmware</h2>
+  <div class="card">
+    <p class="sub">Upload a <code>dbcanary.bin</code>. It is written to the spare
+       slot and verified before anything points at it, so a bad file or a pulled
+       cable leaves the running firmware alone.</p>
+    <input id="file" type="file" accept=".bin">
+    <progress id="prog" max="100" value="0"></progress>
+    <div class="row"><button id="flash" disabled>Upload and reboot</button></div>
+    <div class="msg" id="otamsg"></div>
+  </div>
+
+  <h2>Diagnostics</h2>
+  <div class="card">
+    <p class="sub" id="dumpnote">&nbsp;</p>
+    <div class="row">
+      <button class="sec" onclick="location='/api/diagnostics'">Download bundle</button>
+      <button class="sec" id="dump" onclick="location='/api/diagnostics/coredump'">Download coredump</button>
+    </div>
+  </div>
+
+  <p class="foot">Reachable over the USB cable only.</p>
+</main>
+
+<script>
+"use strict";
+var $ = function (id) { return document.getElementById(id); };
+
+function say(el, text, kind) {
+  el.textContent = text;
+  el.className = "msg show " + (kind || "info");
+}
+
+function cell(label, value, kind) {
+  return "<tr><td>" + label + "</td><td class='" + (kind || "") + "'>" + value + "</td></tr>";
+}
+
+function duration(s) {
+  var d = Math.floor(s / 86400), h = Math.floor(s % 86400 / 3600);
+  var m = Math.floor(s % 3600 / 60);
+  if (d) { return d + "d " + h + "h"; }
+  if (h) { return h + "h " + m + "m"; }
+  return m + "m " + Math.floor(s % 60) + "s";
+}
+
+function refresh() {
+  fetch("/api/status").then(function (r) { return r.json(); }).then(function (s) {
+    var h = "";
+    h += cell("R1", s.r1.connected ? "connected" : "not connected",
+              s.r1.connected ? "ok" : "");
+    h += cell("LAN jack", s.eth.link ? (s.eth.ip || "link, no address") : "no link",
+              s.eth.link ? (s.eth.ip ? "ok" : "warn") : "");
+    if (s.eth.link_local && s.eth.ip) {
+      h += cell("", "self-assigned — no DHCP server answered", "warn");
+    }
+    h += cell("USB", s.usb.ip || "—", "ok");
+    h += cell("This computer", s.usb.host_ip || "no address taken",
+              s.usb.host_ip ? "" : "warn");
+    h += cell("CAN bus", s.can.state, s.can.state === "running" ? "ok" : "bad");
+    if (s.can.state === "running") {
+      h += cell("CAN messages", s.can.busload + "/s", "");
+    }
+    h += cell("Uptime", duration(s.uptime_s), "");
+    h += cell("Free memory", Math.round(s.heap_free / 1024) + " KB", "");
+    $("status").innerHTML = h;
+    $("ident").textContent = "firmware " + s.version + " · built " + s.built +
+                             " · ESP-IDF " + s.idf;
+
+    $("dump").disabled = !s.coredump;
+    $("dumpnote").textContent = s.coredump
+      ? "A crash dump from a previous boot is stored (" +
+        Math.round(s.coredump_bytes / 1024) + " KB)."
+      : "No crash dump stored. The bundle carries the log ring and the boot record.";
+  }).catch(function () {
+    $("status").innerHTML = cell("Lost contact with the unit", "", "bad");
+  });
+}
+
+function loadConfig() {
+  fetch("/api/config").then(function (r) { return r.json(); }).then(function (c) {
+    $("hostname").value = c.hostname;
+    $("hostname").maxLength = c.hostname_max;
+    $("base_port").value = c.base_port;
+    $("socket_count").value = c.socket_count;
+    $("eth_mode").value = c.eth_mode;
+    $("eth_ip").value = c.eth_ip;
+    $("eth_netmask").value = c.eth_netmask;
+    $("eth_gw").value = c.eth_gw;
+    staticFields();
+    if (!c.stored) {
+      say($("cfgmsg"), "This unit is on factory settings.", "info");
+    }
+  });
+}
+
+function staticFields() {
+  var off = $("eth_mode").value !== "static";
+  ["eth_ip", "eth_netmask", "eth_gw"].forEach(function (id) { $(id).disabled = off; });
+}
+
+$("eth_mode").addEventListener("change", staticFields);
+
+$("save").addEventListener("click", function () {
+  var body = {
+    hostname: $("hostname").value,
+    base_port: Number($("base_port").value),
+    socket_count: Number($("socket_count").value),
+    eth_mode: $("eth_mode").value,
+    eth_ip: $("eth_ip").value.trim(),
+    eth_netmask: $("eth_netmask").value.trim(),
+    eth_gw: $("eth_gw").value.trim()
+  };
+  say($("cfgmsg"), "Saving…", "info");
+  fetch("/api/config", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(body)
+  }).then(function (r) {
+    return r.text().then(function (t) { return { ok: r.ok, text: t }; });
+  }).then(function (res) {
+    if (res.ok) {
+      say($("cfgmsg"), "Saved. Reboot to apply.", "good");
+    } else {
+      /* The server sends its reason as the error body; show that rather than
+         a status code, because the reason is the whole point of validating.
+         say() assigns textContent, so the text needs no escaping here - and
+         escaping it first would render a literal &amp; for an ampersand. */
+      say($("cfgmsg"), res.text || "Rejected.", "bad");
+    }
+  }).catch(function () { say($("cfgmsg"), "Could not reach the unit.", "bad"); });
+});
+
+$("reboot").addEventListener("click", function () {
+  say($("cfgmsg"), "Rebooting. The USB adapter disappears and comes back — " +
+                   "this page will reload itself.", "info");
+  fetch("/api/reboot", { method: "POST" }).then(waitForReturn);
+});
+
+$("reset").addEventListener("click", function () {
+  if (!confirm("Erase all settings and return to factory defaults at the next boot?")) {
+    return;
+  }
+  fetch("/api/config/reset", { method: "POST" }).then(function () {
+    say($("cfgmsg"), "Erased. Reboot to apply.", "good");
+    loadConfig();
+  });
+});
+
+$("file").addEventListener("change", function () {
+  $("flash").disabled = !$("file").files.length;
+});
+
+$("flash").addEventListener("click", function () {
+  var f = $("file").files[0];
+  if (!f) { return; }
+  /* XMLHttpRequest, not fetch: fetch gives no upload progress, and a firmware
+     upload with no progress bar is indistinguishable from a hung one. */
+  var xhr = new XMLHttpRequest();
+  xhr.open("POST", "/api/ota");
+  xhr.upload.onprogress = function (e) {
+    if (e.lengthComputable) {
+      $("prog").style.display = "block";
+      $("prog").value = (e.loaded / e.total) * 100;
+    }
+  };
+  xhr.onload = function () {
+    $("prog").style.display = "none";
+    if (xhr.status >= 200 && xhr.status < 300) {
+      say($("otamsg"), "Written and verified. Rebooting into the new firmware.", "good");
+      waitForReturn();
+    } else {
+      say($("otamsg"), xhr.responseText || "Upload rejected.", "bad");
+      $("flash").disabled = false;
+    }
+  };
+  xhr.onerror = function () {
+    $("prog").style.display = "none";
+    say($("otamsg"), "Upload failed. The running firmware is untouched.", "bad");
+    $("flash").disabled = false;
+  };
+  $("flash").disabled = true;
+  say($("otamsg"), "Uploading…", "info");
+  xhr.send(f);
+});
+
+/* After a reboot the USB device re-enumerates, which takes the network
+   interface away and brings it back with the same address. Poll until the unit
+   answers again rather than leaving a dead page. */
+function waitForReturn() {
+  var tries = 0;
+  var timer = setInterval(function () {
+    tries++;
+    fetch("/api/status", { cache: "no-store" }).then(function () {
+      clearInterval(timer);
+      location.reload();
+    }).catch(function () {
+      if (tries > 60) { clearInterval(timer); }
+    });
+  }, 1000);
+}
+
+loadConfig();
+refresh();
+setInterval(refresh, 2000);
+</script>
+</body>
+</html>

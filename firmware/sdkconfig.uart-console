@@ -1,0 +1,23 @@
+# Overlay: put the console back on UART0 (GPIO43/44 -> J301 pins 3/4).
+#
+# WHY THIS EXISTS: rev A boards fabbed from d9a725d (ordered 2026-08-13) carry
+# the PRE-FIX USB routing -- USB_DP/USB_DM are two uncoupled traces 9.5 mm apart
+# with ~16 mm of length mismatch. Full-speed USB should tolerate that easily, but
+# it has never been proven on silicon, and on this board J102 is the only power
+# path AND the only programming path. If a board will not enumerate, this overlay
+# gets you a console on J301 with a 3.3 V USB-serial adapter instead:
+#
+#   idf.py -B build-selftest-uart -DSDKCONFIG=build-selftest-uart/sdkconfig \
+#          -DSDKCONFIG_DEFAULTS="sdkconfig.defaults;sdkconfig.uart-console" \
+#          build -DDBCANARY_SELFTEST=1
+#
+# -DSDKCONFIG was missing from this line until 2026-09-21. Without it the build
+# shares firmware/sdkconfig, which is only generated from SDKCONFIG_DEFAULTS
+# when it does not yet exist -- so on any tree that had been built once, this
+# overlay was silently ignored and the image came out with the USB console it
+# was supposed to replace. run_qemu.sh always passed it; this line did not.
+#
+# J301 is 1x6, 1.27 mm: 1 VCC_3V3, 2 GND, 3 UART0_TXD, 4 UART0_RXD, 5 BOOT, 6 EN.
+# Adapter on 2/3/4 at 115200.
+CONFIG_ESP_CONSOLE_UART_DEFAULT=y
+CONFIG_ESP_CONSOLE_SECONDARY_USB_SERIAL_JTAG=y

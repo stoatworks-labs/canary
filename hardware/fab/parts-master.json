@@ -1,0 +1,304 @@
+{
+ "C17168": {
+  "mpn": "0402WGF0000TCE",
+  "brand": "UNI-ROYAL(Uniroyal Elec)",
+  "lib": "base",
+  "stock": 953182,
+  "name": "0Ω ±1% 62.5mW 厚膜电阻",
+  "spec": "0402"
+ },
+ "C25741": {
+  "mpn": "0402WGF1003TCE",
+  "brand": "UNI-ROYAL(Uniroyal Elec)",
+  "lib": "base",
+  "stock": 284077,
+  "name": "100kΩ ±1% 62.5mW 厚膜电阻",
+  "spec": "0402"
+ },
+ "C1525": {
+  "mpn": "CL05B104KO5NNNC",
+  "brand": "Samsung Electro-Mechanics",
+  "lib": "base",
+  "stock": 47651271,
+  "name": "100nF ±10% 16V",
+  "spec": "0402"
+ },
+ "C25077": {
+  "mpn": "0402WGF100JTCE",
+  "brand": "UNI-ROYAL(Uniroyal Elec)",
+  "lib": "base",
+  "stock": 489553,
+  "name": "10Ω ±1% 62.5mW 厚膜电阻",
+  "spec": "0402"
+ },
+ "C25744": {
+  "mpn": "0402WGF1002TCE",
+  "brand": "UNI-ROYAL(Uniroyal Elec)",
+  "lib": "base",
+  "stock": 394,
+  "stock_checked": "2026-07-31",
+  "name": "10kΩ ±1% 62.5mW 厚膜电阻",
+  "spec": "0402"
+ },
+ "C15195": {
+  "mpn": "CL05B103KB5NNNC",
+  "brand": "Samsung Electro-Mechanics",
+  "lib": "base",
+  "stock": 11160874,
+  "name": "10nF ±10% 50V",
+  "spec": "0402"
+ },
+ "C15850": {
+  "mpn": "CL21A106KAYNNNE",
+  "brand": "Samsung Electro-Mechanics",
+  "lib": "base",
+  "stock": 11073408,
+  "name": "10uF ±10% 25V",
+  "spec": "0805"
+ },
+ "C11692": {
+  "mpn": "0402WGF1242TCE",
+  "brand": "UNI-ROYAL(Uniroyal Elec)",
+  "lib": "expand",
+  "stock": 217381,
+  "name": "12.4kΩ ±1% 62.5mW 厚膜电阻",
+  "spec": "0402"
+ },
+ "C1549": {
+  "mpn": "0402CG180J500NT",
+  "brand": "FH (Guangdong Fenghua Advanced Tech)",
+  "lib": "base",
+  "stock": 1648657,
+  "name": "18pF ±5% 50V",
+  "spec": "0402"
+ },
+ "C26083": {
+  "mpn": "0402WGF1004TCE",
+  "brand": "UNI-ROYAL(Uniroyal Elec)",
+  "lib": "base",
+  "stock": 912510,
+  "name": "1MΩ ±1% 62.5mW 厚膜电阻",
+  "spec": "0402"
+ },
+ "C11702": {
+  "mpn": "0402WGF1001TCE",
+  "brand": "UNI-ROYAL(Uniroyal Elec)",
+  "lib": "base",
+  "stock": 1398431,
+  "name": "1kΩ ±1% 62.5mW 厚膜电阻",
+  "spec": "0402"
+ },
+ "C9196": {
+  "mpn": "1206B102K202NT",
+  "brand": "FH (Guangdong Fenghua Advanced Tech)",
+  "lib": "base",
+  "stock": 1268538,
+  "name": "1nF ±10% 2kV",
+  "spec": "1206"
+ },
+ "C52923": {
+  "mpn": "CL05A105KA5NQNC",
+  "brand": "Samsung Electro-Mechanics",
+  "lib": "base",
+  "stock": 14405455,
+  "name": "1uF ±10% 25V",
+  "spec": "0402"
+ },
+ "C913207": {
+  "mpn": "SRN4018-2R2M",
+  "brand": "BOURNS",
+  "lib": "expand",
+  "stock": 1011,
+  "name": "2.2uH ±20% 3A",
+  "spec": "SMD,4x4mm"
+ },
+ "C45783": {
+  "mpn": "CL21A226MAQNNNE",
+  "brand": "Samsung Electro-Mechanics",
+  "lib": "base",
+  "stock": 3923849,
+  "name": "22uF ±20% 25V",
+  "spec": "0805"
+ },
+ "C9006": {
+  "mpn": "X322525MOB4SI",
+  "brand": "YXC Crystal Oscillators",
+  "lib": "base",
+  "stock": 240523,
+  "name": "YSX321SL 25MHZ 4P 3225 12PF ±10PPM -40~85℃ (±20PPM)",
+  "spec": "SMD3225-4P"
+ },
+ "C11463": {
+  "mpn": "0402WGF3162TCE",
+  "brand": "UNI-ROYAL(Uniroyal Elec)",
+  "lib": "expand",
+  "stock": 80120,
+  "name": "31.6kΩ ±1% 62.5mW 厚膜电阻",
+  "spec": "0402"
+ },
+ "C53987": {
+  "mpn": "0603B472K500NT",
+  "brand": "FH (Guangdong Fenghua Advanced Tech)",
+  "lib": "base",
+  "stock": 1790027,
+  "name": "4.7nF ±10% 50V",
+  "spec": "0603"
+ },
+ "C19666": {
+  "mpn": "CL10A475KO8NNNC",
+  "brand": "Samsung Electro-Mechanics",
+  "lib": "base",
+  "stock": 4461789,
+  "name": "4.7uF ±10% 16V",
+  "spec": "0603"
+ },
+ "C25120": {
+  "mpn": "0402WGF499JTCE",
+  "brand": "UNI-ROYAL(Uniroyal Elec)",
+  "lib": "base",
+  "stock": 1798049,
+  "name": "49.9Ω ±1% 62.5mW 厚膜电阻",
+  "spec": "0402"
+ },
+ "C93654": {
+  "mpn": "CC0402KRX7R9BB682",
+  "brand": "YAGEO",
+  "lib": "expand",
+  "stock": 278902,
+  "name": "6.8nF ±10% 50V",
+  "spec": "0402"
+ },
+ "C19330": {
+  "mpn": "BLM18AG601SN1D",
+  "brand": "Murata Electronics",
+  "lib": "expand",
+  "stock": 875514,
+  "name": "单路 0603磁珠 阻抗600Ω@100MHz",
+  "spec": "0603"
+ },
+ "C23222": {
+  "mpn": "0603WAF620JT5E",
+  "brand": "UNI-ROYAL(Uniroyal Elec)",
+  "lib": "expand",
+  "stock": 70629,
+  "name": "62Ω ±1% 100mW 厚膜电阻",
+  "spec": "0603"
+ },
+ "C4275": {
+  "mpn": "0603WAF750JT5E",
+  "brand": "UNI-ROYAL(Uniroyal Elec)",
+  "lib": "base",
+  "stock": 945649,
+  "name": "75Ω ±1% 100mW 厚膜电阻",
+  "spec": "0603"
+ },
+ "C117821": {
+  "mpn": "ADM3053BRWZ-REEL7",
+  "brand": "Analog Devices",
+  "lib": "expand",
+  "stock": 721,
+  "name": "集成隔离DC/DC转换器的信号和电源隔离CAN收发器",
+  "spec": "SOIC-20-300mil"
+ },
+ "C2071868": {
+  "mpn": "AP63200WU-7",
+  "brand": "Diodes Incorporated",
+  "lib": "expand",
+  "stock": 2584,
+  "name": "降压型 2A 3.8V~32V",
+  "spec": "TSOT-23-6"
+ },
+ "C221871": {
+  "mpn": "PTS645SK43SMTR92LFS",
+  "brand": "C&K",
+  "lib": "expand",
+  "stock": 5706,
+  "name": "6*6*4.3mm 立贴 轻触开关",
+  "spec": "SMD-4P,6x6mm"
+ },
+ "C12624": {
+  "mpn": "KT-0603G",
+  "brand": "Hubei KENTO Elec",
+  "lib": "expand",
+  "stock": 435634,
+  "name": "0603 翠绿 高亮",
+  "spec": "0603"
+ },
+ "C970725": {
+  "mpn": "CH224K",
+  "brand": "WCH(Jiangsu Qin Heng)",
+  "lib": "expand",
+  "stock": 13350,
+  "name": "USBPD等多快充协议受电芯片CH224",
+  "spec": "ESSOP-10-150mil-1mm"
+ },
+ "C2286": {
+  "mpn": "KT-0603R",
+  "brand": "Hubei KENTO Elec",
+  "lib": "base",
+  "stock": 7764865,
+  "name": "0603 红灯 高亮",
+  "spec": "0603"
+ },
+ "C2913198": {
+  "mpn": "ESP32-S3-WROOM-1-N8",
+  "brand": "Espressif Systems",
+  "lib": "expand",
+  "stock": 5775,
+  "name": "不带固件 通用型Wi-Fi+低功耗蓝牙MCU模组",
+  "spec": "SMD,25.5x18mm"
+ },
+ "C2890118": {
+  "mpn": "NUP2105LT1G",
+  "brand": "TECH PUBLIC",
+  "lib": "expand",
+  "stock": 196000,
+  "name": "双向ESD 24V截止 峰值浪涌电流：7A",
+  "spec": "SOT-23"
+ },
+ "C124001": {
+  "mpn": "PT61017PEL",
+  "brand": "BOURNS",
+  "lib": "expand",
+  "stock": 1632,
+  "name": "IEEE 802.3以太网兼容LAN应用",
+  "spec": "SMD,12.8x6.9mm"
+ },
+ "C21714343": {
+  "mpn": "BSMD1206-110-30V",
+  "brand": "BHFUSE",
+  "lib": "expand",
+  "stock": 41812,
+  "name": "1206 1.1A 30V 自恢复",
+  "spec": "1206"
+ },
+ "C165948": {
+  "mpn": "TYPE-C-31-M-12",
+  "brand": "Korean Hroparts Elec",
+  "lib": "expand",
+  "stock": 283418,
+  "name": "Type-C 母 卧贴",
+  "spec": "SMD"
+ },
+ "C32843": {
+  "mpn": "W5500",
+  "brand": "WIZNET",
+  "lib": "expand",
+  "stock": 40682,
+  "name": "W5500硬连线TCP/IP嵌入式以太网控制器",
+  "spec": "LQFP-48(7x7)"
+ },
+ "_verified": {
+  "date": "2026-07-26",
+  "method": "JLCPCB parts API, exact componentCode match",
+  "healthy_ge_1000": 35,
+  "total": 36,
+  "low_stock": {
+   "C117821": {
+    "mpn": "ADM3053BRWZ-REEL7",
+    "stock": 719,
+    "alternative": "C579192"
+   }
+  }
+ }
+}

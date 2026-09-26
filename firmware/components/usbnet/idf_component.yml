@@ -1,0 +1,13 @@
+## Component manager manifest.
+##
+## This is the project's FIRST registry dependency: everything else here is
+## either ESP-IDF or written in this repo. `dependencies.lock` is committed so
+## a build resolves to the same esp_tinyusb every time, and `managed_components/`
+## is not - the first build on a new machine needs the network once.
+##
+## esp_tinyusb 2.x is what ESP-IDF v5.5's own tusb_ncm example pulls, and it is
+## where tinyusb_net_init() and the NCM class live.
+dependencies:
+  espressif/esp_tinyusb:
+    version: "^2.0.0"
+  idf: ">=5.0"

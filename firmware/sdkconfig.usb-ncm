@@ -1,0 +1,75 @@
+# Overlay: build the USB network-device (CDC-NCM) image.
+#
+#   idf.py -B build-usbnet -DSDKCONFIG=build-usbnet/sdkconfig \
+#          -DSDKCONFIG_DEFAULTS="sdkconfig.defaults;sdkconfig.usb-ncm" build
+#
+# -DSDKCONFIG IS NOT OPTIONAL. Without it every build shares the project's one
+# `firmware/sdkconfig`, and SDKCONFIG_DEFAULTS is only consulted when that file
+# is being CREATED -- so an overlay applied to a tree that has already been
+# built is read, ignored, and reported as a successful build of the image you
+# asked for. The first attempt at this overlay produced a binary 512 bytes
+# different from the default one and no NCM in it at all. Same reason
+# firmware/qemu/run_qemu.sh passes it, and the same reason build-usbnet/ is in
+# .gitignore next to the other variant build directories.
+#
+# WHAT THIS CHANGES ON THE BOARD, and why it is an overlay rather than the
+# default: the ESP32-S3 has ONE USB PHY and two peripherals that want it.
+# USB_SERIAL_JTAG owns it out of reset; installing TinyUSB moves the mux to
+# USB-OTG in software (no eFuse is burnt, and a reset puts it back). From that
+# moment the USB-C port is a network adapter and is no longer a serial port, so
+# on this board -- where J102 is power, console AND programming, all on one
+# connector -- the app console and esptool's automatic reset both go away.
+#
+# The console therefore STAYS on USB-Serial-JTAG and the firmware delays the
+# switch instead (usbnet's start_delay_ms, 8 s). J301 is a DNP and is NOT FITTED
+# on the rev A boards -- BRINGUP-LOG-0001.md says so explicitly -- so moving the
+# console there would mean a unit that fails to enumerate has no console at all.
+# What the delay buys, every power-up:
+#
+#   * the whole boot log readable over USB-C with `idf.py monitor`, including
+#     usbnet's address and lease lines and any failure to install TinyUSB;
+#   * a window in which esptool can reset into download mode and reflash
+#     WITHOUT the BOOT button.
+#
+# If you would rather have a console that survives the switch, fit J301 (1x6
+# 1.27 mm: 1 VCC_3V3, 2 GND, 3 UART0_TXD, 4 UART0_RXD, 5 BOOT, 6 EN; adapter on
+# 2/3/4 at 115200) and add sdkconfig.uart-console to the overlay list.
+#
+# Logging after the switch is safe, not slow: the USB-Serial-JTAG console is
+# gated by a SOF-based connection monitor, so with the PHY gone it reports
+# "not connected" and every write fails fast instead of spinning on the 50 ms
+# TX flush timeout.
+#
+# TO REFLASH a unit running this image: hold BOOT (SW302), tap EN, release. The
+# ROM bootloader is not affected by the software mux -- it re-enables
+# USB_SERIAL_JTAG on the same pins -- so the USB-C port comes back as a serial
+# port for the download and esptool works normally.
+
+CONFIG_TINYUSB_NET_MODE_NCM=y
+
+# What the host shows in its network settings and in `lsusb`/System Information.
+# The VID stays Espressif's: this is an Espressif part and the project has no
+# USB-IF vendor ID of its own. Nothing here claims to be an R70 -- the R70 has
+# no USB interface at all, so there is nothing to be compatible with. R1 finds the
+# unit over IP, exactly as it does on the LAN jack, and never sees USB.
+CONFIG_TINYUSB_DESC_MANUFACTURER_STRING="Stoatworks"
+CONFIG_TINYUSB_DESC_PRODUCT_STRING="dbCANary"
+CONFIG_TINYUSB_DESC_SERIAL_STRING="dbCANary"
+
+# The console stays where sdkconfig.defaults puts it -- USB-Serial-JTAG -- and
+# is live for the whole start-delay window. Restated here rather than inherited
+# silently, because it is load-bearing: see the header.
+CONFIG_ESP_CONSOLE_USB_SERIAL_JTAG=y
+
+# TinyUSB's task and the NCM buffers. Defaults, pinned here so a change in the
+# component's defaults is visible as a diff rather than as a behaviour change:
+# three NTBs each way is what the upstream example ships and is enough to keep
+# "tud_network_can_xmit: request blocked" off the log at dbCAN's traffic rates.
+CONFIG_TINYUSB_NCM_OUT_NTB_BUFFS_COUNT=3
+CONFIG_TINYUSB_NCM_IN_NTB_BUFFS_COUNT=3
+
+# NO DNS in the lease. lwip's DHCP server, with DNS left off (dhcps_dns = 0),
+# still offers ITS OWN address as the DNS server unless this is off -- and the
+# unit runs no resolver, so the laptop would be handed a DNS server that never
+# answers. usbnet.c clears the DNS offer too; that alone is not enough.
+CONFIG_LWIP_DHCPS_ADD_DNS=n

@@ -1,0 +1,47 @@
+{
+ "_comment": [
+  "Part numbers for the five through-hole placements the vendor Fabrication",
+  "Toolkit plugins cannot source. Those plugins read an LCSC/MPN field off the",
+  "footprint; these parts carry none, so every regeneration emits them blank and",
+  "any curation added by hand is silently lost the next time the plugin runs.",
+  "That has already happened once - jlc_verify.py's THT_MPN filled the etherCON",
+  "manufacturer in, and the 2026-08-04 plugin run wiped it back out.",
+  "",
+  "Keyed by designator, not by Value substring, so a value string edit cannot",
+  "quietly stop a part matching. Read by scripts/consolidate_vendor_bom.py,",
+  "which reapplies them after each regeneration.",
+  "",
+  "These are placements, not a decision about who fits them. Whether a given",
+  "line is populated on a given order is passed to that script with --dnp."
+ ],
+ "J201": {
+  "mpn": "NE8FBH",
+  "brand": "Neutrik",
+  "lcsc": "",
+  "note": "etherCON CAT5 B-series PCB receptacle, CAN A. No LCSC listing. PCBWay quoted USD 10.285 ea, 7-10 workday lead, on the rev A PCBWay order."
+ },
+ "J202": {
+  "mpn": "NE8FBH",
+  "brand": "Neutrik",
+  "lcsc": "",
+  "note": "etherCON CAT5 B-series PCB receptacle, CAN B."
+ },
+ "J401": {
+  "mpn": "NE8FBH",
+  "brand": "Neutrik",
+  "lcsc": "",
+  "note": "etherCON CAT5 B-series PCB receptacle, LAN."
+ },
+ "J301": {
+  "mpn": "PZ127V-11-06-H25",
+  "brand": "XFCN",
+  "lcsc": "C2832273",
+  "note": "1x6 1.27mm vertical pin header, UART/debug. Datasheet-recommended PCB hole 0.65mm matches PinHeader_1x06_P1.27mm_Vertical exactly; pins 0.4x0.4mm square. 12,218 in stock 2026-08-10. Alternate DZ127R-11-06-25 (C2935946)."
+ },
+ "SW201": {
+  "mpn": "DSWB02LHGET",
+  "brand": "DongGuan KINGTEK Industrial Co.,LTD",
+  "lcsc": "C99421",
+  "note": "2-position SPST slide DIP, CAN termination. 2.54mm pitch, 7.62mm row, body 9.9x6.5mm inside the 9.78x7.26mm courtyard. Pins 0.56x0.15mm clear our 0.8mm drill although the datasheet asks for 1.0mm - do not enlarge. 31,049 in stock 2026-08-10. Alternate DS-02RP (C92646) has 0.6mm terminals and is a tighter fit."
+ }
+}

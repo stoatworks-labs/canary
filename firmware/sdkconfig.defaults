@@ -1,0 +1,120 @@
+# dbCANary — ESP-IDF default config (target: esp32 / ESP32-WROOM-32E)
+# Regenerate sdkconfig from these: `rm sdkconfig && idf.py reconfigure`
+
+CONFIG_IDF_TARGET="esp32s3"
+
+# --- Flash / partitions (OTA) ---
+CONFIG_PARTITION_TABLE_CUSTOM=y
+CONFIG_PARTITION_TABLE_CUSTOM_FILENAME="partitions.csv"
+# The BOM module is an ESP32-S3-WROOM-1-**N8** — 8 MB. This said 4 MB, which
+# threw half the flash away and made selftest's flash.size check fail on a good
+# board (it reads esp_flash_get_size(), which reports what the bootloader header
+# declares, not what the die holds). The partition table is unchanged and still
+# ends at 0x3E0000, so the extra 4 MB is simply unallocated for now — growing
+# ota_0/ota_1 or adding a data partition is a separate decision.
+CONFIG_ESPTOOLPY_FLASHSIZE_8MB=y
+CONFIG_ESPTOOLPY_FLASHSIZE="8MB"
+
+# --- Console ---
+# The self-test image's REPL binds to whatever the PRIMARY console is, via the
+# #if ladder in components/selftest/selftest_console.c. This used to be
+# CONFIG_ESP_CONSOLE_UART_DEFAULT with USB_SERIAL_JTAG only as the *secondary*
+# console -- and the secondary console is OUTPUT ONLY. The effect was that over
+# the USB-C port you saw the banner and the `dbcanary> ` prompt, typed
+# `selftest`, and nothing happened: input was being read from UART0 on GPIO43/44,
+# which is only reachable on J301. BENCH-BRINGUP 5.3 documents flashing and
+# monitoring over USB-C, so the documented procedure could not work.
+#
+# J102 is power, programming AND console now, so one USB-C cable does everything.
+# The cost: UART0/J301 no longer carries the app console. The ROM bootloader
+# still prints there (that is ROM, not this option), so BENCH-BRINGUP A.4's
+# "UART at reset" check is unaffected. If USB will not enumerate, rebuild with the
+# sdkconfig.uart-console overlay to put the console back on J301 -- that file
+# carries the exact command line.
+CONFIG_ESP_CONSOLE_USB_SERIAL_JTAG=y
+
+# --- TWAI (CAN) ---
+# dbCAN is fixed at 100 kbit/s (R70 SW manual 1.3.1); the rate is set in code.
+CONFIG_TWAI_ISR_IN_IRAM=y
+
+# --- LWIP ---
+# SO_REUSEADDR on the discovery socket. Broadcast needs no option: lwip leaves
+# IP_SOF_BROADCAST at 0, which disables the broadcast *filter* altogether, so
+# UDP 33333 receives R1's probe unconditionally. (CONFIG_LWIP_SO_BROADCAST and
+# CONFIG_LWIP_NETIF_API do not exist in ESP-IDF and were silently ignored.)
+CONFIG_LWIP_SO_REUSE=y
+
+# IPv4 link-local (RFC 3927) as the fallback when nothing is handing out leases.
+# A converter lands on plenty of rigs with no DHCP server at all - a laptop and
+# an amp network on an unmanaged switch is the normal case, not the exception -
+# and without this the unit sat at 0.0.0.0, which R1 cannot connect to, so it
+# was useless there. lwip's DHCP client starts AUTOIP itself once
+# CONFIG_LWIP_AUTOIP_TRIES DISCOVERs have gone unanswered; AUTOIP probes for a
+# free 169.254.x.x, claims it, and hands it to esp_netif through the same
+# netif-address-changed path a lease uses - so IP_EVENT_ETH_GOT_IP fires, the
+# discovery answer carries the self-assigned address (bridge_local_ip() is read
+# per answer, never cached), and the LEDs go nominal.
+#
+# DHCP still wins whenever it can: the two run cooperatively, so if a server
+# answers later the lease replaces the link-local address and a second GOT_IP
+# carries it. The next discovery reply then tells R1 the new one.
+#
+# TRIES=5 rather than the default 2, because ESP-IDF shortens lwip's backoff to
+# (2^tries)*250 ms (lwipopts.h DHCP_REQUEST_BACKOFF_SEQUENCE): DISCOVERs go out
+# at 0, 0.5, 1.5, 3.5 and 7.5 s, so 5 tries gives a slow server - a switch port
+# coming out of STP listening, say - about 7.5 s to answer before we self-assign,
+# and ACD probing binds the address ~6 s after that. Both are inside the 30 s
+# window net_start_eth() waits, and the default 2 would have pre-empted DHCP
+# after half a second.
+CONFIG_LWIP_AUTOIP=y
+CONFIG_LWIP_AUTOIP_TRIES=5
+
+# --- WiFi (development bring-up; wired Ethernet is the shipping path, D4) ---
+CONFIG_ESP_WIFI_ENABLED=y
+
+# --- FreeRTOS ---
+# CAN is only 100 kbit/s so timing is undemanding, but keep 1 kHz ticks for the
+# busload interval and the block-time batching.
+CONFIG_FREERTOS_HZ=1000
+CONFIG_ESP_TASK_WDT_TIMEOUT_S=10
+
+# app_main does a lot before it hands off: NVS, diag (which promotes any
+# coredump the last boot left), selftest_post, the network and the bridge. The
+# 3584-byte default was not enough — FreeRTOS's own detector reported
+# "A stack overflow in task main has been detected" during bring-up when the
+# image was first booted under QEMU (see firmware/qemu). Nothing here runs for
+# long, so the extra 2.5 KB is reclaimed as soon as app_main returns.
+CONFIG_ESP_MAIN_TASK_STACK_SIZE=6144
+
+# --- rev A board: W5500 Ethernet over SPI (ESP32-S3 has no internal EMAC) ---
+CONFIG_ETH_USE_SPI_ETHERNET=y
+CONFIG_ETH_SPI_ETHERNET_W5500=y
+# The internal EMAC does not exist on the S3; make sure nothing pulls it in.
+CONFIG_ETH_USE_ESP32_EMAC=n
+
+# --- OTA rollback ---
+# Since components/webui can replace the firmware over the USB cable, a bad
+# image is now something an operator can install rather than only something a
+# developer can flash. With this on, a freshly written image boots on
+# probation: unless it reaches esp_ota_mark_app_valid_cancel_rollback() at the
+# end of app_main - by which point the bridge is listening and the LEDs are
+# running - the bootloader reverts to the image it replaced.
+#
+# This matters more on this board than on most: J301 is a DNP and is not
+# fitted, so recovering a unit that will not boot means the BOOT button and a
+# cable, and on a USB-NCM image the serial port is only there for the first
+# eight seconds. Automatic revert is the difference between a bad upload being
+# an inconvenience and being a trip to the bench.
+CONFIG_BOOTLOADER_APP_ROLLBACK_ENABLE=y
+
+# --- Crash diagnostics (see components/diag) ---
+# A converter in a rack has no console. The panic handler writes a coredump to
+# its own flash partition instead; esp-coredump decodes it offline against the
+# matching .elf, giving registers, the faulting task and a full backtrace.
+CONFIG_ESP_COREDUMP_ENABLE_TO_FLASH=y
+CONFIG_ESP_COREDUMP_DATA_FORMAT_ELF=y
+CONFIG_ESP_COREDUMP_CHECKSUM_SHA256=y
+CONFIG_ESP_COREDUMP_MAX_TASKS_NUM=32
+# Reboot after a panic rather than halting: a dead converter is a dead amp
+# network, and the coredump survives the reboot to explain it afterwards.
+CONFIG_ESP_SYSTEM_PANIC_PRINT_REBOOT=y

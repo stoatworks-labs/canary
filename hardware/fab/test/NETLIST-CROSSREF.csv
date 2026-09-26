@@ -1,0 +1,120 @@
+D356 Net Name,Full Net Name,Pad Points,Vias,Top Access,Bottom Access,Continuity Testable,Example Pads
+rCON/BOB_SMITH,"/Ethernet — W5500 SPI, PoE magjack, etherCON/BOB_SMITH",5,0,5,0,yes,"R405.2, R404.2, R402.2, C411.1"
+herCON/ETH_1V2,"/Ethernet — W5500 SPI, PoE magjack, etherCON/ETH_1V2",2,2,2,0,yes,"U401.22, C408.1"
+rCON/ETH_CT_RD,"/Ethernet — W5500 SPI, PoE magjack, etherCON/ETH_CT_RD",2,2,2,0,yes,"T401.7, R403.1"
+rCON/ETH_CT_TD,"/Ethernet — W5500 SPI, PoE magjack, etherCON/ETH_CT_TD",2,0,2,0,yes,"R402.1, T401.2"
+rCON/ETH_EXRES,"/Ethernet — W5500 SPI, PoE magjack, etherCON/ETH_EXRES",2,0,2,0,yes,"U401.10, R401.1"
+herCON/ETH_RCT,"/Ethernet — W5500 SPI, PoE magjack, etherCON/ETH_RCT",4,0,4,0,yes,"R409.2, T401.10, R408.2, C413.1"
+herCON/ETH_RXN,"/Ethernet — W5500 SPI, PoE magjack, etherCON/ETH_RXN",3,2,3,0,yes,"U401.5, R409.1, T401.9"
+herCON/ETH_RXP,"/Ethernet — W5500 SPI, PoE magjack, etherCON/ETH_RXP",3,3,3,0,yes,"U401.6, T401.11, R408.1"
+ON/ETH_SPARE_1,"/Ethernet — W5500 SPI, PoE magjack, etherCON/ETH_SPARE_1",3,0,3,2,yes,"R404.1, J401.4, J401.5"
+ON/ETH_SPARE_2,"/Ethernet — W5500 SPI, PoE magjack, etherCON/ETH_SPARE_2",3,0,3,2,yes,"R405.1, J401.7, J401.8"
+herCON/ETH_TCT,"/Ethernet — W5500 SPI, PoE magjack, etherCON/ETH_TCT",5,0,5,0,yes,"R406.2, R410.2, R407.2, T401.15"
+rCON/ETH_TOCAP,"/Ethernet — W5500 SPI, PoE magjack, etherCON/ETH_TOCAP",2,0,2,0,yes,"U401.20, C410.1"
+herCON/ETH_TXN,"/Ethernet — W5500 SPI, PoE magjack, etherCON/ETH_TXN",3,2,3,0,yes,"U401.1, R407.1, T401.14"
+herCON/ETH_TXP,"/Ethernet — W5500 SPI, PoE magjack, etherCON/ETH_TXP",3,0,3,0,yes,"R406.1, U401.2, T401.16"
+herCON/ETH_VBG,"/Ethernet — W5500 SPI, PoE magjack, etherCON/ETH_VBG",2,2,2,0,yes,"U401.18, C409.1"
+therCON/ETH_XI,"/Ethernet — W5500 SPI, PoE magjack, etherCON/ETH_XI",4,0,4,0,yes,"U401.30, Y401.1, R411.1, C401.1"
+therCON/ETH_XO,"/Ethernet — W5500 SPI, PoE magjack, etherCON/ETH_XO",4,0,4,0,yes,"R412.2, C402.1, Y401.2, R411.2"
+CON/ETH_XO_DRV,"/Ethernet — W5500 SPI, PoE magjack, etherCON/ETH_XO_DRV",2,2,2,0,yes,"U401.31, R412.1"
+erCON/LAN_RD_N,"/Ethernet — W5500 SPI, PoE magjack, etherCON/LAN_RD_N",2,0,2,1,yes,"T401.8, J401.6"
+erCON/LAN_RD_P,"/Ethernet — W5500 SPI, PoE magjack, etherCON/LAN_RD_P",2,0,2,1,yes,"T401.6, J401.3"
+erCON/LAN_TD_N,"/Ethernet — W5500 SPI, PoE magjack, etherCON/LAN_TD_N",2,0,2,1,yes,"T401.3, J401.2"
+erCON/LAN_TD_P,"/Ethernet — W5500 SPI, PoE magjack, etherCON/LAN_TD_P",2,0,2,1,yes,"T401.1, J401.1"
+"USB, LEDs/BOOT","/MCU — ESP32-S3-WROOM-1, USB, LEDs/BOOT",4,1,4,1,yes,"SW302.1, SW302.1, U301.27, J301.5"
+", USB, LEDs/EN","/MCU — ESP32-S3-WROOM-1, USB, LEDs/EN",6,2,6,1,yes,"R301.2, SW301.1, SW301.1, C304.1"
+", LEDs/LED_CAN","/MCU — ESP32-S3-WROOM-1, USB, LEDs/LED_CAN",2,0,2,0,yes,"R304.1, U301.10"
+LEDs/LED_CAN_K,"/MCU — ESP32-S3-WROOM-1, USB, LEDs/LED_CAN_K",2,0,2,0,yes,"D303.2, R304.2"
+", LEDs/LED_ERR","/MCU — ESP32-S3-WROOM-1, USB, LEDs/LED_ERR",2,0,2,0,yes,"R303.1, U301.9"
+LEDs/LED_ERR_K,"/MCU — ESP32-S3-WROOM-1, USB, LEDs/LED_ERR_K",2,0,2,0,yes,"D302.2, R303.2"
+", LEDs/LED_LAN","/MCU — ESP32-S3-WROOM-1, USB, LEDs/LED_LAN",2,0,2,0,yes,"R302.1, U301.8"
+LEDs/LED_LAN_K,"/MCU — ESP32-S3-WROOM-1, USB, LEDs/LED_LAN_K",2,0,2,0,yes,"R302.2, D301.2"
+ LEDs/LED_ON_K,"/MCU — ESP32-S3-WROOM-1, USB, LEDs/LED_ON_K",2,0,2,0,yes,"D304.2, R305.2"
+LEDs/UART0_RXD,"/MCU — ESP32-S3-WROOM-1, USB, LEDs/UART0_RXD",2,1,2,1,yes,"U301.36, J301.4"
+LEDs/UART0_TXD,"/MCU — ESP32-S3-WROOM-1, USB, LEDs/UART0_TXD",2,1,2,1,yes,"U301.37, J301.3"
+V and 3V3/BST2,"/Power — PoE + USB-C PD, 5V and 3V3/BST2",2,0,2,0,yes,"U103.6, C105.2"
+5V and 3V3/FB2,"/Power — PoE + USB-C PD, 5V and 3V3/FB2",3,0,3,0,yes,"R104.1, R103.2, U103.1"
+/PD_VBUS_SENSE,"/Power — PoE + USB-C PD, 5V and 3V3/PD_VBUS_SENSE",2,0,2,0,yes,"R107.2, U104.8"
+and 3V3/PD_VDD,"/Power — PoE + USB-C PD, 5V and 3V3/PD_VDD",4,0,4,0,yes,"R106.2, U104.1, U104.9, C109.1"
+5V and 3V3/SW2,"/Power — PoE + USB-C PD, 5V and 3V3/SW2",3,0,3,0,yes,"L102.1, U103.5, C105.1"
+nd 3V3/USB_CC1,"/Power — PoE + USB-C PD, 5V and 3V3/USB_CC1",2,2,2,0,yes,"J102.A5, U104.7"
+nd 3V3/USB_CC2,"/Power — PoE + USB-C PD, 5V and 3V3/USB_CC2",2,2,2,0,yes,"J102.B5, U104.6"
+d 3V3/VBUS_RAW,"/Power — PoE + USB-C PD, 5V and 3V3/VBUS_RAW",5,2,5,0,yes,"J102.A4, J102.A9, J102.B4, J102.B9"
+ etherCON/CANH,"/dbCAN — ADM3053 isolated, 2x etherCON/CANH",5,1,5,2,yes,"D201.1, J202.4, U201.17, R202.1"
+ etherCON/CANL,"/dbCAN — ADM3053 isolated, 2x etherCON/CANL",5,1,5,2,yes,"D201.3, J202.5, U201.15, J201.5"
+herCON/CAN_GND,"/dbCAN — ADM3053 isolated, 2x etherCON/CAN_GND",12,40,12,2,yes,"C206.2, D201.2, R201.2, J202.SH"
+therCON/CAN_RS,"/dbCAN — ADM3053 isolated, 2x etherCON/CAN_RS",2,2,2,0,yes,"R201.1, U201.18"
+therCON/TERM_A,"/dbCAN — ADM3053 isolated, 2x etherCON/TERM_A",2,1,2,1,yes,"R202.2, SW201.3"
+therCON/TERM_B,"/dbCAN — ADM3053 isolated, 2x etherCON/TERM_B",2,0,2,1,yes,"R203.1, SW201.1"
+erCON/TERM_MID,"/dbCAN — ADM3053 isolated, 2x etherCON/TERM_MID",3,0,3,2,yes,"C207.1, SW201.2, SW201.4"
+ etherCON/VISO,"/dbCAN — ADM3053 isolated, 2x etherCON/VISO",4,0,4,0,yes,"C206.1, U201.19, FB201.2, C205.1"
+erCON/VISO_RAW,"/dbCAN — ADM3053 isolated, 2x etherCON/VISO_RAW",3,0,3,0,yes,"U201.12, C204.1, FB201.1"
+CAN_RX,CAN_RX,2,2,2,0,yes,"U201.4, U301.5"
+CAN_TX,CAN_TX,2,2,2,0,yes,"U201.5, U301.4"
+CHASSIS,CHASSIS,6,4,6,5,yes,"J102.SH, J102.SH, J102.SH, J102.SH"
+ETH_CSn,ETH_CSn,2,2,2,0,yes,"U401.32, U301.18"
+ETH_INTn,ETH_INTn,2,0,2,0,yes,"U401.36, U301.22"
+ETH_RSTn,ETH_RSTn,2,0,2,0,yes,"U401.37, U301.17"
+GND,GND,67,93,67,13,yes,"C107.2, U401.3, U401.9, U401.14"
+PD_PG,PD_PG,2,2,2,0,yes,"U104.10, U301.11"
+SPI_MISO,SPI_MISO,2,2,2,0,yes,"U401.34, U301.21"
+SPI_MOSI,SPI_MOSI,2,2,2,0,yes,"U401.35, U301.19"
+SPI_SCK,SPI_SCK,2,2,2,0,yes,"U401.33, U301.20"
+USB_DM,USB_DM,3,2,3,0,yes,"J102.A7, J102.B7, U301.13"
+USB_DP,USB_DP,3,2,3,0,yes,"J102.A6, J102.B6, U301.14"
+VCC_3V3,VCC_3V3,28,29,28,1,yes,"R301.1, U401.4, U401.8, U401.11"
+VCC_5V,VCC_5V,10,4,10,0,yes,"C107.1, U201.8, C201.1, R106.1"
+02-SBU1-PadA8),unconnected-(J102-SBU1-PadA8),1,0,1,0,NO - single point,J102.A8
+02-SBU2-PadB8),unconnected-(J102-SBU2-PadB8),1,0,1,0,NO - single point,J102.B8
+ed-(J201-Pad1),unconnected-(J201-Pad1),1,0,1,1,NO - single point,J201.1
+ed-(J201-Pad2),unconnected-(J201-Pad2),1,0,1,1,NO - single point,J201.2
+ed-(J201-Pad3),unconnected-(J201-Pad3),1,0,1,1,NO - single point,J201.3
+ed-(J201-Pad6),unconnected-(J201-Pad6),1,0,1,1,NO - single point,J201.6
+ed-(J201-Pad7),unconnected-(J201-Pad7),1,0,1,1,NO - single point,J201.7
+ed-(J201-Pad8),unconnected-(J201-Pad8),1,0,1,1,NO - single point,J201.8
+ed-(J202-Pad1),unconnected-(J202-Pad1),1,0,1,1,NO - single point,J202.1
+ed-(J202-Pad2),unconnected-(J202-Pad2),1,0,1,1,NO - single point,J202.2
+ed-(J202-Pad3),unconnected-(J202-Pad3),1,0,1,1,NO - single point,J202.3
+ed-(J202-Pad6),unconnected-(J202-Pad6),1,0,1,1,NO - single point,J202.6
+ed-(J202-Pad7),unconnected-(J202-Pad7),1,0,1,1,NO - single point,J202.7
+ed-(J202-Pad8),unconnected-(J202-Pad8),1,0,1,1,NO - single point,J202.8
+104-CFG2-Pad2),unconnected-(U104-CFG2-Pad2),1,0,1,0,NO - single point,U104.2
+104-CFG3-Pad3),unconnected-(U104-CFG3-Pad3),1,0,1,0,NO - single point,U104.3
+(U104-DM-Pad5),unconnected-(U104-DM-Pad5),1,0,1,0,NO - single point,U104.5
+(U104-DP-Pad4),unconnected-(U104-DP-Pad4),1,0,1,0,NO - single point,U104.4
+(U201-NC-Pad2),unconnected-(U201-NC-Pad2),1,0,1,0,NO - single point,U201.2
+01-VREF-Pad14),unconnected-(U201-VREF-Pad14),1,0,1,0,NO - single point,U201.14
+301-IO1-Pad39),unconnected-(U301-IO1-Pad39),1,0,1,0,NO - single point,U301.39
+301-IO2-Pad38),unconnected-(U301-IO2-Pad38),1,0,1,0,NO - single point,U301.38
+01-IO21-Pad23),unconnected-(U301-IO21-Pad23),1,0,1,0,NO - single point,U301.23
+301-IO3-Pad15),unconnected-(U301-IO3-Pad15),1,0,1,0,NO - single point,U301.15
+01-IO35-Pad28),unconnected-(U301-IO35-Pad28),1,0,1,0,NO - single point,U301.28
+01-IO36-Pad29),unconnected-(U301-IO36-Pad29),1,0,1,0,NO - single point,U301.29
+01-IO37-Pad30),unconnected-(U301-IO37-Pad30),1,0,1,0,NO - single point,U301.30
+01-IO38-Pad31),unconnected-(U301-IO38-Pad31),1,0,1,0,NO - single point,U301.31
+01-IO39-Pad32),unconnected-(U301-IO39-Pad32),1,0,1,0,NO - single point,U301.32
+01-IO40-Pad33),unconnected-(U301-IO40-Pad33),1,0,1,0,NO - single point,U301.33
+01-IO41-Pad34),unconnected-(U301-IO41-Pad34),1,0,1,0,NO - single point,U301.34
+01-IO42-Pad35),unconnected-(U301-IO42-Pad35),1,0,1,0,NO - single point,U301.35
+01-IO45-Pad26),unconnected-(U301-IO45-Pad26),1,0,1,0,NO - single point,U301.26
+01-IO46-Pad16),unconnected-(U301-IO46-Pad16),1,0,1,0,NO - single point,U301.16
+01-IO47-Pad24),unconnected-(U301-IO47-Pad24),1,0,1,0,NO - single point,U301.24
+01-IO48-Pad25),unconnected-(U301-IO48-Pad25),1,0,1,0,NO - single point,U301.25
+U301-IO6-Pad6),unconnected-(U301-IO6-Pad6),1,0,1,0,NO - single point,U301.6
+U301-IO7-Pad7),unconnected-(U301-IO7-Pad7),1,0,1,0,NO - single point,U301.7
+301-IO8-Pad12),unconnected-(U301-IO8-Pad12),1,0,1,0,NO - single point,U301.12
+-ACTLED-Pad27),unconnected-(U401-ACTLED-Pad27),1,0,1,0,NO - single point,U401.27
+U401-DNC-Pad7),unconnected-(U401-DNC-Pad7),1,0,1,0,NO - single point,U401.7
+-DUPLED-Pad26),unconnected-(U401-DUPLED-Pad26),1,0,1,0,NO - single point,U401.26
+LINKLED-Pad25),unconnected-(U401-LINKLED-Pad25),1,0,1,0,NO - single point,U401.25
+U401-NC-Pad12),unconnected-(U401-NC-Pad12),1,0,1,0,NO - single point,U401.12
+U401-NC-Pad13),unconnected-(U401-NC-Pad13),1,0,1,0,NO - single point,U401.13
+U401-NC-Pad46),unconnected-(U401-NC-Pad46),1,0,1,0,NO - single point,U401.46
+U401-NC-Pad47),unconnected-(U401-NC-Pad47),1,0,1,0,NO - single point,U401.47
+01-RSVD-Pad23),unconnected-(U401-RSVD-Pad23),1,0,1,0,NO - single point,U401.23
+01-RSVD-Pad38),unconnected-(U401-RSVD-Pad38),1,0,1,0,NO - single point,U401.38
+01-RSVD-Pad39),unconnected-(U401-RSVD-Pad39),1,0,1,0,NO - single point,U401.39
+01-RSVD-Pad40),unconnected-(U401-RSVD-Pad40),1,0,1,0,NO - single point,U401.40
+01-RSVD-Pad41),unconnected-(U401-RSVD-Pad41),1,0,1,0,NO - single point,U401.41
+01-RSVD-Pad42),unconnected-(U401-RSVD-Pad42),1,0,1,0,NO - single point,U401.42
+-SPDLED-Pad24),unconnected-(U401-SPDLED-Pad24),1,0,1,0,NO - single point,U401.24

@@ -1,0 +1,17 @@
+# ESP-IDF partition table for dbCANary (dual OTA).
+# The module is an ESP32-S3-WROOM-1-N8 (8 MB). This table was laid out when the
+# config still said 4 MB and has not been resized since, so it ends at 0x3E0000
+# and the upper 4 MB is unallocated. That is deliberate for rev A bring-up:
+# growing ota_0/ota_1 or adding a data partition changes OTA compatibility and
+# is a separate decision.
+# Name,     Type, SubType,  Offset,   Size
+nvs,        data, nvs,      0x9000,   0x6000
+otadata,    data, ota,      0xf000,   0x2000
+phy_init,   data, phy,      0x11000,  0x1000
+ota_0,      app,  ota_0,    0x20000,  0x1D0000
+ota_1,      app,  ota_1,    0x1F0000, 0x1D0000
+# 256K of unused flash sat above ota_1; a coredump partition fits there without
+# resizing anything. Without it the panic handler has nowhere to
+# write, and a converter that reboots in a rack tells you nothing about why.
+coredump,   data, coredump, 0x3C0000, 0x20000
+

@@ -1,0 +1,142 @@
+{
+  "schema": "dbcanary.board-test/1",
+  "serial_number": "0001",
+  "timestamp": "2026-09-09T17:38:37+0100",
+  "operator": "claude",
+  "simulated": false,
+  "note": "",
+  "summary": {
+    "pass": 19,
+    "fail": 0,
+    "skip": 1
+  },
+  "checks": [
+    {
+      "name": "answer",
+      "verdict": "PASS",
+      "detail": "260 bytes from 192.0.2.27:33333",
+      "stage": "discover"
+    },
+    {
+      "name": "opcode",
+      "verdict": "PASS",
+      "detail": "opcode 0x00, expected 0x00",
+      "stage": "discover"
+    },
+    {
+      "name": "interface-index",
+      "verdict": "PASS",
+      "detail": "2, probe used 2",
+      "stage": "discover"
+    },
+    {
+      "name": "socket-count",
+      "verdict": "PASS",
+      "detail": "4 socket record(s); R1 needs >= 2 to make the socket column editable",
+      "stage": "discover"
+    },
+    {
+      "name": "socket-uniqueness",
+      "verdict": "PASS",
+      "detail": "4 records, 4 distinct - R1 drops the repeats",
+      "stage": "discover"
+    },
+    {
+      "name": "record-filter",
+      "verdict": "PASS",
+      "detail": "service=1 protocol=1 on port 30000",
+      "stage": "discover"
+    },
+    {
+      "name": "tag",
+      "verdict": "PASS",
+      "detail": "b'R70 ', expected b'R70 '",
+      "stage": "discover"
+    },
+    {
+      "name": "identity",
+      "verdict": "INFO",
+      "detail": "host='db-70' mac=50:78:7d:0e:39:b3 ip=192.0.2.27 port=30000",
+      "stage": "discover"
+    },
+    {
+      "name": "advertised-ip",
+      "verdict": "PASS",
+      "detail": "advertises 192.0.2.27, answered from 192.0.2.27",
+      "stage": "discover"
+    },
+    {
+      "name": "connect",
+      "verdict": "PASS",
+      "detail": "192.0.2.27:30000",
+      "stage": "rmbcp"
+    },
+    {
+      "name": "device-id",
+      "verdict": "PASS",
+      "detail": "cmd=0x40 name='db-70-TCP-30000' mac=50:78:7d:0e:39:b3",
+      "stage": "rmbcp"
+    },
+    {
+      "name": "version",
+      "verdict": "PASS",
+      "detail": "6 bytes: HW, FW, bootloader",
+      "stage": "rmbcp"
+    },
+    {
+      "name": "error-status",
+      "verdict": "PASS",
+      "detail": "0000",
+      "stage": "rmbcp"
+    },
+    {
+      "name": "busload",
+      "verdict": "PASS",
+      "detail": "0 msgs/interval",
+      "stage": "rmbcp"
+    },
+    {
+      "name": "can-baud",
+      "verdict": "PASS",
+      "detail": "0xFE (0xFE = 100 kbit/s)",
+      "stage": "rmbcp"
+    },
+    {
+      "name": "block-time-echo",
+      "verdict": "PASS",
+      "detail": "0xA3 echoed",
+      "stage": "rmbcp"
+    },
+    {
+      "name": "reset-answers-device-id",
+      "verdict": "PASS",
+      "detail": "0x40",
+      "stage": "rmbcp"
+    },
+    {
+      "name": "silent-interfaces-version",
+      "verdict": "PASS",
+      "detail": "no reply, correct",
+      "stage": "rmbcp"
+    },
+    {
+      "name": "silent-baud-calc-interval",
+      "verdict": "PASS",
+      "detail": "no reply, correct",
+      "stage": "rmbcp"
+    },
+    {
+      "name": "alive-after-can-frame",
+      "verdict": "PASS",
+      "detail": "still answering after a CAN frame",
+      "stage": "rmbcp"
+    },
+    {
+      "name": "available",
+      "verdict": "SKIP",
+      "detail": "no --can-channel; the CAN wire was not tested",
+      "stage": "can"
+    }
+  ],
+  "board_selftest": {}
+}
