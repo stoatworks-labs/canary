@@ -440,6 +440,28 @@ TUBE_SCREW_X_BR = SLOT_R_ROOT + 1.0 + INSERT_PILOT_D / 2.0 + 1.0    # 1 mm past 
 TUBE_FIN_T = 1.2                    # 3 x 0.42 mm lines
 TUBE_FIN_BURY = 1.0                 # fin top inside the teardrop, so the union overlaps
 TUBE_LED_SHIFT = -1.5               # LED window moved left, clear of the fin root
+# Internal bracing (2026-09-27). The tube is one 2.5 mm ring 137 x 45 mm, and its long flat-
+# ish top and bottom are what flex. Two kinds of stiffener, both clear of everything that
+# has to pass through the tube or sit in it:
+#   * HOOP BANDS round the inside of the section at three stations along the tube. Standing
+#     on the rear end they are horizontal ledges, so each has a 45-degree underside: BAND_D
+#     inward, BAND_W flat on top of that. A band stops short of the lid's opening strip (the
+#     LED window, pinholes, SW201 slot and cover pocket, BAND_OPENING_CLEAR round them),
+#     since a band across the window would shade the LEDs and one across the pinholes would
+#     block the guide tubes' mouths.
+#   * LONGITUDINAL RIBS the full length, two under the lid and two on the floor. Standing
+#     up they are vertical walls: nothing to support.
+# Clearances the checks hold them to: the board's swept path (it slides in from the front)
+# with its pins below and components above, the etherCON plates' swept path at the front,
+# the rear plate's USB-C well, and the end-face insert pilots.
+BAND_D = 2.0                        # inward from the inner wall
+BAND_W = 2.5                        # flat thickness along Y, above the 45-degree underside
+BAND_Y_TOP = (-26.0, 2.0, 32.0)     # each band's top face (+Y, the upper face as printed)
+BAND_OPENING_CLEAR = 2.0
+RIB_H = 2.5                         # inward from the inner wall
+RIB_T = 1.7                         # 4 x 0.42 mm lines
+RIB_TOP_X = (0.0, 30.0)             # under the lid, clear of the opening strip (x < -21)
+RIB_FLOOR_X = (-20.0, 15.0)         # on the floor, clear of the USB-C well (x 31.6..52.4)
 if TUBE:
     RAIL_L_FACE = X_PCB_L + CH_ENGAGE_R
     SLOT_L_ROOT = X_PCB_L - 0.5
@@ -619,6 +641,74 @@ def tube_bosses():
     for x, d in ((POST_X_L, BOSS_D_L), (POST_X_R, BOSS_D_R)):
         # buried 1 mm into the wall's inner surface, as the posts are half a wall
         out.append((x, skin_z(x, INNER_A, INNER_B) - d / 2.0 + 1.0, d))
+    return out
+
+
+def opening_strip():
+    """(x0, x1, y0, y1) round every lid opening on the left, grown by BAND_OPENING_CLEAR."""
+    ops = [o for o in lid_openings() if o[0] < 0.0]
+    c = BAND_OPENING_CLEAR
+    return (min(o[0] for o in ops) - c, max(o[1] for o in ops) + c,
+            min(o[2] for o in ops) - c, max(o[3] for o in ops) + c)
+
+
+def band_span(y_top):
+    """(y of the underside's foot at the inner wall, y of the top face)."""
+    return y_top - BAND_W - BAND_D, y_top
+
+
+def tube_band(y_top):
+    """One hoop band: flat BAND_W on top of a 45-degree underside BAND_D deep (--tube)."""
+    y_lo, _ = band_span(y_top)
+    a, b = INNER_A, INNER_B
+    # Rooted half a wall into the shell, as the posts are: a real overlap, not a tangency.
+    outer = se_prism(*POST_CLIP, BAND_W + BAND_D + 1.0, y=(y_lo - 1.0 + y_top) / 2.0)
+    # The cutter: the full inner section below the band, a cone shrinking by BAND_D over
+    # BAND_D of height (the underside), then the shrunk section up through the top.
+    # The cone runs E past the inner surface, still at 45 degrees, so the underside meets
+    # the wall at an angle inside the shell rather than edge-on at its surface (edge-on,
+    # OCC's clean() refused the union).
+    E = 0.3
+    cone = (cq.Workplane("XZ", origin=(0, y_top - BAND_W, 0))
+            .spline(se_points(a - BAND_D, b - BAND_D), periodic=True).close()
+            .workplane(offset=BAND_D + E)
+            .spline(se_points(a + E, b + E), periodic=True).close()
+            .loft(ruled=True))
+    cut = (cone.union(se_prism(a - BAND_D, b - BAND_D, BAND_W + 2.0,
+                               y=y_top - BAND_W / 2.0 + 0.5))
+           .union(se_prism(a + E, b + E, 2.0, y=y_lo - E - 0.95)))
+    band = outer.cut(cut)
+    # Stop short of the lid's opening strip, over the band's WHOLE span: a gap cut across
+    # only part of it would leave a flat ledge hanging over air.
+    x0, x1, y0, y1 = opening_strip()
+    if y_lo < y1 and y_top > y0:
+        band = band.cut(zbox(x1 - x0, BAND_W + BAND_D + 2.0, 5.0, OUTER_B + 5.0,
+                             (x0 + x1) / 2.0, (y_lo + y_top) / 2.0))
+    return band
+
+
+def tube_ribs():
+    """The four full-length longitudinal ribs, two under the lid and two on the floor."""
+    L = TUBE_L
+    clip = section_prism(*POST_CLIP, L + 10.0)
+    out = None
+    for x, up in [(x, True) for x in RIB_TOP_X] + [(x, False) for x in RIB_FLOOR_X]:
+        z_in = min(skin_z(x - RIB_T / 2.0, INNER_A, INNER_B),
+                   skin_z(x + RIB_T / 2.0, INNER_A, INNER_B))
+        if up:
+            r = zbox(RIB_T, L + 2.0, z_in - RIB_H, OUTER_B + 1.0, x, 0.0)
+        else:
+            r = zbox(RIB_T, L + 2.0, -(OUTER_B + 1.0), -z_in + RIB_H, x, 0.0)
+        r = r.intersect(clip)
+        out = r if out is None else out.union(r)
+    return out
+
+
+def tube_bracing():
+    """Every stiffener, as one solid, before it joins the tube (--tube, lozenge section)."""
+    out = tube_ribs()
+    for y in BAND_Y_TOP:
+        out = out.union(tube_band(y))
     return out
 
 
@@ -811,6 +901,10 @@ def build_tube():
     # --- screw bosses under the top wall, full length -------------------------
     for (x, z, d) in tube_bosses():
         part = part.union(ybore(d, x, z, -L / 2.0 - 1.0, L / 2.0 + 1.0).intersect(clip))
+
+    # --- internal bracing: hoop bands and longitudinal ribs --------------------
+    if SECTION != "flat":
+        part = part.union(tube_bracing())
 
     part = top_apertures(part)
     # The flush switch cover's pocket and lever notch. After the apertures, so the
@@ -1764,6 +1858,71 @@ def verify_flush_pocket(cover, tube):
     return errs
 
 
+def verify_bracing(tube):
+    """The bands and ribs are in the built tube, and the stiffeners on their own stay out
+    of every path and part that has to pass through or sit in the tube."""
+    errs = []
+    L = TUBE_L
+    brace = tube_bracing()
+
+    def clash(region):
+        try:
+            return brace.intersect(region).val().Volume()
+        except Exception:
+            return 0.0
+    keep_out = {
+        # the board slides in from the front: its pins below, its components and the guide
+        # tubes' lower ends above, full length
+        "the board's path": zbox(X_PCB_R - X_PCB_L, L + 4.0,
+                                 Z_PCB_BOT - NE8FBH_PIN_BELOW_PCB - 0.5, BTN_GUIDE_Z0,
+                                 (X_PCB_L + X_PCB_R) / 2.0, 0.0),
+        # the etherCON plates enter from the front with the board
+        "the etherCON plates' path": zbox(bx(ETHERCON_X[2]) - bx(ETHERCON_X[0])
+                                          + NE8FBH_PLATE_W + 1.0, L + 4.0, Z_PCB_TOP,
+                                          Z_AXIS + NE8FBH_PLATE_ABOVE + 1.0,
+                                          bx(ETHERCON_X[1]), 0.0),
+        # the rear plate's USB-C well, standing into the rear of the tube
+        "the USB-C well": yrect(USBC_WELL_W + 2 * USBC_WELL_WALL + 2.0,
+                                USBC_WELL_H + 2 * USBC_WELL_WALL + 2.0, bx(USBC_X), USBC_ZC,
+                                -L / 2.0 - 1.0, -L / 2.0 + USBC_WELL_DEPTH + 1.0),
+    }
+    x0, x1, y0, y1 = opening_strip()
+    keep_out["the lid's opening strip"] = zbox(x1 - x0 - 0.2, y1 - y0 - 0.2, 5.0,
+                                               OUTER_B + 5.0, (x0 + x1) / 2.0,
+                                               (y0 + y1) / 2.0)
+    for (x, z) in tube_screws():
+        for s in (-1, 1):
+            keep_out[f"the pilot at ({x:+.1f}, {z:+.1f})"] = ybore(
+                INSERT_PILOT_D + 2.0, x, z, s * L / 2.0 - s * (INSERT_DEPTH + 1.0),
+                s * L / 2.0 + s * 1.0)
+    for name, region in keep_out.items():
+        v = clash(region)
+        if v > 0.05:
+            errs.append(f"bracing runs into {name} ({v:.1f} mm3)")
+    # present where it should be, in the built tube
+    for y_top in BAND_Y_TOP:
+        yp = y_top - BAND_W / 2.0
+        for (x, zlo, zhi, where) in ((0.0, -INNER_B + 0.3, -INNER_B + BAND_D - 0.3, "floor"),
+                                     (0.0, INNER_B - BAND_D + 0.3, INNER_B - 0.3, "lid"),
+                                     (INNER_A - BAND_D + 0.3, -1.0, 1.0, "right flank")):
+            if probe(tube, x + (0.0 if where != "right flank" else 0.6), yp, zlo, zhi,
+                     d=0.6) < 0.05:
+                errs.append(f"band at y {y_top:+.1f} is missing at the {where}")
+        # the 45-degree underside: at the band's foot, only the outermost sliver is band
+        y_lo, _ = band_span(y_top)
+        if probe(tube, 0.0, y_lo + 0.3, -INNER_B + 0.6, -INNER_B + BAND_D, d=0.4) > 0.01:
+            errs.append(f"band at y {y_top:+.1f} has no chamfer under it")
+    for x in RIB_TOP_X:
+        z = skin_z(x, INNER_A, INNER_B)
+        if probe(tube, x, 20.0, z - RIB_H + 0.3, z - 0.3, d=0.6) < 0.05:
+            errs.append(f"lid rib at x {x:+.1f} is missing")
+    for x in RIB_FLOOR_X:
+        z = -skin_z(x, INNER_A, INNER_B)
+        if probe(tube, x, 20.0, z + 0.3, z + RIB_H - 0.3, d=0.6) < 0.05:
+            errs.append(f"floor rib at x {x:+.1f} is missing")
+    return errs
+
+
 def verify_solids(parts):
     """Check the BUILT solids, not the parameters.
 
@@ -1902,6 +2061,8 @@ def verify_tube(parts):
         for (x, z) in tube_screws():
             if probe(e, x, 0.0, z - 0.3, z + 0.3, d=1.0) > 0.02:
                 errs.append(f"{name} has no screw hole at ({x:+.1f}, {z:+.1f})")
+    if SECTION != "flat":
+        errs += verify_bracing(tube)
     errs += verify_rear_well(parts["canary_end_rear"])
     errs += verify_led_insert(parts["canary_led_insert"])
     errs += verify_switch_cover(parts)

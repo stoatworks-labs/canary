@@ -83,6 +83,21 @@ and that fixes where the board's front edge is. So the whole 6.5 mm of extra dep
 0.5, and the channel moves forward with the board. The generator checks the module against
 the rear face and the section, not just the board outline.
 
+## Internal bracing
+
+Added 2026-09-27. Three **hoop bands** run round the inside of the section, their top faces
+at y −26, +2 and +32: 2 mm inward, 2.5 mm flat on top of a 45° underside, so standing on the
+rear end they print as ledges with nothing under them. Four **full-length ribs**, 2.5 × 1.7 mm,
+run front to back — two under the lid at x 0 and +30, two on the floor at x −20 and +15
+(board frame). Every band stops short of the lid's opening strip (the LED window, pinholes,
+SW201 slot and cover pocket, 2 mm clear) across its whole width, so no part of a band hangs
+over air. `verify_bracing()` intersects the stiffeners on their own with the board's sliding
+path (pins below, guide-tube ends above), the etherCON plates' path, the rear plate's USB-C
+well, all eight insert pilots and the opening strip, and probes each band and rib in the
+built tube; bands made 9 mm deep, ribs 9 mm tall, or the gap removed each fail it. Cost:
+**+6 g and +23 min** a case, still 0.0 g of support. How much stiffer it is has not been
+measured.
+
 ## How the board is held
 
 **The board has no mounting holes.** Its primary fixing is the **six M3 panel screws** that
@@ -306,8 +321,8 @@ engraving prints on a vertical wall), and 2026-09-27 for the rename and the flus
 
 | `build.sh` variant | Nozzle | Layer | Time | Filament | For |
 |---|---|---|---|---|---|
-| `absgf-0.4-tube` | 0.4 | 0.24 | **4 h 36 m** | **125 g** ABS-GF, **no support** | **the case**: body + both end plates, one nozzle |
-| `absgf-0.4-tube-x4 tube-x4` | 0.4 | 0.24 | **17 h 25 m** | **498 g** ABS-GF, no support | a production bed: four bodies + eight end plates, laid out by `place_x4.py` (3 mm brim) |
+| `absgf-0.4-tube` | 0.4 | 0.24 | **4 h 59 m** | **131 g** ABS-GF, **no support** | **the case**: body + both end plates, one nozzle |
+| `absgf-0.4-tube-x4 tube-x4` | 0.4 | 0.24 | **18 h 57 m** | **522 g** ABS-GF, no support | a production bed: four bodies + eight end plates, laid out by `place_x4.py` (3 mm brim) |
 | `pla-0.4-tube white-x4` | 0.4 | 0.24 | **42 m** | **13.3 g** white PLA, no support | four LED window inserts and four switch covers, one set per body on the 4-up bed; inserts tile down, covers top down |
 | `pla-0.4-tube switchcover` | 0.4 | 0.24 | **8 m** | **1.3 g** white PLA | one switch cover on its own |
 | `pla-0.4-jig jig` | 0.4 | 0.24 | **2 h 23 m** | **116 g** PLA, no support | the [heat-set insert jig](../jig/README.md): index plate, nest, peg |

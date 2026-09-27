@@ -12,6 +12,9 @@
 - **Flush switch cover.** The tube's lid has a 1.2 mm pocket over the service pinholes and
   the SW201 slot; the cover sits flush in it, with a lever notch at its front end for a
   small screwdriver. The new cover does not fit a 0.1.0 tube, nor the old cover the new one.
+- **Internal bracing** in the tube: three hoop bands round the inside (45° undersides, no
+  support) and four full-length ribs, clear of the board's path, the etherCONs, the USB-C
+  well and the insert pilots. +6 g a case; the stiffness gain has not been measured.
 - **Heat-set insert jig** (`hardware/enclosure/gen_insert_jig.py`, `hardware/enclosure/jig/`)
   for a common 3D-printed insert press: an index plate keyed to the press's base, a nest
   that holds the tube on end, and a keyed peg; one socket per insert. The tip's distance
