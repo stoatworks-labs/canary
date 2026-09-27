@@ -1,4 +1,4 @@
-# dbCANary — Developing
+# CANary — Developing
 
 Environment, build variants, tests, and the conventions that keep this project honest.
 
@@ -77,13 +77,13 @@ Three, and the flags are **sticky**, which is the single most common way to wast
 | Variant | Command |
 |---|---|
 | Product (Ethernet) | `idf.py build` |
-| Product (Wi-Fi, devkit only) | `idf.py build -DDBCANARY_USE_WIFI=1 -DDBCANARY_WIFI_SSID=… -DDBCANARY_WIFI_PASS=…` |
-| Self-test image | `idf.py -B build-selftest build -DDBCANARY_SELFTEST=1` |
+| Product (Wi-Fi, devkit only) | `idf.py build -DCANARY_USE_WIFI=1 -DCANARY_WIFI_SSID=… -DCANARY_WIFI_PASS=…` |
+| Self-test image | `idf.py -B build-selftest build -DCANARY_SELFTEST=1` |
 
 > **`idf.py -D` writes to the CMake cache.** A later plain `idf.py build` silently keeps
 > building the variant you last selected. To go back you must say so explicitly:
-> `idf.py -DDBCANARY_USE_WIFI=0 build`. Verify with
-> `grep -c DBCANARY_USE_WIFI=1 build/compile_commands.json`.
+> `idf.py -DCANARY_USE_WIFI=0 build`. Verify with
+> `grep -c CANARY_USE_WIFI=1 build/compile_commands.json`.
 
 The self-test image is built into a **separate build directory** (`-B build-selftest`) on
 purpose: the shipping image must carry no command interface at all, and keeping the two trees
@@ -124,7 +124,7 @@ firmware/  components/rmbcp     protocol codec (C), host tests
            main/app_main.c      builds; never run on hardware
            main/status.c        maps link / lease / R1 / CAN state to the LEDs
 
-hardware/  dbcanary.kicad_*  rev A, 4 sheets, 100 × 81 mm, 4-layer
+hardware/  canary.kicad_*  rev A, 4 sheets, 100 × 81 mm, 4-layer
            fab/              gerbers, drill, BOM, CPL per vendor
            fab/test/         BENCH-BRINGUP.md, FUNCTIONAL-TEST-SPEC.md,
                              PROBE-POINTS.{json,csv}, netlists
@@ -188,7 +188,7 @@ the routed board; see [`FAB.md`](FAB.md).
 Re-run DRC yourself with:
 
 ```bash
-kicad-cli pcb drc --schematic-parity --severity-error --severity-warning hardware/dbcanary.kicad_pcb
+kicad-cli pcb drc --schematic-parity --severity-error --severity-warning hardware/canary.kicad_pcb
 ```
 
 ### The LED polarity correction
@@ -205,7 +205,7 @@ occurrence, it is wrong.
 ### Probe points
 
 `hardware/scripts/probe_points.py` generates `hardware/fab/test/PROBE-POINTS.{json,csv}` and the
-`docs/renders/probe-*.svg` drawings from `dbcanary.kicad_pcb`, and **refuses to run if a probe's
+`docs/renders/probe-*.svg` drawings from `canary.kicad_pcb`, and **refuses to run if a probe's
 designator, pad or net no longer matches**. A marker cannot quietly drift off its pad across a
 re-spin. Regenerate rather than hand-editing.
 
@@ -220,11 +220,11 @@ PoE, Ethernet ESD/TVS, silkscreen cleanup.
 **Scope is a transparent bridge — exactly what the R70 is.** It is not a control surface and
 should not grow into one.
 
-**dbCANary stays d&b-only.** Multi-brand support was researched and the premise did not hold:
+**CANary stays d&b-only.** Multi-brand support was researched and the premise did not hold:
 CAN is a d&b idiosyncrasy and no other manufacturer uses it, so a universal amp bridge's axis
 is the *control protocol*, not the CAN dialect. That work moved to
 [amp-commander](https://github.com/stoatworks-labs/amp-commander), whose KiCad project is a
-renamed copy of dbCANary rev A — dbCANary's own project was deliberately left untouched.
+renamed copy of CANary rev A — CANary's own project was deliberately left untouched.
 
 **Legal**: this is an independent, clean-room-by-documentation implementation built from
 published vendor documentation. Do not import d&b or RM Michaelides code or firmware into it,

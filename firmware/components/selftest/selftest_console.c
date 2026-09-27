@@ -352,7 +352,7 @@ esp_err_t selftest_console_start(void)
 {
     esp_console_repl_t *repl = NULL;
     esp_console_repl_config_t cfg = ESP_CONSOLE_REPL_CONFIG_DEFAULT();
-    cfg.prompt = "dbcanary> ";
+    cfg.prompt = "canary> ";
     cfg.max_cmdline_length = 128;
     /* The IDF default is 4096 bytes, and `selftest` runs with a
      * selftest_report_t (~2 KB) on THIS task's stack plus the SPI and TWAI
@@ -386,7 +386,7 @@ esp_err_t selftest_console_start(void)
      * linenoise's terminal probing and line rewriting. */
     linenoiseSetDumbMode(1);
 
-    printf("\nDBCANARY-TEST-CONSOLE " SELFTEST_SCHEMA "\n"
+    printf("\nCANARY-TEST-CONSOLE " SELFTEST_SCHEMA "\n"
            "Type 'help' for commands, 'selftest' to run everything.\n");
     fflush(stdout);
 

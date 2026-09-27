@@ -9,7 +9,7 @@
  *                    entirely through the W5500. Pins come from board.h.
  *
  *   net_start_sta()  Wi-Fi STA. Kept only so the bridge is testable on a plain
- *                    ESP32-S3 devkit plus a CAN transceiver, with no dbCANary
+ *                    ESP32-S3 devkit plus a CAN transceiver, with no CANary
  *                    hardware. NOT the shipping path: the rev A board's antenna
  *                    keepout exists for the module but Wi-Fi is not part of the
  *                    product's signal path.

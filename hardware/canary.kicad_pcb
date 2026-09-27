@@ -2636,7 +2636,7 @@
 			)
 		)
 	)
-	(footprint "dbcanary:Neutrik_etherCON_NE8FBH"
+	(footprint "canary:Neutrik_etherCON_NE8FBH"
 		(layer "F.Cu")
 		(uuid "1114ecf6-55b8-42f0-b1b1-3b2484fea1e1")
 		(at 64 92 180)
@@ -8594,7 +8594,7 @@
 			)
 		)
 	)
-	(footprint "dbcanary:Neutrik_etherCON_NE8FBH"
+	(footprint "canary:Neutrik_etherCON_NE8FBH"
 		(layer "F.Cu")
 		(uuid "70ac49f4-8df6-4d0e-b861-19803be32544")
 		(at 36 92 180)
@@ -11920,7 +11920,7 @@
 			)
 		)
 	)
-	(footprint "dbcanary:Neutrik_etherCON_NE8FBH"
+	(footprint "canary:Neutrik_etherCON_NE8FBH"
 		(layer "F.Cu")
 		(uuid "a3d774b0-4aba-40ef-85bf-ee3159b112a9")
 		(at 92 92 180)

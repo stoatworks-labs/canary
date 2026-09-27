@@ -53,8 +53,8 @@ CONFIG_TINYUSB_NET_MODE_NCM=y
 # no USB interface at all, so there is nothing to be compatible with. R1 finds the
 # unit over IP, exactly as it does on the LAN jack, and never sees USB.
 CONFIG_TINYUSB_DESC_MANUFACTURER_STRING="Stoatworks"
-CONFIG_TINYUSB_DESC_PRODUCT_STRING="dbCANary"
-CONFIG_TINYUSB_DESC_SERIAL_STRING="dbCANary"
+CONFIG_TINYUSB_DESC_PRODUCT_STRING="CANary"
+CONFIG_TINYUSB_DESC_SERIAL_STRING="CANary"
 
 # The console stays where sdkconfig.defaults puts it -- USB-Serial-JTAG -- and
 # is live for the whole start-delay window. Restated here rather than inherited

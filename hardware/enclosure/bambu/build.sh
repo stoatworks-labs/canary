@@ -1,5 +1,5 @@
 #!/bin/sh
-# Build a dbCANary case plate for the Bambu Lab H2C and slice it to prove it.
+# Build a CANary case plate for the Bambu Lab H2C and slice it to prove it.
 #
 #   ./build.sh                      # default variant, all four parts
 #   ./build.sh absgf-0.4            # named variant (see variants.py)
@@ -10,12 +10,13 @@
 #   ./build.sh pla-0.4-tube white-x4      # four LED inserts + four switch covers, one set
 #                                         # per body of the 4-up bed
 #   ./build.sh absgf-0.4-tube-x4 tube-x4  # four bodies + eight end plates, one bed
+#   ./build.sh pla-0.4-jig jig            # the heat-set insert jig for the press
 #   ./build.sh absgf-0.4-flat       # the flat-section case, from print-flat/
 #   ./build.sh absgf-0.4-tube       # the one-piece body + end plates, from print-tube/
 #
 # Must run under $HOME: the Mac BambuStudio is sandboxed away from /tmp.
 #
-# Needs DBCANARY_H2C_REF_3MF set to a Bambu Studio-made H2C project (.3mf) -- see
+# Needs CANARY_H2C_REF_3MF set to a Bambu Studio-made H2C project (.3mf) -- see
 # make_project_config.py for why.
 set -e
 cd "$(dirname "$0")"
@@ -37,29 +38,31 @@ G=$(python3 -c "import json;print(json.load(open('presets/paths.json')).get('geo
 PRINT=print
 [ "$G" = flat ] && PRINT=print-flat
 [ "$G" = tube ] && PRINT=print-tube
+# The insert jig is not the case: gen_insert_jig.py writes its parts print-ready to ../jig.
+[ "$G" = jig ] && PRINT=../jig
 test -d "$PRINT" || { echo "run orient_for_print.py first (no $PRINT/ dir)"; exit 1; }
 
 # The one-piece body is three parts, not four.
-BODY="$PRINT/dbcanary_shell_bottom.stl $PRINT/dbcanary_shell_top.stl"
-[ "$G" = tube ] && BODY="$PRINT/dbcanary_tube.stl"
+BODY="$PRINT/canary_shell_bottom.stl $PRINT/canary_shell_top.stl"
+[ "$G" = tube ] && BODY="$PRINT/canary_tube.stl"
 
 case "$PARTSET" in
-  all)        STLS="$BODY $PRINT/dbcanary_end_front.stl $PRINT/dbcanary_end_rear.stl"
-              STEM="dbcanary-case" ;;
-  frontplate) STLS="$PRINT/dbcanary_end_front.stl"
-              STEM="dbcanary-frontplate" ;;
-  rearplate)  STLS="$PRINT/dbcanary_end_rear.stl"
-              STEM="dbcanary-rearplate" ;;
-  ledinsert)  STLS="$PRINT/dbcanary_led_insert.stl"
-              STEM="dbcanary-ledinsert" ;;
-  switchcover) STLS="$PRINT/dbcanary_switch_cover.stl"
-              STEM="dbcanary-switchcover" ;;
+  all)        STLS="$BODY $PRINT/canary_end_front.stl $PRINT/canary_end_rear.stl"
+              STEM="canary-case" ;;
+  frontplate) STLS="$PRINT/canary_end_front.stl"
+              STEM="canary-frontplate" ;;
+  rearplate)  STLS="$PRINT/canary_end_rear.stl"
+              STEM="canary-rearplate" ;;
+  ledinsert)  STLS="$PRINT/canary_led_insert.stl"
+              STEM="canary-ledinsert" ;;
+  switchcover) STLS="$PRINT/canary_switch_cover.stl"
+              STEM="canary-switchcover" ;;
   white-x4)   # everything that prints in the white PLA, four units' worth
               STLS=""
               for i in 1 2 3 4; do
-                  STLS="$STLS $PRINT/dbcanary_led_insert.stl $PRINT/dbcanary_switch_cover.stl"
+                  STLS="$STLS $PRINT/canary_led_insert.stl $PRINT/canary_switch_cover.stl"
               done
-              STEM="dbcanary-white-x4" ;;
+              STEM="canary-white-x4" ;;
   tube-x4)    # four one-piece bodies and their ends on one bed (tube geometry only),
               # laid out by place_x4.py and exported without arranging -- see that file
               # needs trimesh, so the CAD venv (the one gen_case_3dp.py runs under)
@@ -68,10 +71,13 @@ case "$PARTSET" in
               "$CADPY" place_x4.py "$PRINT" || exit 1
               STLS="$(ls work/x4-stls/*/*.stl | tr '\n' ' ')"
               ARRANGE=0
-              STEM="dbcanary-4up" ;;
-  ends)       STLS="$PRINT/dbcanary_end_front.stl $PRINT/dbcanary_end_rear.stl"
-              STEM="dbcanary-ends" ;;
-  *) echo "unknown part set '$PARTSET' (all | ends | frontplate | rearplate | ledinsert | switchcover | white-x4 | tube-x4)"; exit 1 ;;
+              STEM="canary-4up" ;;
+  jig)        # the heat-set insert jig (gen_insert_jig.py): plate, nest, peg
+              STLS="$PRINT/canary_jig_plate.stl $PRINT/canary_jig_nest.stl $PRINT/canary_jig_peg.stl"
+              STEM="canary-insert-jig" ;;
+  ends)       STLS="$PRINT/canary_end_front.stl $PRINT/canary_end_rear.stl"
+              STEM="canary-ends" ;;
+  *) echo "unknown part set '$PARTSET' (all | ends | frontplate | rearplate | ledinsert | switchcover | white-x4 | tube-x4 | jig)"; exit 1 ;;
 esac
 
 M=$(python3 -c "import json;print(json.load(open('presets/paths.json'))['machine'])")

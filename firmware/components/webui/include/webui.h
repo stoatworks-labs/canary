@@ -15,7 +15,7 @@
  *      one interface, so this is what makes "USB only" true rather than
  *      aspirational.
  *
- * The reasoning: dbCANary is a transparent bridge (AGENTS.md §1) and TCP 30000
+ * The reasoning: CANary is a transparent bridge (AGENTS.md §1) and TCP 30000
  * has no authentication by design, exactly as a real R70 has none. A surface
  * that can rename the unit, move its port or replace its firmware is a
  * different risk class from one that carries CAN frames, and putting it behind

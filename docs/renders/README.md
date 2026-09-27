@@ -1,6 +1,6 @@
-# dbCANary rev A — board renders
+# CANary rev A — board renders
 
-Generated with `kicad-cli pcb render` from `hardware/dbcanary.kicad_pcb`.
+Generated with `kicad-cli pcb render` from `hardware/canary.kicad_pcb`.
 Regenerate with `hardware/scripts/render.sh`.
 
 | File | View |
@@ -25,7 +25,7 @@ every probe point in `hardware/fab/test/PROBE-POINTS.json` badged and keyed.
 | `probe-can.svg` | ADM3053, termination, CAN jacks, isolated domain shaded |
 
 The script asserts every probe's designator, pad and net against
-`dbcanary.kicad_pcb` and refuses to run if one has moved, so a badge cannot
+`canary.kicad_pcb` and refuses to run if one has moved, so a badge cannot
 quietly drift off its pad. Use them with
 [`BENCH-BRINGUP.md`](../../hardware/fab/test/BENCH-BRINGUP.md).
 

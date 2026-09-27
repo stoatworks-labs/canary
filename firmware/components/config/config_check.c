@@ -16,10 +16,11 @@ void cfg_defaults(cfg_t *out)
         return;
     }
     memset(out, 0, sizeof(*out));
-    /* The R70 factory default. R1 shows it verbatim, and a rig with two units
-     * on defaults shows two identically named entries - which is exactly why
-     * being able to change it is the first reason this component exists. */
-    strcpy(out->hostname, "db-70");
+    /* Our own name, not the R70's factory "db-70", so R1's list says what the
+     * unit is. R1 shows it verbatim, and a rig with two units on defaults shows
+     * two identically named entries - which is exactly why being able to change
+     * it is the first reason this component exists. */
+    strcpy(out->hostname, "CANary");
     out->base_port = 30000;
     out->socket_count = 4;
     out->eth_mode = CFG_IPV4_DHCP;

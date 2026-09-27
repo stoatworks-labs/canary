@@ -16,7 +16,7 @@ cd "$(dirname "$0")"
 
 CC=${CC:-cc}
 COMPONENTS=../../components
-OUTDIR=${OUTDIR:-/tmp/dbcanary-fuzz}
+OUTDIR=${OUTDIR:-/tmp/canary-fuzz}
 mkdir -p "$OUTDIR"
 
 SAN="-fsanitize=address,undefined -fno-omit-frame-pointer -fno-sanitize-recover=all"

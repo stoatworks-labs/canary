@@ -23,7 +23,7 @@ OUT = pathlib.Path("work/x4-stls")
 BED = (330.0, 320.0)
 BRIM, GAP_X, GAP_Y = 3.0, 3.0, 10.0
 W, L = 45.0, 137.0                      # footprint after the turn: W along X, L along Y
-PARTS = ["dbcanary_tube"] * 4 + ["dbcanary_end_front"] * 4 + ["dbcanary_end_rear"] * 4
+PARTS = ["canary_tube"] * 4 + ["canary_end_front"] * 4 + ["canary_end_rear"] * 4
 
 
 def main():

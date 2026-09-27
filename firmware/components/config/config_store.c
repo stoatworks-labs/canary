@@ -11,7 +11,11 @@ static const char *TAG = "cfg";
 
 /* Its own namespace, separate from diag's: erasing settings to recover a unit
  * must not throw away the crash summary that explains why it needed
- * recovering. NVS keys are capped at 15 characters. */
+ * recovering. NVS keys are capped at 15 characters.
+ *
+ * Still "dbcanary" after the rename to CANary, on purpose: the namespace is
+ * where every unit in the field keeps its settings, and a new name would read
+ * as "never configured" and quietly put them all back on defaults. */
 #define NS "dbcanary"
 
 #define KEY_HOSTNAME "host"

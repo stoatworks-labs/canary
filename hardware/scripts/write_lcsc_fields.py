@@ -33,8 +33,8 @@ import sys
 import pcbnew
 
 HW = _REPO + "/hardware"
-BOARD = f"{HW}/dbcanary.kicad_pcb"
-BOM = f"{HW}/fab/jlcpcb/dbcanary-jlcpcb-bom.csv"
+BOARD = f"{HW}/canary.kicad_pcb"
+BOM = f"{HW}/fab/jlcpcb/canary-jlcpcb-bom.csv"
 MASTER = f"{HW}/fab/parts-master.json"
 
 

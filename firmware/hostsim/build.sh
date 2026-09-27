@@ -1,5 +1,5 @@
 #!/bin/sh
-# Build dbcanaryd — the shipping bridge firmware as a host process.
+# Build canaryd — the shipping bridge firmware as a host process.
 #
 # Same warning discipline as the component tests: -Wall -Wextra -Werror, and
 # the component sources are compiled UNMODIFIED. If a component stops building
@@ -12,7 +12,7 @@ set -e
 cd "$(dirname "$0")"
 
 CC=${CC:-cc}
-OUT=${OUT:-./dbcanaryd}
+OUT=${OUT:-./canaryd}
 COMPONENTS=../components
 
 CFLAGS="-std=c99 -D_DARWIN_C_SOURCE -D_GNU_SOURCE -Wall -Wextra -Werror -O1 -g"

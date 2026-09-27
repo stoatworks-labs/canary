@@ -12,8 +12,8 @@ import csv, json, sys, time, urllib.request
 
 API = ("https://jlcpcb.com/api/overseas-pcb-order/v1/"
        "shoppingCart/smtGood/selectSmtComponentList")
-BOM = "fab/jlcpcb/dbcanary-jlcpcb-bom.csv"
-PW = "fab/pcbway/dbcanary-pcbway-bom.csv"
+BOM = "fab/jlcpcb/canary-jlcpcb-bom.csv"
+PW = "fab/pcbway/canary-pcbway-bom.csv"
 
 FINAL_PICKS = {          # from the debug queries, validated by eye
     "18pF": "C1549",             # 0402CG180J500NT - CG in the MPN = C0G

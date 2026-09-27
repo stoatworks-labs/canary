@@ -26,7 +26,7 @@ import tempfile
 import pcbnew
 
 HW = _REPO + "/hardware"
-BOARD = f"{HW}/dbcanary.kicad_pcb"
+BOARD = f"{HW}/canary.kicad_pcb"
 PLUGINS = os.path.expanduser("~/Documents/KiCad/10.0/3rdparty/plugins")
 JLC_PLUGIN = f"{PLUGINS}/com_github_bennymeg_JLC-Plugin-for-KiCad"
 PW_PLUGIN = f"{PLUGINS}/com_github_pcbway_PCBWay-Fabrication-Toolkit-for-KiCad"
@@ -57,7 +57,7 @@ def run_pcbway(board):
     p.get_netlist_file(out + "/")
     p.get_components_file(out + "/")
 
-    archive = shutil.make_archive(f"{out}/dbcanary_gerber", "zip", f"{out}/gerber")
+    archive = shutil.make_archive(f"{out}/canary_gerber", "zip", f"{out}/gerber")
     print(f"  PCBWay: gerbers -> {os.path.basename(archive)}")
     for f in sorted(os.listdir(out)):
         if os.path.isfile(os.path.join(out, f)):

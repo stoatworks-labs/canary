@@ -55,7 +55,7 @@ import pcbnew
 sys.path.insert(0, _REPO + "/hardware/scripts")
 import route_residual as rr
 
-BOARD = _REPO + "/hardware/dbcanary.kicad_pcb"
+BOARD = _REPO + "/hardware/canary.kicad_pcb"
 
 F, B, IN2 = pcbnew.F_Cu, pcbnew.B_Cu, pcbnew.In2_Cu
 

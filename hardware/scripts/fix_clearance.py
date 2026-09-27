@@ -14,7 +14,7 @@ import sys
 
 import pcbnew
 
-BOARD = _REPO + "/hardware/dbcanary.kicad_pcb"
+BOARD = _REPO + "/hardware/canary.kicad_pcb"
 BOARD_BOX = (20.0, 19.0, 120.0, 100.0)
 VIA_R = 0.3
 MARGIN = 0.06          # extra beyond the rule, mm

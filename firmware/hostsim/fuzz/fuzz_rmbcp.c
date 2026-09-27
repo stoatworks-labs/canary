@@ -2,7 +2,7 @@
  * Fuzz the RMBCP stream decoder — the code that parses bytes off the network.
  *
  * This is the whole attack surface. TCP 30000 has no authentication (see
- * bridge.h), so anything that can reach a dbCANary on a show network gets to
+ * bridge.h), so anything that can reach a CANary on a show network gets to
  * choose these bytes. A decoder that reads out of bounds on a hostile length
  * field is a remote crash on a device in a rack.
  *

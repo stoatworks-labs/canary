@@ -1,5 +1,5 @@
 /*
- * USB network device (CDC-NCM) — dbCANary over the USB-C cable.
+ * USB network device (CDC-NCM) — CANary over the USB-C cable.
  *
  * Plug the unit into a laptop and it appears as a second Ethernet adapter, on
  * a private point-to-point link with the unit at one end and the laptop at the

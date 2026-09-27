@@ -5,5 +5,5 @@
 set -e
 cd "$(dirname "$0")"
 CC=${CC:-cc}
-"$CC" -std=c11 -Wall -Wextra -Werror -I.. -I../../r70_ddt/include ../config_check.c test_config_check.c -o /tmp/dbcanary_test_config
-exec /tmp/dbcanary_test_config
+"$CC" -std=c11 -Wall -Wextra -Werror -I.. -I../../r70_ddt/include ../config_check.c test_config_check.c -o /tmp/canary_test_config
+exec /tmp/canary_test_config

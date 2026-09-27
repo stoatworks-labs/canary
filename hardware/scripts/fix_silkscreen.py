@@ -39,7 +39,7 @@ import sys
 import pcbnew
 
 HW = _REPO + "/hardware"
-BOARD = f"{HW}/dbcanary.kicad_pcb"
+BOARD = f"{HW}/canary.kicad_pcb"
 PLUGIN = os.path.expanduser(
     "~/Documents/KiCad/10.0/3rdparty/plugins/com_github_sijah_center-silk-ref")
 

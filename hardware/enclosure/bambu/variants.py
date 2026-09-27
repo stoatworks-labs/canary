@@ -1,4 +1,4 @@
-"""Print variants for the dbCANary case.
+"""Print variants for the CANary case.
 
 One nozzle change covers both materials actually to hand: Bambu ships an ABS-GF profile
 for the H2C only at 0.4, and PLA is happy there too, so 0.4 is the nozzle to fit.
@@ -66,7 +66,7 @@ VARIANTS = {
         process="0.24mm Standard @BBL H2C",
         filament="Bambu ABS-GF @BBL H2C 0.4 nozzle",
         nozzle="0.4", filament_id="GFB50", filament_type="ABS-GF",
-        process_name="0.24mm dbCANary Case ABS-GF @BBL H2C 0.4",
+        process_name="0.24mm CANary Case ABS-GF @BBL H2C 0.4",
         note="structural part: glass-filled ABS, enclosed chamber, hardened nozzle",
         overrides={**COMMON, **_walls(0.42),
                    # ABS-GF shrinks; a 137 x 87 footprint wants all the bed it can get.
@@ -77,7 +77,7 @@ VARIANTS = {
         process="0.24mm Standard @BBL H2C",
         filament="Bambu PLA Basic @BBL H2C",
         nozzle="0.4", filament_id="GFA00", filament_type="PLA",
-        process_name="0.24mm dbCANary Case PLA @BBL H2C 0.4",
+        process_name="0.24mm CANary Case PLA @BBL H2C 0.4",
         note="fit-check article only -- PLA creeps under the panel-screw preload",
         overrides={**COMMON, **_walls(0.42)},
     ),
@@ -87,7 +87,7 @@ VARIANTS = {
         process="0.24mm Standard @BBL H2C",
         filament="Bambu PLA Basic @BBL H2C",
         nozzle="0.4", filament_id="GFA00", filament_type="PLA",
-        process_name="0.24mm dbCANary LED insert PLA @BBL H2C 0.4",
+        process_name="0.24mm CANary LED insert PLA @BBL H2C 0.4",
         note="the LED window insert for the flat case: natural or white PLA, tile down",
         overrides={**COMMON, **_walls(0.42),
                    "enable_support": "0",
@@ -102,17 +102,31 @@ VARIANTS = {
         process="0.24mm Standard @BBL H2C",
         filament="Bambu PLA Basic @BBL H2C",
         nozzle="0.4", filament_id="GFA00", filament_type="PLA",
-        process_name="0.24mm dbCANary LED insert PLA tube @BBL H2C 0.4",
+        process_name="0.24mm CANary LED insert PLA tube @BBL H2C 0.4",
         filament_colour="#FFFFFF",
         note="the white PLA parts for the one-piece tube: LED window insert and switch "
              "cover. The tube's window sits 1.5 mm left and its pillars are 1.6 mm "
-             "shorter than the flat case's, so the inserts do not swap; the covers fit "
-             "the lozenge and the tube alike, not the flat case",
+             "shorter than the flat case's, so the inserts do not swap; since the tube "
+             "took a flush pocket for its cover, the tube's cover fits only the tube",
         overrides={**COMMON, **_walls(0.42),
                    "enable_support": "0",
                    "slow_down_for_layer_cooling": "1",
                    "slow_down_min_speed": "10",
                    "slow_down_layer_time": "8"},
+    ),
+    "pla-0.4-jig": dict(
+        geometry="jig",
+        machine="Bambu Lab H2C 0.4 nozzle",
+        process="0.24mm Standard @BBL H2C",
+        filament="Bambu PLA Basic @BBL H2C",
+        nozzle="0.4", filament_id="GFA00", filament_type="PLA",
+        process_name="0.24mm CANary insert jig PLA @BBL H2C 0.4",
+        note="the heat-set insert jig (gen_insert_jig.py): index plate, nest and peg. "
+             "Workshop tooling, never near the iron's heat, so plain PLA",
+        overrides={**COMMON,
+                   "wall_loops": "3",
+                   "sparse_infill_density": "15%",
+                   "enable_support": "0"},
     ),
     "absgf-0.4-dualsupport": dict(
         machine="Bambu Lab H2C 0.4 nozzle",
@@ -125,7 +139,7 @@ VARIANTS = {
         # support cannot do that at any gap -- 0.2 mm of ABS-GF onto ABS-GF is a weld.
         support_filament="Bambu Support for ABS @BBL H2C 0.4 nozzle",
         support_filament_id="GFS06", support_filament_type="ABS",
-        process_name="0.24mm dbCANary Case ABS-GF dual @BBL H2C 0.4",
+        process_name="0.24mm CANary Case ABS-GF dual @BBL H2C 0.4",
         note="the one to print: ABS-GF body, Support for ABS on the second nozzle",
         overrides={**COMMON, **_walls(0.42),
                    "brim_width": "8",
@@ -146,7 +160,7 @@ VARIANTS = {
         process="0.24mm Standard @BBL H2C",
         filament="Bambu ABS-GF @BBL H2C 0.4 nozzle",
         nozzle="0.4", filament_id="GFB50", filament_type="ABS-GF",
-        process_name="0.24mm dbCANary Case ABS-GF flat @BBL H2C 0.4",
+        process_name="0.24mm CANary Case ABS-GF flat @BBL H2C 0.4",
         note="flat-section case: shells print outer face down, no support, one nozzle",
         overrides={**COMMON, **_walls(0.42),
                    "brim_width": "8",
@@ -164,7 +178,7 @@ VARIANTS = {
         process="0.24mm Standard @BBL H2C",
         filament="Bambu ABS-GF @BBL H2C 0.4 nozzle",
         nozzle="0.4", filament_id="GFB50", filament_type="ABS-GF",
-        process_name="0.24mm dbCANary Case ABS-GF tube @BBL H2C 0.4",
+        process_name="0.24mm CANary Case ABS-GF tube @BBL H2C 0.4",
         note="one-piece body standing on its rear end + two end plates; no support",
         overrides={**COMMON, **_walls(0.42),
                    "brim_width": "8",
@@ -181,7 +195,7 @@ VARIANTS = {
         process="0.24mm Standard @BBL H2C",
         filament="Bambu ABS-GF @BBL H2C 0.4 nozzle",
         nozzle="0.4", filament_id="GFB50", filament_type="ABS-GF",
-        process_name="0.24mm dbCANary Case ABS-GF tube x4 @BBL H2C 0.4",
+        process_name="0.24mm CANary Case ABS-GF tube x4 @BBL H2C 0.4",
         note="a production plate: four bodies and their eight end plates on one bed; "
              "the brim drops to 3 mm because twelve 137 x 45 footprints do not fit "
              "the 350 x 320 bed with 8 mm around each",
@@ -196,7 +210,7 @@ VARIANTS = {
         process="0.30mm Standard @BBL H2C 0.6 nozzle",
         filament="Bambu ASA @BBL H2C 0.6 nozzle",
         nozzle="0.6", filament_id="GFB98", filament_type="ASA",
-        process_name="0.30mm dbCANary Case @BBL H2C 0.6",
+        process_name="0.30mm CANary Case @BBL H2C 0.6",
         note="the design spec in 3dp/README.md; needs a 0.6 nozzle and ASA",
         overrides={**COMMON, **_walls(0.625)},
     ),

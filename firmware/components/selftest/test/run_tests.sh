@@ -6,5 +6,5 @@ set -e
 cd "$(dirname "$0")"
 CC=${CC:-cc}
 "$CC" -std=c11 -Wall -Wextra -Werror -I../include ../selftest_report.c \
-      test_selftest_report.c -o /tmp/dbcanary_test_selftest_report
-exec /tmp/dbcanary_test_selftest_report
+      test_selftest_report.c -o /tmp/canary_test_selftest_report
+exec /tmp/canary_test_selftest_report

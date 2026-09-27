@@ -1,4 +1,4 @@
-# dbCANary rev A — test files: what to send where
+# CANary rev A — test files: what to send where
 
 Claims below were taken from JLCPCB's own help centre, blog and order form,
 then independently re-checked against the live pages. Where JLCPCB contradicts
@@ -41,7 +41,7 @@ selected. It is bundled into the quoted price.
 Connectivity is CAM-extracted from the Gerber + drill set you upload. The order
 form contains zero occurrences of "netlist", "IPC-D-356" or "D356".
 
-**Action: nothing extra to do.** `jlcpcb/dbcanary-jlcpcb-netlist.ipc` already covers it.
+**Action: nothing extra to do.** `jlcpcb/canary-jlcpcb-netlist.ipc` already covers it.
 
 ---
 
@@ -60,7 +60,7 @@ My first draft said flatly that JLCPCB "does not accept" IPC-D-356. That was
   **container**, not its contents. Nothing states that an unrecognised file
   inside the ZIP is rejected or harmful.
 
-**Recommendation: include `dbcanary.d356` in the Gerber ZIP.** It is 42 KB, it
+**Recommendation: include `canary.d356` in the Gerber ZIP.** It is 42 KB, it
 cannot hurt, their own blog suggests it, and it gives their CAM a reference to
 compare against rather than relying solely on extraction.
 
@@ -135,7 +135,7 @@ route — and JLCPCB's own linked ODB++ how-to is Altium's documentation.
 
 | File | Size | Contains |
 |---|---|---|
-| `dbcanary-ODB++.zip` | 263 KB | all layers, drills, placement, **plus a CAD netlist with full untruncated net names** (`steps/pcb/netlists/cadnet/netlist`, 120 nets) |
+| `canary-ODB++.zip` | 263 KB | all layers, drills, placement, **plus a CAD netlist with full untruncated net names** (`steps/pcb/netlists/cadnet/netlist`, 120 nets) |
 
 ---
 
@@ -155,8 +155,8 @@ ODB++ has no such limit and keeps full names.
 
 | File | Send to | Purpose |
 |---|---|---|
-| `dbcanary.d356` | **inside the Gerber ZIP** (optional but suggested by JLCPCB's blog); required by PCBWay and most Western fabs | IPC-D-356A netlist |
-| `dbcanary-ODB++.zip` | JLCPCB PCBA flying probe — **only after support agrees** | layers + full-name CAD netlist |
+| `canary.d356` | **inside the Gerber ZIP** (optional but suggested by JLCPCB's blog); required by PCBWay and most Western fabs | IPC-D-356A netlist |
+| `canary-ODB++.zip` | JLCPCB PCBA flying probe — **only after support agrees** | layers + full-name CAD netlist |
 | `FUNCTIONAL-TEST-SPEC.md` **Part A** | JLCPCB FCT attachment — **only if §0 resolves** | operator-executable procedure |
 | `BENCH-BRINGUP.md` | **in-house only** — never send this to a fab | full bench procedure: bench PSU, DMM, switch, scope, logic analyser, with expected values and annotated board drawings |
 | `PROBE-POINTS.csv` / `.json` | in-house | every probe point, its pad, its net, its expected value and empty columns to record what you measured. Generated from the board by `hardware/scripts/probe_points.py` |
@@ -175,6 +175,6 @@ ODB++ has no such limit and keeps full names.
 - Prices are as published and will drift; both "FCT" and the older name
   "Power-on Testing" are live on their site simultaneously, so quote either
   term to support.
-- **No dbCANary board exists.** Nothing in the functional spec has been run,
+- **No CANary board exists.** Nothing in the functional spec has been run,
   and nothing in `BENCH-BRINGUP.md` has been executed. Its `[predicted]` values
   are hypotheses, not acceptance limits.

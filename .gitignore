@@ -7,7 +7,7 @@ __pycache__/
 # ESP-IDF
 firmware/build/
 # The bench self-test image is built into its own tree so the product build
-# is never silently replaced by it: idf.py build -DDBCANARY_SELFTEST=1
+# is never silently replaced by it: idf.py build -DCANARY_SELFTEST=1
 firmware/build-selftest/
 # QEMU boots a UART-console variant (its console sink differs from the
 # shipping USB-Serial-JTAG one, which -nographic cannot capture), and the
@@ -62,7 +62,7 @@ hardware/lib/*.pdf
 hardware/**/fab/generic/gerbers/
 
 # hostsim: host build of the firmware, and fuzzing artefacts
-firmware/hostsim/dbcanaryd
+firmware/hostsim/canaryd
 firmware/hostsim/*.dSYM/
 
 # vendor toolkit scratch output (like hardware/production/)

@@ -41,7 +41,7 @@ import sys
 from pathlib import Path
 
 HW = Path(__file__).resolve().parent.parent
-SRC = HW / "fab" / "pcbway" / "dbcanary-pcbway-bom.csv"
+SRC = HW / "fab" / "pcbway" / "canary-pcbway-bom.csv"
 OUT_DIR = HW / "fab" / "pcbtrain"
 VERIFIED = "2026-07-26"
 
@@ -446,13 +446,13 @@ def main():
                      supplier, part["mpn"] if supplier else "",
                      collapse(des), note])
 
-    csv_path = OUT_DIR / "dbcanary-pcbtrain-bom.csv"
+    csv_path = OUT_DIR / "canary-pcbtrain-bom.csv"
     with csv_path.open("w", newline="", encoding="utf-8-sig") as fh:
         w = csv.writer(fh)
         w.writerow(header)
         w.writerows(body)
 
-    write_xlsx(OUT_DIR / "dbcanary-pcbtrain-bom.xlsx", header, body, lines)
+    write_xlsx(OUT_DIR / "canary-pcbtrain-bom.xlsx", header, body, lines)
 
     fitted = sum(r[2] for r, (p, d) in zip(body, lines) if p["action"] != DNF)
     print(f"wrote {csv_path.relative_to(HW.parent)}")

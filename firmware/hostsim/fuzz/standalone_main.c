@@ -112,7 +112,7 @@ static size_t mutate(uint8_t *buf, size_t len)
 int main(int argc, char **argv)
 {
     unsigned long iterations = 200000;
-    const char   *crash_path = "/tmp/dbcanary_fuzz_last.bin";
+    const char   *crash_path = "/tmp/canary_fuzz_last.bin";
 
     for (int i = 1; i < argc; i++) {
         if (!strcmp(argv[i], "--iterations") && i + 1 < argc) {

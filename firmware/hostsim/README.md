@@ -1,6 +1,6 @@
 # hostsim — the shipping firmware, as a host process
 
-`dbcanaryd` links the **real** C from `firmware/components` (bridge, rmbcp,
+`canaryd` links the **real** C from `firmware/components` (bridge, rmbcp,
 r70_ddt, dbcan) against stand-ins for the slice of ESP-IDF it uses, and puts it
 on real sockets.
 
@@ -13,10 +13,10 @@ against unit vectors. Nothing had exercised the assembled bridge: the session
 state machine, the discovery responder and the CAN return path, together, under
 a client that did not come from this repo.
 
-Point R1 at `dbcanaryd` and R1 is driving the code that ships.
+Point R1 at `canaryd` and R1 is driving the code that ships.
 
 ```
-    R1 / board_test.py  <--TCP 30000 / UDP 33333-->  dbcanaryd
+    R1 / board_test.py  <--TCP 30000 / UDP 33333-->  canaryd
                                                          |
                                                      vcan hub
                                                          |
@@ -26,8 +26,8 @@ Point R1 at `dbcanaryd` and R1 is driving the code that ships.
 ## Running it
 
 ```sh
-./build.sh                       # -> ./dbcanaryd
-./dbcanaryd --ip 127.0.0.1
+./build.sh                       # -> ./canaryd
+./canaryd --ip 127.0.0.1
 
 # the project's own acceptance runner, against the C instead of a board:
 python3 ../../tools/board_test.py --host 127.0.0.1 --broadcast 127.0.0.1 \

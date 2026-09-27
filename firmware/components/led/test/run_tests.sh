@@ -6,5 +6,5 @@ set -e
 cd "$(dirname "$0")"
 CC=${CC:-cc}
 "$CC" -std=c11 -Wall -Wextra -Werror -I.. ../led_patterns.c test_led_patterns.c \
-      -o /tmp/dbcanary_test_led_patterns
-exec /tmp/dbcanary_test_led_patterns
+      -o /tmp/canary_test_led_patterns
+exec /tmp/canary_test_led_patterns

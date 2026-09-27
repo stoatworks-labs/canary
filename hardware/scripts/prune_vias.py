@@ -17,7 +17,7 @@ import sys
 
 import pcbnew
 
-BOARD = _REPO + "/hardware/dbcanary.kicad_pcb"
+BOARD = _REPO + "/hardware/canary.kicad_pcb"
 POUR = ("GND", "CAN_GND", "CHASSIS", "VCC_3V3")
 TOL = 1200
 

@@ -4,7 +4,7 @@ import os as _os
 _REPO = _os.path.dirname(_os.path.dirname(_os.path.dirname(_os.path.abspath(__file__))))
 import pcbnew
 
-BOARD = _REPO + "/hardware/dbcanary.kicad_pcb"
+BOARD = _REPO + "/hardware/canary.kicad_pcb"
 X0, Y0, X1, Y1 = 20.0, 19.0, 120.0, 100.0
 tomm = pcbnew.ToMM
 

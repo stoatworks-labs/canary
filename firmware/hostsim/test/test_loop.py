@@ -10,7 +10,7 @@ had ever exercised the CAN return path, because that needed a bus.
 
 Chain under test:
 
-    this script  --TCP 30000-->  dbcanaryd (components/bridge + rmbcp + dbcan)
+    this script  --TCP 30000-->  canaryd (components/bridge + rmbcp + dbcan)
                                        |
                                     vcan hub
                                        |
@@ -38,8 +38,8 @@ sys.path.insert(0, str(ROOT / "tools"))
 import rmbcp  # noqa: E402
 from rmbcp import OBJ_DEVICE_PROCESS_DATA, OBJ_PRIMARY_MASTER, dbcan_id  # noqa: E402
 
-VCAN_PORT = int(os.environ.get("DBCANARY_VCAN_PORT", "35010"))
-TCP_PORT = int(os.environ.get("DBCANARY_TCP_PORT", "30010"))
+VCAN_PORT = int(os.environ.get("CANARY_VCAN_PORT", "35010"))
+TCP_PORT = int(os.environ.get("CANARY_TCP_PORT", "30010"))
 
 PASSED = 0
 FAILED = 0
@@ -69,7 +69,7 @@ def wait_for_line(proc: subprocess.Popen, needle: str, timeout: float = 5.0) -> 
 
 def main() -> int:
     procs: list[subprocess.Popen] = []
-    env = dict(os.environ, DBCANARY_VCAN_PORT=str(VCAN_PORT))
+    env = dict(os.environ, CANARY_VCAN_PORT=str(VCAN_PORT))
 
     try:
         hub = subprocess.Popen(
@@ -88,11 +88,11 @@ def main() -> int:
         check("amp.started", wait_for_line(amp, "vamp:"), f"device {amp_addr}")
 
         daemon = subprocess.Popen(
-            [str(HOSTSIM / "dbcanaryd"), "--ip", "127.0.0.1",
+            [str(HOSTSIM / "canaryd"), "--ip", "127.0.0.1",
              "--port", str(TCP_PORT)],
             stdout=subprocess.PIPE, stderr=subprocess.DEVNULL, text=True, env=env)
         procs.append(daemon)
-        check("bridge.started", wait_for_line(daemon, "dbcanaryd ready"),
+        check("bridge.started", wait_for_line(daemon, "canaryd ready"),
               f"tcp {TCP_PORT}")
 
         sock = socket.create_connection(("127.0.0.1", TCP_PORT), timeout=5)

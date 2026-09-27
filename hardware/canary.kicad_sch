@@ -20,7 +20,7 @@
     (property "Sheetname" "Power — PoE + USB-C PD, 5V and 3V3")
     (property "Sheetfile" "power.kicad_sch")
     (instances
-      (project "dbcanary"
+      (project "canary"
         (path "/8c8f16f0-3255-4090-93bc-62801db39490"
           (page "2")))))
 
@@ -37,7 +37,7 @@
     (property "Sheetname" "MCU — ESP32-S3-WROOM-1, USB, LEDs")
     (property "Sheetfile" "mcu.kicad_sch")
     (instances
-      (project "dbcanary"
+      (project "canary"
         (path "/8c8f16f0-3255-4090-93bc-62801db39490"
           (page "3")))))
 
@@ -54,7 +54,7 @@
     (property "Sheetname" "Ethernet — W5500 SPI, PoE magjack, etherCON")
     (property "Sheetfile" "ethernet.kicad_sch")
     (instances
-      (project "dbcanary"
+      (project "canary"
         (path "/8c8f16f0-3255-4090-93bc-62801db39490"
           (page "4")))))
 
@@ -71,7 +71,7 @@
     (property "Sheetname" "dbCAN — ADM3053 isolated, 2x etherCON")
     (property "Sheetfile" "can.kicad_sch")
     (instances
-      (project "dbcanary"
+      (project "canary"
         (path "/8c8f16f0-3255-4090-93bc-62801db39490"
           (page "5")))))
 )

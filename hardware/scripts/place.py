@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-dbCANary rev A — board resize + component placement.
+CANary rev A — board resize + component placement.
 
 Run with KiCad's bundled Python so `pcbnew` is importable:
   /Applications/KiCad/KiCad.app/Contents/Frameworks/Python.framework/Versions/3.9/bin/python3 place.py
@@ -32,7 +32,7 @@ _REPO = _os.path.dirname(_os.path.dirname(_os.path.dirname(_os.path.abspath(__fi
 import sys
 import pcbnew
 
-BOARD = _REPO + "/hardware/dbcanary.kicad_pcb"
+BOARD = _REPO + "/hardware/canary.kicad_pcb"
 
 # Board outline, mm. JLCPCB cheap tier is <=100x100.
 # Top edge is y=19, not 20: buys 1 mm of copper-to-edge clearance for J102's

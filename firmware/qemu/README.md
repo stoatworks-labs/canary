@@ -1,7 +1,7 @@
 # qemu — booting the real image without a board
 
 `hostsim` runs the firmware's *logic* on the host. It never executes the boot
-path. This does: Espressif's QEMU fork boots `build/dbcanary.bin` on an emulated
+path. This does: Espressif's QEMU fork boots `build/canary.bin` on an emulated
 ESP32-S3, through the second-stage bootloader, the partition table, the heap and
 `app_main`.
 

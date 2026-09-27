@@ -8,7 +8,7 @@ Every script here runs under **KiCad's bundled Python**, not the system one:
 
 `render.sh` is the exception — it only shells out to `kicad-cli`.
 
-> **Close KiCad first.** These write `dbcanary.kicad_pcb` directly. The GUI holds
+> **Close KiCad first.** These write `canary.kicad_pcb` directly. The GUI holds
 > the board in memory and will happily overwrite whatever a script just did —
 > that is how this board got corrupted once already.
 

@@ -1,7 +1,7 @@
 # Sources
 
 Primary documents this project was built from. They are **not committed** —
-they are third-party copyrighted manuals, and dbCANary redistributes no vendor
+they are third-party copyrighted manuals, and CANary redistributes no vendor
 material. Download them yourself; `docs/*.pdf` is gitignored so they can sit
 here locally.
 
@@ -45,7 +45,7 @@ No R1 code is included — only the wire format needed to interoperate. See
 ## Hardware / mechanical
 
 - **Neutrik NE8FBH etherCON** — PCB-mount etherCON receptacle, the connector all
-  three network jacks use. `hardware/lib/dbcanary.pretty/Neutrik_etherCON_NE8FBH.kicad_mod`
+  three network jacks use. `hardware/lib/canary.pretty/Neutrik_etherCON_NE8FBH.kicad_mod`
   was drawn from its DXF. The datasheet is **not committed**
   (`hardware/lib/*.pdf` is gitignored, same no-redistribution policy as above);
   download it from Neutrik and drop it at `hardware/lib/ne8fbh.pdf`.
@@ -57,4 +57,4 @@ No R1 code is included — only the wire format needed to interoperate. See
 ## Other manufacturers' control protocols
 
 Moved to the **amp-commander** repo, which is where multi-brand and RS485 work
-now lives. dbCANary is d&b-only.
+now lives. CANary is d&b-only.

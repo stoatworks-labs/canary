@@ -1,4 +1,4 @@
-# dbCANary — enclosure
+# CANary — enclosure
 
 `DECISIONS.md` lists the enclosure as unchosen, with one note: *"The R70 is 115×110×35 mm extruded
 aluminium; etherCON jacks are deeper than plain RJ45 and will drive the depth."* Both halves of that
@@ -248,7 +248,7 @@ acrylic).
 | TPU 95A | A printed gasket in the top plate groove, if splash resistance is ever wanted. |
 
 **ASA, black, textured plate for the show faces.** PETG is the honest budget answer for a rack-only
-product and should not be dismissed — but a single material across both dbCANary and nanODE is worth
+product and should not be dismissed — but a single material across both CANary and nanODE is worth
 something in a workshop, and nanODE genuinely needs the UV stability.
 
 If these ever ship rather than get built, look at a **UL94 V-0** filament for the body. Standard ASA

@@ -1,4 +1,4 @@
-# dbCANary firmware
+# CANary firmware
 
 ESP32-S3 firmware for the R70-compatible IP-to-CAN bridge. Build with ESP-IDF
 v5.x — v5.5.5 is what it is developed against:
@@ -78,21 +78,21 @@ any tree that has been built before. The console moves to UART0 on J301 and
 reflashing needs BOOT held; the whole trade-off, and the list of what has and
 has not been proven, is in [../docs/USB-NIC.md](../docs/USB-NIC.md).
 
-## Testing without dbCANary hardware
+## Testing without CANary hardware
 
 `net` retains a Wi-Fi STA path so the bridge can be exercised on a plain
 ESP32-S3 devkit plus any 3.3 V CAN transceiver on the pins in
 `components/board/include/board.h`:
 
 ```sh
-idf.py build -DDBCANARY_USE_WIFI=1 \
-             -DDBCANARY_WIFI_SSID=myssid -DDBCANARY_WIFI_PASS=mypass
+idf.py build -DCANARY_USE_WIFI=1 \
+             -DCANARY_WIFI_SSID=myssid -DCANARY_WIFI_PASS=mypass
 ```
 
 Those reach the preprocessor through `main/CMakeLists.txt`, which turns the CMake
 cache variables into compile definitions — `idf.py -D` on its own only sets a
 CMake variable, which nothing would read. Note the cache **persists**: to go back
-to Ethernet, `idf.py fullclean` or set `-DDBCANARY_USE_WIFI=0` explicitly, or a
+to Ethernet, `idf.py fullclean` or set `-DCANARY_USE_WIFI=0` explicitly, or a
 plain rebuild silently stays on Wi-Fi.
 
 The LEDs work on a devkit too, but the pins are the rev A board's (GPIO15/16/17,

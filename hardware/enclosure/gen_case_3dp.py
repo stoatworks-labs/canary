@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build the dbCANary 3D-printable four-part enclosure and export STEP/STL.
+"""Build the CANary 3D-printable four-part enclosure and export STEP/STL.
 
 A lozenge: a superelliptical cross-section extruded between two flat end faces,
 split on the horizontal centreline. Four parts:
@@ -13,7 +13,7 @@ split on the horizontal centreline. Four parts:
     led_insert     translucent tile + four light pillars for the LED window (PLA)
     switch_cover   push-on cap over the two service pinholes and the SW201 slot (PLA)
 
-The lid carries the Stoatworks Labs mark and name and "dbCANary", the front plate CAN 1 /
+The lid carries the Stoatworks Labs mark and name and "CANary", the front plate CAN 1 /
 CAN 2 / ETH under its connectors, the rear plate USB -- all engraved, from lettering/.
 
 Cross-section is a SUPERELLIPSE (|x/a|^4 + |z/b|^4 = 1), not a true ellipse.
@@ -24,7 +24,7 @@ is otherwise required -- because it throws away all four corners. n = 4 keeps
 the same soft profile with 40 mm.
 
 Everything is derived from the placed board. Key facts, all read from
-`hardware/dbcanary.kicad_pcb` and `hardware/lib/ne8fbh.pdf`:
+`hardware/canary.kicad_pcb` and `hardware/lib/ne8fbh.pdf`:
 
   * board is 100 x 81 mm and has NO mounting holes, so it is edge-captured in a
     channel rather than bolted to bosses
@@ -119,7 +119,7 @@ NE8FBH_PLATE_BELOW = NE8FBH_AXIS
 NE8FBH_PLATE_ABOVE = NE8FBH_PLATE_H - NE8FBH_AXIS
 # Same drawing, PCB-layout view: 3,81 from the panel's rear face down to the first
 # latch post, and 8,89 between the two latch posts. The footprint's origin is their
-# midpoint (see hardware/lib/dbcanary.pretty/Neutrik_etherCON_NE8FBH.kicad_mod), so
+# midpoint (see hardware/lib/canary.pretty/Neutrik_etherCON_NE8FBH.kicad_mod), so
 # the panel the connector bolts to sits this far in FRONT of the footprint origin.
 NE8FBH_PANEL_FROM_ORIGIN = 3.81 + 8.89 / 2.0            # = 8.255
 # 3,45 in the front view runs from the plate's bottom edge down to the pin tips.
@@ -275,6 +275,19 @@ SW_COVER_PEG_D = 3.9        # into the 4.0 pinholes: the push fit that holds it 
 SW_COVER_PEG_L = 4.0        # below the lid surface; the bores run 20 mm deeper
 SW_COVER_KEY_CLEAR = 0.15   # per side, key vs slot -- it locates, the pegs hold
 SW_COVER_KEY_L = 2.0        # into the 2.5 mm wall; stops short of the cavity
+# The tube's cover sits FLUSH, in a pocket in the lid, instead of on top of it. The lid
+# falls 0.7 mm across the cover's 17 mm, but it is within 0.13 mm of its own chord there,
+# so the cover is a flat slab on a plane tilted to that chord: its top is flush to under
+# half a layer, and it still prints on a flat face. The pocket floor is the same plane,
+# SW_POCKET_T lower. A notch past the pocket's front end, with a bevel under the cover's
+# edge above it, takes a small screwdriver to lever the cover out.
+SW_POCKET_T = 1.2           # cover thickness = pocket depth (6 layers at 0.2)
+SW_POCKET_CLEAR = 0.15      # per side, cover vs pocket
+SW_POCKET_FLOOR_MIN = 1.0   # validate(): wall left under the pocket, at its thinnest
+SW_NOTCH_W = 6.0            # lever notch, across the case
+SW_NOTCH_L = 2.5            # ...and out past the pocket's front end
+SW_NOTCH_BEVEL = 0.6        # 45-deg bevel under the cover's front edge, for the blade
+SW_COVER_KEY_FLUSH_L = 1.0  # the key only locates; the pocket floor is ~1.2 mm thick
 USBC_W, USBC_H = 9.7, 3.8
 # The receptacle mouth is flush with the board's rear edge, and the rear end piece sits
 # REAR_CLEAR (7 mm) behind that edge so the ESP32 antenna has room. A plug cannot reach
@@ -319,7 +332,7 @@ USB_LABEL_GAP = 2.5         # label's baseline above the lead-in chamfer's top e
 MARK_W = 44.0               # mark width; at this size the stoat's outline is ~0.7 mm
 WORD_CAP = 4.5
 WORD_LEAD = 2.5             # between STOATWORKS and LABS
-NAME = "dbCANary"
+NAME = "CANary"
 NAME_CAP = 7.0
 LID_GAPS = (4.0, 6.0)       # mark -> wordmark, wordmark -> name
 LID_CLEAR = 3.0             # nearest approach to a top-face opening
@@ -381,7 +394,7 @@ if SECTION == "flat":
 # vertical walls. Insertion changes with it -- the board drops straight in.
 #
 # Where a rail may run is set by what the board carries within 3 mm of each long edge.
-# Courtyards, board-relative, from hardware/dbcanary.kicad_pcb:
+# Courtyards, board-relative, from hardware/canary.kicad_pcb:
 #   left   D301..D304 from x 2.78 (y 5.5..20.6, under the LED window)
 #          SW301/SW302 from x 2.96 (y 25.6..42.5)
 #   right  F101 to x 97.22 (y 9.7..14.4), C109 to 99.0 (y 16.5..17.6),
@@ -800,6 +813,9 @@ def build_tube():
         part = part.union(ybore(d, x, z, -L / 2.0 - 1.0, L / 2.0 + 1.0).intersect(clip))
 
     part = top_apertures(part)
+    # The flush switch cover's pocket and lever notch. After the apertures, so the
+    # pinholes and the SW201 slot come up through its floor.
+    part = part.cut(sw_pocket_cut())
 
     # --- insert pilots at both ends of all four screw positions ---------------
     for (x, z) in tube_screws():
@@ -885,8 +901,95 @@ def switch_cover_box():
     return x0, x1, y0, y1
 
 
+def sw_plane():
+    """The flush cover's top plane (--tube): z = z0 + slope * x, board frame.
+
+    Through the lid's chord across the cover, lifted by half the chord's sag so the lid
+    wanders +/- a quarter of it either side of the plane rather than all on one side.
+    """
+    x0, x1, _, _ = switch_cover_box()
+    za, zb = skin_z(x0), skin_z(x1)
+    slope = (zb - za) / (x1 - x0)
+    xs = [x0 + (x1 - x0) * i / 40.0 for i in range(41)]
+    sag = max(skin_z(x) - (za + slope * (x - x0)) for x in xs)
+    return za - slope * x0 + sag / 2.0, slope
+
+
+def sw_slab(z_lo, z_hi, pad=0.0):
+    """Everything between two planes parallel to sw_plane(), offsets z_lo..z_hi from it,
+    inside the cover footprint grown by pad (rounded corners), board frame."""
+    x0, x1, y0, y1 = switch_cover_box()
+    z0, slope = sw_plane()
+    xc, yc = (x0 + x1) / 2.0, (y0 + y1) / 2.0
+    ang = math.degrees(math.atan(slope))
+    slab = (cq.Workplane("XY").box(x1 - x0 + 2 * pad, y1 - y0 + 2 * pad, z_hi - z_lo,
+                                   centered=(True, True, False))
+            .edges("|Z").fillet(SW_COVER_R + pad)
+            .translate((0, 0, z_lo))
+            .rotate((0, 0, 0), (0, 1, 0), -ang)
+            .translate((xc, yc, z0 + slope * xc)))
+    return slab
+
+
+def sw_notch(z_lo, z_hi):
+    """The lever notch past the pocket's front (+y) end, same planes as sw_slab()."""
+    x0, x1, y0, y1 = switch_cover_box()
+    z0, slope = sw_plane()
+    xc = (x0 + x1) / 2.0
+    ang = math.degrees(math.atan(slope))
+    # Overlaps the pocket by 1 mm so the two cuts share volume, not a face.
+    ln = SW_NOTCH_L + SW_POCKET_CLEAR + 1.0
+    return (cq.Workplane("XY").box(SW_NOTCH_W, ln, z_hi - z_lo, centered=(True, True, False))
+            .edges("|Z").fillet(1.0)
+            .translate((0, 0, z_lo))
+            .rotate((0, 0, 0), (0, 1, 0), -ang)
+            .translate((xc, y1 + SW_POCKET_CLEAR + SW_NOTCH_L - ln / 2.0, z0 + slope * xc)))
+
+
+def sw_pocket_cut():
+    """What the tube loses for the flush cover: the pocket and its lever notch."""
+    return (sw_slab(-SW_POCKET_T, 5.0, pad=SW_POCKET_CLEAR)
+            .union(sw_notch(-SW_POCKET_T, 5.0)))
+
+
+def switch_cover_flush():
+    """The tube's cover: a flat slab in the lid pocket, pegs and key below (--tube)."""
+    x0, x1, y0, y1 = switch_cover_box()
+    z0, slope = sw_plane()
+    part = sw_slab(-SW_POCKET_T, 0.0)
+    # Bevel under the front edge, over the notch: a wedge along the edge, cut away.
+    # Built in the slab's own frame (front edge at y = hl, underside at z = -T), then
+    # tilted and placed exactly as sw_slab() is. The triangle runs 0.5 mm past the edge
+    # and the underside so the cut never ends on one of the slab's faces.
+    ang = math.degrees(math.atan(slope))
+    b, t, hl = SW_NOTCH_BEVEL, SW_POCKET_T, (y1 - y0) / 2.0
+    xc, yc = (x0 + x1) / 2.0, (y0 + y1) / 2.0
+    wedge = (cq.Workplane("YZ")
+             .polyline([(hl - b - 0.5, -t - 0.5), (hl + 0.5, -t - 0.5),
+                        (hl + 0.5, -t + b + 0.5)]).close()
+             .extrude(x1 - x0 + 2.0)
+             .translate((-(x1 - x0) / 2.0 - 1.0, 0, 0))
+             .rotate((0, 0, 0), (0, 1, 0), -ang)
+             .translate((xc, yc, z0 + slope * xc)))
+    part = part.cut(wedge)
+    # Pegs and key rooted 0.5 mm up into the slab, a real overlap rather than a shared face.
+    for y in BTN_Y:
+        x = bx(BTN_X)
+        zf = z0 + slope * x - SW_POCKET_T               # the pocket floor over this pinhole
+        part = part.union(zcyl(SW_COVER_PEG_D, zf - SW_COVER_PEG_L, zf + 0.5, x, by(y)))
+    x = bx(DIP_X)
+    zf = min(z0 + slope * (x - DIP_SLOT[0] / 2.0), z0 + slope * (x + DIP_SLOT[0] / 2.0)) \
+        - SW_POCKET_T
+    part = part.union(zbox(DIP_SLOT[0] - 2 * SW_COVER_KEY_CLEAR,
+                           DIP_SLOT[1] - 2 * SW_COVER_KEY_CLEAR,
+                           zf - SW_COVER_KEY_FLUSH_L, zf + 0.5, x, by(DIP_Y)))
+    return part
+
+
 def switch_cover():
     """Cap over SW301/SW302's pinholes and SW201's slot: pegs in the pinholes hold it."""
+    if TUBE:
+        return switch_cover_flush()
     x0, x1, y0, y1 = switch_cover_box()
     xs = [x0 + (x1 - x0) * i / 40.0 for i in range(41)]
     z_hi = max(skin_z(x) for x in xs)
@@ -1042,6 +1145,11 @@ def lid_openings():
         for (x, y, d) in POSTS:
             r = SCREW_HEAD_D / 2.0
             out.append((x - r, x + r, y - r, y + r))
+    else:
+        # the flush cover's pocket, and the lever notch past its front end
+        x0, x1, y0, y1 = switch_cover_box()
+        c = SW_POCKET_CLEAR
+        out.append((x0 - c, x1 + c, y0 - c, y1 + c + SW_NOTCH_L))
     return out
 
 
@@ -1069,7 +1177,7 @@ def lettering_cuts():
         return section_prism(OUTER_A + outside, OUTER_B + outside, OUTER_L + 10.0).cut(
             section_prism(OUTER_A - d, OUTER_B - d, OUTER_L + 20.0)).intersect(
             halfspace(True))
-    cuts["dbcanary_tube" if TUBE else "dbcanary_shell_top"] = (
+    cuts["canary_tube" if TUBE else "canary_shell_top"] = (
         lid.intersect(band(1.0)), lid.intersect(band(0.0)))
 
     # --- the end plates --------------------------------------------------------
@@ -1081,19 +1189,19 @@ def lettering_cuts():
         s = text_page(label, PORT_CAP, FONT_BOLD, bx(x), PORT_LABEL_Z - PORT_CAP / 2.0, h)
         front = s if front is None else front.union(s)
     plane = cq.Plane(origin=(0.0, t / 2.0 - d, 0.0), xDir=(-1, 0, 0), normal=(0, 1, 0))
-    cuts["dbcanary_end_front"] = (cq.Workplane("XY")
+    cuts["canary_end_front"] = (cq.Workplane("XY")
                                   .add(front.val().moved(cq.Location(plane)))
                                   .mirror("YZ"))
     # Read from outside the rear, u = +X; the USB-C is at physical x -bx(USBC_X).
     z_base = USBC_ZC + USBC_WELL_H / 2.0 + 2 * USBC_WELL_CHAMFER + USB_LABEL_GAP
     rear = text_page(USB_LABEL, PORT_CAP, FONT_BOLD, -bx(USBC_X), z_base, h)
     plane = cq.Plane(origin=(0.0, -(t / 2.0 - d), 0.0), xDir=(1, 0, 0), normal=(0, -1, 0))
-    cuts["dbcanary_end_rear"] = (cq.Workplane("XY")
+    cuts["canary_end_rear"] = (cq.Workplane("XY")
                                  .add(rear.val().moved(cq.Location(plane)))
                                  .mirror("YZ"))
     # Trim each plate's stamp to run from depth d to 1 mm out into the air (not flush with
     # the face, for the same reason as the lid), and keep the exact-depth slab to measure.
-    for name in ("dbcanary_end_front", "dbcanary_end_rear"):
+    for name in ("canary_end_front", "canary_end_rear"):
         sy = 1 if name.endswith("front") else -1
 
         def slab(outside):
@@ -1139,7 +1247,7 @@ def apply_lettering(parts):
         if not after.val().isValid() or len(after.val().Solids()) != 1:
             errs.append(f"{name}: not one valid solid after lettering")
         parts[name] = after
-    bb = cuts["dbcanary_tube" if TUBE else "dbcanary_shell_top"][1].val().BoundingBox()
+    bb = cuts["canary_tube" if TUBE else "canary_shell_top"][1].val().BoundingBox()
     # in the board frame; the mirror on export changes no distance
     for (x0, x1, y0, y1) in lid_openings():
         if (bb.xmin < x1 + LID_CLEAR - 0.01 and bb.xmax > x0 - LID_CLEAR + 0.01
@@ -1503,6 +1611,28 @@ def validate():
                      f"LED window at x {led_x:+.1f} (shifted {TUBE_LED_SHIFT:+.1f}); "
                      f"guide tubes teardrop + {TUBE_FIN_T} mm fin, "
                      f"{fx0 - wx1:.2f} mm right of the window")
+    if TUBE:
+        # The flush cover: how far its flat top strays from the curved lid, and how much
+        # wall the pocket leaves under it at its thinnest.
+        x0, x1, y0, y1 = switch_cover_box()
+        z0, slope = sw_plane()
+        c = SW_POCKET_CLEAR
+        xs = [x0 - c + (x1 - x0 + 2 * c) * i / 60.0 for i in range(61)]
+        stray = max(abs(z0 + slope * x - skin_z(x)) for x in xs)
+        floor = min(z0 + slope * x - SW_POCKET_T - skin_z(x, INNER_A, INNER_B) for x in xs)
+        if stray > 0.1:
+            errs.append(f"flush switch cover strays {stray:.2f} mm from the lid")
+        if floor < SW_POCKET_FLOOR_MIN:
+            errs.append(f"switch-cover pocket leaves {floor:.2f} mm of wall "
+                        f"(< {SW_POCKET_FLOOR_MIN})")
+        if BTN_GUIDE_Z0 < Z_TOP_IN + 0.5 and min(z0 + slope * bx(BTN_X) - SW_POCKET_T,
+                                                 99.0) < Z_TOP_IN + 0.5:
+            errs.append("switch-cover pocket floor is below the guide tubes' tops")
+        notes.append(f"switch cover sits flush: {x1 - x0:.1f} x {y1 - y0:.1f} x "
+                     f"{SW_POCKET_T:.1f} mm slab tilted {math.degrees(math.atan(slope)):.1f} "
+                     f"deg to the lid (within {stray:.2f} mm of it), {floor:.2f} mm of wall "
+                     f"under the pocket, {SW_NOTCH_W:.0f} x {SW_NOTCH_L:.1f} mm lever notch "
+                     f"at its front end")
     return errs, notes
 
 
@@ -1568,16 +1698,23 @@ def verify_led_insert(part):
 
 def verify_switch_cover(parts):
     errs = []
-    cover = parts["dbcanary_switch_cover"]
-    body = parts["dbcanary_tube" if TUBE else "dbcanary_shell_top"]
+    cover = parts["canary_switch_cover"]
+    body = parts["canary_tube" if TUBE else "canary_shell_top"]
     x0, x1, y0, y1 = switch_cover_box()
     for y in BTN_Y:
         x, zs = bx(BTN_X), skin_z(bx(BTN_X))
         if probe(cover, x, by(y), zs - SW_COVER_PEG_L + 0.5, zs - 0.5, d=1.0) < 0.5:
             errs.append(f"switch cover has no peg in the pinhole at board y={y}")
     x = bx(DIP_X)
-    if probe(cover, x, by(DIP_Y), skin_z(x) - SW_COVER_KEY_L + 0.3, skin_z(x) - 0.3,
-             d=1.0) < 0.2:
+    if TUBE:
+        z0, slope = sw_plane()
+        zf = z0 + slope * x - SW_POCKET_T
+        if probe(cover, x, by(DIP_Y), zf - SW_COVER_KEY_FLUSH_L + 0.2, zf - 0.2,
+                 d=1.0) < 0.2:
+            errs.append("switch cover has no key in the SW201 slot")
+        errs += verify_flush_pocket(cover, body)
+    elif probe(cover, x, by(DIP_Y), skin_z(x) - SW_COVER_KEY_L + 0.3, skin_z(x) - 0.3,
+               d=1.0) < 0.2:
         errs.append("switch cover has no key in the SW201 slot")
     # It must sit ON the lid, not in it: nothing of the cap but its pegs and key may
     # share volume with the body.
@@ -1594,6 +1731,39 @@ def verify_switch_cover(parts):
     return errs
 
 
+def verify_flush_pocket(cover, tube):
+    """The tube's pocket is open, floored, notched; the cover fills it and has its bevel."""
+    errs = []
+    x0, x1, y0, y1 = switch_cover_box()
+    z0, slope = sw_plane()
+    zp = lambda x: z0 + slope * x                   # the cover's top plane
+    t = SW_POCKET_T
+    # Sample points inside the footprint but clear of the pinholes and the slot.
+    xm = (x0 + x1) / 2.0
+    pts = [(x0 + 1.5, y0 + 1.5), (x1 - 1.5, y0 + 1.5), (x1 - 1.5, y1 - 1.5),
+           (x0 + 1.5, y1 - 1.5)]
+    for (x, y) in pts:
+        if probe(tube, x, y, zp(x) - t + 0.15, zp(x) - 0.15, d=0.6) > 0.02:
+            errs.append(f"pocket is not open at ({x:+.1f}, {y:+.1f})")
+        if probe(tube, x, y, zp(x) - t - 0.8, zp(x) - t - 0.2, d=0.6) < 0.05:
+            errs.append(f"pocket has no floor at ({x:+.1f}, {y:+.1f})")
+        if probe(cover, x, y, zp(x) - t + 0.15, zp(x) - 0.15, d=0.6) < 0.05:
+            errs.append(f"cover is missing at ({x:+.1f}, {y:+.1f})")
+    # the notch: open to the floor past the front end, and wall either side of it
+    yn = y1 + SW_POCKET_CLEAR + SW_NOTCH_L / 2.0
+    if probe(tube, xm, yn, zp(xm) - t + 0.15, zp(xm) - 0.15, d=0.6) > 0.02:
+        errs.append("lever notch is not open")
+    xs = xm + SW_NOTCH_W / 2.0 + 1.0
+    if probe(tube, xs, yn, zp(xs) - t + 0.15, zp(xs) - 0.3, d=0.6) < 0.05:
+        errs.append("lever notch is wider than it should be (no wall beside it)")
+    # the bevel: no cover at the front edge's bottom corner, cover just above it
+    if probe(cover, xm, y1 - 0.15, zp(xm) - t, zp(xm) - t + 0.3, d=0.2) > 0.001:
+        errs.append("cover has no bevel over the lever notch")
+    if probe(cover, xm, y1 - 0.15, zp(xm) - 0.3, zp(xm) - 0.05, d=0.2) < 0.001:
+        errs.append("the bevel took the whole front edge")
+    return errs
+
+
 def verify_solids(parts):
     """Check the BUILT solids, not the parameters.
 
@@ -1606,7 +1776,7 @@ def verify_solids(parts):
     errs = []
     if TUBE:
         return verify_tube(parts)
-    bot, top = parts["dbcanary_shell_bottom"], parts["dbcanary_shell_top"]
+    bot, top = parts["canary_shell_bottom"], parts["canary_shell_top"]
     for (x, y, d) in POSTS:
         # Off-axis, so the probe misses the insert pilot and the screw clearance bore
         # but stays inside the boss.
@@ -1666,8 +1836,8 @@ def verify_solids(parts):
     if bb.zmax > 2 * TONGUE_H + 0.01:
         errs.append(f"bottom shell reaches z={bb.zmax:.2f}, above its tongue")
 
-    errs += verify_rear_well(parts["dbcanary_end_rear"])
-    errs += verify_led_insert(parts["dbcanary_led_insert"])
+    errs += verify_rear_well(parts["canary_end_rear"])
+    errs += verify_led_insert(parts["canary_led_insert"])
     errs += verify_switch_cover(parts)
     for name, solid in parts.items():
         if not solid.val().isValid():
@@ -1678,7 +1848,7 @@ def verify_solids(parts):
 def verify_tube(parts):
     """verify_solids() for the one-piece body: probe what the tube has to carry."""
     errs = []
-    tube = parts["dbcanary_tube"]
+    tube = parts["canary_tube"]
     L = TUBE_L
     bb = tube.val().BoundingBox()
     if abs(bb.ymin + L / 2.0) > 0.01 or abs(bb.ymax - L / 2.0) > 0.01:
@@ -1723,7 +1893,7 @@ def verify_tube(parts):
         if all(abs(yp - by(y2)) > BTN_GUIDE_OD / 2.0 + 1.0 for y2 in BTN_Y if y2 != y):
             if probe(tube, x, yp, Z_TOP_IN - 8.0, Z_TOP_IN - 5.0, d=0.5) < 0.02:
                 errs.append(f"guide-tube fin at y={yy:+.1f} is missing")
-    for name in ("dbcanary_end_front", "dbcanary_end_rear"):
+    for name in ("canary_end_front", "canary_end_rear"):
         e = parts[name]
         eb = e.val().BoundingBox()
         if abs(eb.xlen - 2 * OUTER_A) > 0.3 or abs(eb.zlen - 2 * OUTER_B) > 0.3:
@@ -1732,8 +1902,8 @@ def verify_tube(parts):
         for (x, z) in tube_screws():
             if probe(e, x, 0.0, z - 0.3, z + 0.3, d=1.0) > 0.02:
                 errs.append(f"{name} has no screw hole at ({x:+.1f}, {z:+.1f})")
-    errs += verify_rear_well(parts["dbcanary_end_rear"])
-    errs += verify_led_insert(parts["dbcanary_led_insert"])
+    errs += verify_rear_well(parts["canary_end_rear"])
+    errs += verify_led_insert(parts["canary_led_insert"])
     errs += verify_switch_cover(parts)
     for name, solid in parts.items():
         if not solid.val().isValid():
@@ -1763,7 +1933,7 @@ def mesh_leaks(path):
 
 def main():
     errs, notes = validate()
-    print(f"dbCANary printable enclosure -- {SECTION} section"
+    print(f"CANary printable enclosure -- {SECTION} section"
           + (", one-piece tube" if TUBE else ""))
     notes.append(f"LED insert: {LED_WIN[0] + 3 - 2 * LED_INSERT_CLEAR:.1f} x "
                  f"{LED_WIN[1] + 3 - 2 * LED_INSERT_CLEAR:.1f} x {LED_WIN_REBATE:.1f} tile, "
@@ -1785,20 +1955,20 @@ def main():
     OUT.mkdir(parents=True, exist_ok=True)
     if TUBE:
         parts = {
-            "dbcanary_tube": build_tube(),
-            "dbcanary_end_front": build_end("front"),
-            "dbcanary_end_rear": build_end("rear"),
-            "dbcanary_led_insert": led_insert(),
-            "dbcanary_switch_cover": switch_cover(),
+            "canary_tube": build_tube(),
+            "canary_end_front": build_end("front"),
+            "canary_end_rear": build_end("rear"),
+            "canary_led_insert": led_insert(),
+            "canary_switch_cover": switch_cover(),
         }
     else:
         parts = {
-            "dbcanary_shell_bottom": build_bottom(),
-            "dbcanary_shell_top": build_top(),
-            "dbcanary_end_front": build_end("front"),
-            "dbcanary_end_rear": build_end("rear"),
-            "dbcanary_led_insert": led_insert(),
-            "dbcanary_switch_cover": switch_cover(),
+            "canary_shell_bottom": build_bottom(),
+            "canary_shell_top": build_top(),
+            "canary_end_front": build_end("front"),
+            "canary_end_rear": build_end("rear"),
+            "canary_led_insert": led_insert(),
+            "canary_switch_cover": switch_cover(),
         }
     solid_errs = verify_solids(parts)
     if solid_errs:
@@ -1846,8 +2016,8 @@ def main():
         elif name.endswith("end_rear"):
             loc = cq.Location(cq.Vector(0, -(OUTER_L / 2.0 - END_T / 2.0), 0))
         asm.add(solid, name=name, loc=loc)
-    asm.export(str(OUT / "dbcanary_case_assembly.step"))
-    print(f"  wrote {len(parts)} parts + dbcanary_case_assembly.step -> {OUT}")
+    asm.export(str(OUT / "canary_case_assembly.step"))
+    print(f"  wrote {len(parts)} parts + canary_case_assembly.step -> {OUT}")
     return 0
 
 

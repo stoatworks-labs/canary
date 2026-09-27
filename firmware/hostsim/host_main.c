@@ -1,5 +1,5 @@
 /*
- * dbcanaryd — the real bridge firmware, running as a host process.
+ * canaryd — the real bridge firmware, running as a host process.
  *
  * This links the SHIPPING C from firmware/components (bridge, rmbcp, r70_ddt,
  * dbcan) against the ESP-IDF stand-ins in hostsim/shim, and puts it on real
@@ -10,7 +10,7 @@
  * What it does not cover: W5500/SPI, TWAI silicon, boot, NVS, task stack
  * sizing, anything in net.c. See hostsim/README.md.
  *
- *     ./dbcanaryd --hostname db-70 --port 30000
+ *     ./canaryd --hostname CANary --port 30000
  */
 #include "bridge.h"
 
@@ -25,7 +25,7 @@
 #include <sys/socket.h>
 #include <unistd.h>
 
-static const char *TAG = "dbcanaryd";
+static const char *TAG = "canaryd";
 
 static uint32_t s_forced_ip; /* host byte order, 0 = auto-detect */
 
@@ -40,7 +40,7 @@ static uint32_t s_forced_ip; /* host byte order, 0 = auto-detect */
  * is reachable from any given R1. On the target, net.c answers that from the
  * interface table. Here the host's own routing table answers it exactly, which
  * is the better oracle: connect() on a UDP socket picks the source address the
- * kernel would really use for that peer, so dbcanaryd exercises the per-peer
+ * kernel would really use for that peer, so canaryd exercises the per-peer
  * contract rather than a stub that ignores it.
  */
 uint32_t bridge_local_ip_for(uint32_t peer)
@@ -94,22 +94,22 @@ static void usage(const char *argv0)
 {
     fprintf(stderr,
             "usage: %s [options]\n"
-            "  --hostname NAME   name R1 lists (default db-70)\n"
+            "  --hostname NAME   name R1 lists (default CANary)\n"
             "  --port N          TCP data socket (default 30000)\n"
             "  --sockets N       sockets advertised, 0 = R70 default of 4\n"
             "  --mac AA:BB:...   advertised MAC (default 02:00:5E:10:00:01)\n"
             "  --ip A.B.C.D      address put in the discovery record\n"
             "                    (default: auto-detected outbound address)\n"
             "environment:\n"
-            "  DBCANARY_LOG_LEVEL  0-5, default 3 (INFO)\n"
-            "  DBCANARY_VCAN_PORT  virtual CAN hub port, default 35000\n",
+            "  CANARY_LOG_LEVEL  0-5, default 3 (INFO)\n"
+            "  CANARY_VCAN_PORT  virtual CAN hub port, default 35000\n",
             argv0);
 }
 
 int main(int argc, char **argv)
 {
     bridge_config_t cfg = {
-        .hostname = "db-70",
+        .hostname = "CANary",
         .mac = {0x02, 0x00, 0x5E, 0x10, 0x00, 0x01},
         .base_port = 30000,
         .socket_count = 0, /* bridge_start replaces 0 with the R70's 4 */
@@ -157,7 +157,7 @@ int main(int argc, char **argv)
 
     /* stdout is the machine-readable channel; the harness waits on this line
      * rather than sleeping a fixed time. */
-    printf("dbcanaryd ready tcp=%u udp=33333\n", cfg.base_port);
+    printf("canaryd ready tcp=%u udp=33333\n", cfg.base_port);
     fflush(stdout);
 
     for (;;) {

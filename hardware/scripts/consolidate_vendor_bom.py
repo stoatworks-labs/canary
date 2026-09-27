@@ -34,7 +34,7 @@ Usage:
                               [-o OUT] [--dry-run]
 
     # this order: consolidate, and drop the etherCONs we hand-fit ourselves
-    consolidate_vendor_bom.py fab/pcbway/dbcanary-pcbway-bom.csv \
+    consolidate_vendor_bom.py fab/pcbway/canary-pcbway-bom.csv \
         --dnp J201,J202,J401
 """
 import argparse

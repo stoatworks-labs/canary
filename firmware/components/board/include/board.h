@@ -1,8 +1,8 @@
 /*
- * dbCANary rev A board pin map.
+ * CANary rev A board pin map.
  *
  * SINGLE SOURCE OF TRUTH for anything that touches a pin. Every value here was
- * extracted from hardware/dbcanary.kicad_pcb (net -> U301 module pad) and then
+ * extracted from hardware/canary.kicad_pcb (net -> U301 module pad) and then
  * translated pad -> GPIO using the ESP32-S3-WROOM-1 symbol in KiCad's
  * RF_Module library, rather than from anyone's memory of the module pinout.
  *

@@ -1,6 +1,6 @@
 # The USB network device (CDC-NCM)
 
-Plug a dbCANary into a laptop and it comes up as a second Ethernet adapter. R1
+Plug a CANary into a laptop and it comes up as a second Ethernet adapter. R1
 then finds it and drives amplifiers over the USB cable, with no switch, no
 router and no LAN cable at all.
 
@@ -41,7 +41,7 @@ running the NCM image:
 
 | | default image | NCM image |
 |---|---|---|
-| USB-C shows up as | USB JTAG/serial debug unit | serial port for 8 s, then network adapter "dbCANary" |
+| USB-C shows up as | USB JTAG/serial debug unit | serial port for 8 s, then network adapter "CANary" |
 | App console | USB-C, always | USB-C, **for the first 8 s** |
 | Reflash | `idf.py flash`, auto-reset | `idf.py flash` **within the first 8 s**, else hold BOOT (SW302) and tap EN |
 | LAN jack | works | works, unchanged |
@@ -154,7 +154,7 @@ persistent, the mux resets with the chip.
 | Lease | lwip default |
 
 **No gateway, deliberately.** lwip's DHCP server advertises the router option by
-default (`dhcps_offer = 0xFF`), which would tell the laptop that dbCANary is its
+default (`dhcps_offer = 0xFF`), which would tell the laptop that CANary is its
 way to the rest of the world. macOS and Windows both rank a newly appeared wired
 adapter *above* Wi-Fi in their automatic service order, so the laptop would move
 its default route onto a point-to-point link that routes nowhere — the operator
@@ -188,7 +188,7 @@ this end the link looks perfect — which is why it gets the D301 heartbeat.
 | Router | **leave empty** |
 | DNS | leave empty |
 
-On macOS: System Settings → Network → the `dbCANary` adapter → Details → TCP/IP
+On macOS: System Settings → Network → the `CANary` adapter → Details → TCP/IP
 → Configure IPv4: Manually. Leaving the router field empty matters for the same
 reason the unit does not offer one.
 
@@ -253,7 +253,7 @@ is an Espressif one, so borrowing a VID it is not entitled to would be worse.
 | It boots, the deferred install fires after the delay, and a USB stack that fails to start does not take the unit down | `firmware/qemu/run_qemu.sh --usbnet --check`. QEMU has no USB device controller, so TinyUSB asserts out at t+8 s — which is the useful half: it is logged and the bridge carries on |
 | Address selection is right for the pairs that occur | 19 host checks, each of which fails against a planted bug |
 | Nothing above the netif changed | the whole suite still passes: 57 Python, 758 firmware host checks, hostsim 20/20, fuzzers clean |
-| A macOS host enumerates it, leases from it, and reaches every service over it | First bench session, 2026-09-26, board #1 on macOS 26.4: adapter `dbCANary` (`en25`), lease 192.168.7.2/24 with **no router and no DNS** offered, default route stayed on Wi-Fi, ping ~1 ms, `http://192.168.7.1/` 200 with `usb.link: true`, and `board_test.py --host 192.168.7.1 --broadcast 192.168.7.255 --skip console,can` **19/19** — discovery advertising 192.168.7.1 as `db-70`, full RM Byte Command Protocol walk on TCP 30000 |
+| A macOS host enumerates it, leases from it, and reaches every service over it | First bench session, 2026-09-26, board #1 on macOS 26.4: adapter `CANary` (`en25`), lease 192.168.7.2/24 with **no router and no DNS** offered, default route stayed on Wi-Fi, ping ~1 ms, `http://192.168.7.1/` 200 with `usb.link: true`, and `board_test.py --host 192.168.7.1 --broadcast 192.168.7.255 --skip console,can` **19/19** — discovery advertising 192.168.7.1 as `db-70`, full RM Byte Command Protocol walk on TCP 30000 |
 | BOOT+EN reflashing, and reflashing in the 8 s window with no button | both done repeatedly in the same session; esptool's `default_reset` catches the window if it is already waiting for the port |
 
 **Four bugs that session found, all invisible without a host** (fixed in the
@@ -290,7 +290,7 @@ itself as DNS whenever DNS is "off".
    `NCM will be at 192.168.7.1/24` line, then `starting USB-OTG`, then the port
    drops. Anything failing before that is visible here and nowhere else.
 3. **Enumerate** — the adapter should appear in macOS Network settings as
-   `dbCANary`.
+   `CANary`.
 4. **Check the host's address on that adapter.** It must be `192.168.7.2`.
    A `169.254` address means DHCP did not take — D301 will be heartbeating.
 5. **Confirm the host did NOT take a default route** (`netstat -rn | grep

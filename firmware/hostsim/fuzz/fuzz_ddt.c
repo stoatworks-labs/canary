@@ -55,7 +55,7 @@ size_t fuzz_seed(size_t index, uint8_t *out, size_t max)
 
 /* Longer than the record can hold, so truncation is exercised every run. */
 static const char LONG_HOSTNAME[] =
-    "dbcanary-a-deliberately-overlong-hostname-that-must-be-truncated-safely";
+    "canary-a-deliberately-overlong-hostname-that-must-be-truncated-safely";
 
 int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size)
 {

@@ -1,4 +1,4 @@
-# dbCANary rev A — fabrication
+# CANary rev A — fabrication
 
 Status: **routed, checked, and ready to upload.** DRC reports **0 errors and 0
 unconnected items** (31 accepted silkscreen warnings). Every fab package was
@@ -26,7 +26,7 @@ included in the public repo.)
 
 ## Board specification
 
-Read from `hardware/dbcanary.kicad_pcb`, not from memory.
+Read from `hardware/canary.kicad_pcb`, not from memory.
 
 | Item | Value |
 |---|---|
@@ -52,7 +52,7 @@ rather than a chopped-up pour.
 
 - **`J201` / `J202` / `J401` — Neutrik etherCON NE8FBH.** Through-hole,
   panel-mount, **customer-supplied** (not an LCSC part). Footprint is
-  `dbcanary:Neutrik_etherCON_NE8FBH`, drawn from Neutrik drawing 20003890 rev D.
+  `canary:Neutrik_etherCON_NE8FBH`, drawn from Neutrik drawing 20003890 rev D.
   Its two Ø1.55 mm latch-post holes are **non-plated** — mechanical locating posts.
 - **Five parts are hand-soldered, not machine-placed**: `J201`, `J202`, `J401`,
   `J301`, `SW201`. They appear in the BOM and CPL with no LCSC part so the two
@@ -100,7 +100,7 @@ These survive into rev B. Do not "clean them up".
 ## Regenerating the packages
 
 ```bash
-python3 hardware/scripts/fab_package.py hardware/dbcanary.kicad_pcb
+python3 hardware/scripts/fab_package.py hardware/canary.kicad_pcb
 ```
 
 That rebuilds `generic/` from scratch and **never** overwrites a vendor BOM or a
@@ -112,7 +112,7 @@ commands — and the PCB Train BOM from `hardware/scripts/make_pcbtrain_bom.py`.
 Re-check the board yourself before any order with:
 
 ```bash
-kicad-cli pcb drc --schematic-parity --severity-error --severity-warning hardware/dbcanary.kicad_pcb
+kicad-cli pcb drc --schematic-parity --severity-error --severity-warning hardware/canary.kicad_pcb
 ```
 
 ## Known-broken tooling

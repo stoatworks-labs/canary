@@ -1,5 +1,22 @@
 # Changelog
 
+## Unreleased (2026-09-27)
+
+- **Renamed dbCANary → CANary** across the docs, firmware, tools, enclosure and KiCad
+  project (files and footprint library nickname: `canary:`). The firmware's settings
+  namespace keeps its old name, so a configured unit keeps its settings through an update.
+  Dated records (the 0.1.0 entry below, the board #1 bring-up log and test record) keep the
+  name they were written under.
+- **Default name in R1 is now `CANary`**, instead of the R70 factory default `db-70`, so a
+  unit is listed as what it is. It can still be changed from the settings page.
+- **Flush switch cover.** The tube's lid has a 1.2 mm pocket over the service pinholes and
+  the SW201 slot; the cover sits flush in it, with a lever notch at its front end for a
+  small screwdriver. The new cover does not fit a 0.1.0 tube, nor the old cover the new one.
+- **Heat-set insert jig** (`hardware/enclosure/gen_insert_jig.py`, `hardware/enclosure/jig/`)
+  for a common 3D-printed insert press: an index plate keyed to the press's base, a nest
+  that holds the tube on end, and a keyed peg; one socket per insert. The tip's distance
+  from the press walls is an estimate until measured on a built press.
+
 ## 0.1.0 — first public release (2026-09-26)
 
 The prototype, published as it stands.

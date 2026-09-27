@@ -3,7 +3,7 @@
 # High quality raytracing; each view takes a few seconds.
 set -euo pipefail
 HERE="$(cd "$(dirname "$0")/.." && pwd)"
-BOARD="$HERE/dbcanary.kicad_pcb"
+BOARD="$HERE/canary.kicad_pcb"
 OUT="$HERE/../docs/renders"
 mkdir -p "$OUT"
 

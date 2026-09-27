@@ -1,16 +1,16 @@
-# dbCANary rev A — bench bring-up and hardware verification
+# CANary rev A — bench bring-up and hardware verification
 
 | | |
 |---|---|
-| Board | dbCANary rev A, 100 × 81 mm, 4-layer |
-| Document | BBU-DBCANARY-A, **revision 0.1 — DRAFT, never executed** |
+| Board | CANary rev A, 100 × 81 mm, 4-layer |
+| Document | BBU-CANARY-A, **revision 0.1 — DRAFT, never executed** |
 | Equipment assumed | bench PSU with current limit, DMM, network switch, PC |
 | Equipment optional | oscilloscope, logic analyser, insulation tester |
 | Companion documents | [`FUNCTIONAL-TEST-SPEC.md`](FUNCTIONAL-TEST-SPEC.md) (production), [`PROBE-POINTS.csv`](PROBE-POINTS.csv), [`TEST-COVERAGE.md`](TEST-COVERAGE.md) |
 | Per-board records | [`BRINGUP-LOG-0001.md`](BRINGUP-LOG-0001.md) — board #1, 2026-09-09, the first time this firmware ran on hardware |
 
-> **No dbCANary board has ever existed.** Every number below is derived from
-> `dbcanary.kicad_pcb`, the schematic and the component datasheets. Values are
+> **No CANary board has ever existed.** Every number below is derived from
+> `canary.kicad_pcb`, the schematic and the component datasheets. Values are
 > tagged **[spec]** (from a datasheet), **[derived]** (our arithmetic on the
 > schematic, shown so you can check it) or **[predicted]** (an educated guess
 > with no measurement behind it). **Never fail a board on a [predicted] value
@@ -318,7 +318,7 @@ Now swap the bench supply for a real USB-C PD source.
 ```bash
 cd firmware
 idf.py build                                   # the product image
-idf.py -B build-selftest build -DDBCANARY_SELFTEST=1   # the bench test image
+idf.py -B build-selftest build -DCANARY_SELFTEST=1   # the bench test image
 ```
 
 The self-test image runs every on-board test and then a command console, and
@@ -332,7 +332,7 @@ does **not** start the bridge. Flash that one first.
 > It was not always so, and the old arrangement is worth recognising if you ever
 > meet it again: with UART0 as primary and USB-Serial-JTAG only as the
 > *secondary* console, output was duplicated to USB-C but **input was not**. You
-> saw the banner and the `dbcanary> ` prompt over USB-C, typed `selftest`, and
+> saw the banner and the `canary> ` prompt over USB-C, typed `selftest`, and
 > nothing happened — because the REPL was reading GPIO43/44, reachable only on
 > J301. A prompt that ignores you reads exactly like a dead board.
 >
@@ -341,7 +341,7 @@ does **not** start the bridge. Flash that one first.
 > ```bash
 > idf.py -B build-selftest-uart -DSDKCONFIG=build-selftest-uart/sdkconfig \
 >        -DSDKCONFIG_DEFAULTS="sdkconfig.defaults;sdkconfig.uart-console" \
->        build -DDBCANARY_SELFTEST=1
+>        build -DCANARY_SELFTEST=1
 > ```
 >
 > and drive it with a 3.3 V USB-serial adapter on J301 pins 2/3/4 at 115200.
@@ -375,7 +375,7 @@ only programming path.
 idf.py -B build-selftest -p <port> monitor
 ```
 
-then at the `dbcanary>` prompt:
+then at the `canary>` prompt:
 
 ```
 selftest
@@ -459,7 +459,7 @@ With `led lan on`, measure **M6** (`R302.1`, the GPIO15 end of R302) against P9:
 disagree, and it has not been settled on hardware.**
 
 `board.h` was changed on 2026-07-27 from ACTIVE LOW to ACTIVE HIGH after
-re-deriving the connection from `dbcanary.kicad_pcb`:
+re-deriving the connection from `canary.kicad_pcb`:
 
 - KiCad's `Device:LED` symbol is **pin 1 = K (cathode), pin 2 = A (anode)**.
 - `D301.1 → GND`, `D301.2 → R302 → GPIO15`. Same shape for D302 and D303.

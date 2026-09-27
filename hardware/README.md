@@ -1,4 +1,4 @@
-# dbCANary hardware
+# CANary hardware
 
 KiCad 10 project for the R70-compatible IP-to-CAN bridge.
 Architecture and the reasoning behind every part choice: [../docs/DECISIONS.md](../docs/DECISIONS.md) (H1–H13).
@@ -7,12 +7,12 @@ Architecture and the reasoning behind every part choice: [../docs/DECISIONS.md](
 
 | Sheet | File | State |
 |---|---|---|
-| Root | `dbcanary.kicad_sch` | 4 sheets placed, CAN sheet pins linked |
+| Root | `canary.kicad_sch` | 4 sheets placed, CAN sheet pins linked |
 | Power — PoE + USB-C, 5 V / 3V3 | `power.kicad_sch` | **drawn**, 15 symbols, 0 unconnected pins (U101 pending, see below) |
 | MCU — ESP32-S3-WROOM-1, USB, LEDs | `mcu.kicad_sch` | **drawn**, 17 symbols, 0 unconnected pins |
 | Ethernet — W5500 SPI, PoE tap, etherCON | `ethernet.kicad_sch` | **drawn**, 18 symbols, 0 unconnected pins |
 | dbCAN — ADM3053 isolated | `can.kicad_sch` | **drawn**, 16 symbols, 0 unconnected pins |
-| PCB | `dbcanary.kicad_pcb` | **not started** |
+| PCB | `canary.kicad_pcb` | **not started** |
 
 **All four sheets are drawn** — 68 symbols, 0 unconnected pins on every sheet, and
 the exported netlist confirms every cross-sheet bus connects. One part is still

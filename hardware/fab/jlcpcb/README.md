@@ -1,15 +1,15 @@
-# dbCANary rev A — JLCPCB package
+# CANary rev A — JLCPCB package
 
 Upload these three:
 
 | File | Where it goes |
 |---|---|
-| `dbcanary-jlcpcb-gerbers.zip` | the gerber upload on the PCB order page |
-| `dbcanary-jlcpcb-bom.csv` | **BOM file** on the assembly page |
-| `dbcanary-jlcpcb-cpl.csv` | **CPL file** on the assembly page |
+| `canary-jlcpcb-gerbers.zip` | the gerber upload on the PCB order page |
+| `canary-jlcpcb-bom.csv` | **BOM file** on the assembly page |
+| `canary-jlcpcb-cpl.csv` | **CPL file** on the assembly page |
 
-Also here: `dbcanary-jlcpcb-designators.csv` (designator/quantity list) and
-`dbcanary-jlcpcb-netlist.ipc` (IPC-D-356, optional — lets JLC electrically test
+Also here: `canary-jlcpcb-designators.csv` (designator/quantity list) and
+`canary-jlcpcb-netlist.ipc` (IPC-D-356, optional — lets JLC electrically test
 the bare board).
 
 Board parameters for the order form are in [`../../../docs/FAB.md`](../../../docs/FAB.md#board-specification).

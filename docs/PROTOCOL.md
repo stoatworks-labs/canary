@@ -1,4 +1,4 @@
-# dbCANary — protocol reference
+# CANary — protocol reference
 
 Everything needed to build an interface compatible with the d&b audiotechnik
 **R70 Ethernet to CAN interface**'s protocol, as used by the **R1** remote control
@@ -288,7 +288,7 @@ Completing this needs the dbCAN **application layer**, which no document we have
 describes, and it is not documented here. **A transparent bridge does not need
 any of this** — see §7.
 
-## 7. What this means for dbCANary
+## 7. What this means for CANary
 
 Because the R70 does not interpret dbCAN, a faithful emulator needs **only**:
 

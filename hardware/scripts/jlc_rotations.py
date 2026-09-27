@@ -41,8 +41,8 @@ import sys
 import pcbnew
 
 HW = _REPO + "/hardware"
-BOARD = f"{HW}/dbcanary.kicad_pcb"
-CPL = f"{HW}/fab/jlcpcb/dbcanary-jlcpcb-cpl.csv"
+BOARD = f"{HW}/canary.kicad_pcb"
+CPL = f"{HW}/fab/jlcpcb/canary-jlcpcb-cpl.csv"
 PLUGIN = os.path.expanduser(
     "~/Documents/KiCad/10.0/3rdparty/plugins/com_github_bouni_kicad-jlcpcb-tools")
 CORRECTIONS_DB = f"{PLUGIN}/jlcpcb/corrections.db"

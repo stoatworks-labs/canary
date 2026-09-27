@@ -1,5 +1,5 @@
 """Flatten Bambu system presets (resolving `inherits`, which the CLI does not) so the
-BambuStudio CLI can build the dbCANary case project.
+BambuStudio CLI can build the CANary case project.
 
     python3 flatten_preset.py [variant]      # see variants.py
 

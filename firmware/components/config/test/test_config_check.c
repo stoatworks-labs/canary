@@ -38,7 +38,7 @@ int main(void)
         cfg_t c;
         cfg_defaults(&c);
         CHECK(cfg_validate(&c) == NULL, "the defaults must validate");
-        CHECK(strcmp(c.hostname, "db-70") == 0, "default name is the R70's");
+        CHECK(strcmp(c.hostname, "CANary") == 0, "default name is CANary");
         CHECK(c.base_port == 30000, "default port is the R70's");
         CHECK(c.socket_count == 4, "default socket count is the R70's");
         CHECK(c.eth_mode == CFG_IPV4_DHCP, "default is DHCP, as it always was");

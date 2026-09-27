@@ -8,13 +8,13 @@ items['Metadata/project_settings.config'] = json.dumps(config, indent=4).encode(
 
 # The CLI names objects after their STL files; give Studio's object list real names.
 NAMES = [
-    ('dbcanary_tube.stl', 'dbCANary case - body (one piece)'),
-    ('dbcanary_shell_bottom.stl', 'dbCANary case - shell bottom'),
-    ('dbcanary_shell_top.stl', 'dbCANary case - shell top'),
-    ('dbcanary_end_front.stl', 'dbCANary case - end front (3x etherCON)'),
-    ('dbcanary_end_rear.stl', 'dbCANary case - end rear (USB-C)'),
-    ('dbcanary_led_insert.stl', 'dbCANary case - LED window insert (PLA)'),
-    ('dbcanary_switch_cover.stl', 'dbCANary case - switch cover (PLA)'),
+    ('canary_tube.stl', 'CANary case - body (one piece)'),
+    ('canary_shell_bottom.stl', 'CANary case - shell bottom'),
+    ('canary_shell_top.stl', 'CANary case - shell top'),
+    ('canary_end_front.stl', 'CANary case - end front (3x etherCON)'),
+    ('canary_end_rear.stl', 'CANary case - end rear (USB-C)'),
+    ('canary_led_insert.stl', 'CANary case - LED window insert (PLA)'),
+    ('canary_switch_cover.stl', 'CANary case - switch cover (PLA)'),
 ]
 ms = items['Metadata/model_settings.config'].decode()
 for old, new in NAMES:

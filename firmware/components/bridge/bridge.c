@@ -294,7 +294,7 @@ esp_err_t bridge_start(const bridge_config_t *cfg)
 {
     s_cfg = *cfg;
     snprintf(s_hostname, sizeof(s_hostname), "%s",
-             cfg->hostname != NULL ? cfg->hostname : "db-70");
+             cfg->hostname != NULL ? cfg->hostname : "CANary");
     s_cfg.hostname = s_hostname;
     if (s_cfg.socket_count == 0 || s_cfg.socket_count > R70_DDT_MAX_SOCKETS) {
         /* R1 leaves the socket column read-only below two, so default to the

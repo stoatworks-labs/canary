@@ -47,7 +47,7 @@ RESULT mac.eth PASS 84:FC:E6:00:11:22
 RESULT eth.versionr PASS 0x04 at 4 MHz
 RESULT can.loopback PASS 8-byte frame round-tripped
 SELFTEST-END pass=4 fail=0 skip=0 info=1
-JSON {"schema":"dbcanary.selftest/1","results":[],"pass":4,"fail":0,"skip":0,"info":1}
+JSON {"schema":"canary.selftest/1","results":[],"pass":4,"fail":0,"skip":0,"info":1}
 OK
 """
 
@@ -57,7 +57,7 @@ def test_parses_a_clean_transcript():
     assert [r["name"] for r in results] == [
         "chip", "flash.size", "mac.eth", "eth.versionr", "can.loopback"]
     assert tally == {"pass": 4, "fail": 0, "skip": 0, "info": 1}
-    assert blob["schema"] == "dbcanary.selftest/1"
+    assert blob["schema"] == "canary.selftest/1"
     assert results[0]["detail"].startswith("ESP32-S3")
 
 
@@ -97,7 +97,7 @@ def test_unparseable_json_line_is_reported_not_swallowed():
 
 
 def test_no_results_at_all():
-    results, tally, blob = parse_selftest("dbcanary> \nhelp\nOK\n")
+    results, tally, blob = parse_selftest("canary> \nhelp\nOK\n")
     assert results == [] and tally == {} and blob == {}
 
 
@@ -112,7 +112,7 @@ def test_simulated_run_passes(ports, tmp_path, capsys):
     assert rc == 0, capsys.readouterr().out
 
     data = json.loads(record.read_text())
-    assert data["schema"] == "dbcanary.board-test/1"
+    assert data["schema"] == "canary.board-test/1"
     assert data["serial_number"] == "SIM-0001"
     assert data["simulated"] is True
     assert data["summary"]["fail"] == 0

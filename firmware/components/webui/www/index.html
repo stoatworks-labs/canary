@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!--
-  dbCANary configuration UI.
+  CANary configuration UI.
 
   ONE FILE, NO EXTERNAL REFERENCES. The unit is at the end of a USB cable with
   no route to the internet, so a stylesheet, a font or a script from a CDN
@@ -14,7 +14,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>dbCANary</title>
+<title>CANary</title>
 <style>
 :root{--bg:#fff;--fg:#14171a;--dim:#5b6570;--line:#dfe3e8;--card:#f7f8fa;
       --ok:#1a7f45;--warn:#a8630a;--bad:#b3261e;--accent:#1f6feb}
@@ -57,7 +57,7 @@ a{color:var(--accent)}
 </head>
 <body>
 <main>
-  <h1>dbCANary</h1>
+  <h1>CANary</h1>
   <p class="sub" id="ident">&nbsp;</p>
 
   <h2>Status</h2>
@@ -104,7 +104,7 @@ a{color:var(--accent)}
 
   <h2>Firmware</h2>
   <div class="card">
-    <p class="sub">Upload a <code>dbcanary.bin</code>. It is written to the spare
+    <p class="sub">Upload a <code>canary.bin</code>. It is written to the spare
        slot and verified before anything points at it, so a bad file or a pulled
        cable leaves the running firmware alone.</p>
     <input id="file" type="file" accept=".bin">

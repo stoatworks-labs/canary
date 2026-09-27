@@ -50,7 +50,7 @@ static uint32_t           s_rx_count;
 
 static uint16_t hub_port(void)
 {
-    const char *env = getenv("DBCANARY_VCAN_PORT");
+    const char *env = getenv("CANARY_VCAN_PORT");
     const int   port = env ? atoi(env) : VCAN_DEFAULT_PORT;
     return (port > 0 && port < 65536) ? (uint16_t)port : VCAN_DEFAULT_PORT;
 }

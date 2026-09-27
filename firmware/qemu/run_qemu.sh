@@ -4,7 +4,7 @@
 # WHY: everything else in this project tests the firmware's logic on a host.
 # None of it executes the boot path — the bootloader, the partition table, task
 # stacks, driver init order — and that is where a first board wastes its first
-# hour. This runs the actual dbcanary.bin.
+# hour. This runs the actual canary.bin.
 #
 # `idf.py qemu monitor` does the same thing but needs a TTY, so it cannot run
 # from a script or CI. This drives QEMU directly instead.
@@ -94,7 +94,7 @@ echo "--- building the $LABEL image for QEMU ($BUILD)"
 ( cd "$FW" && idf.py -B "$BUILD" -DSDKCONFIG="$BUILD/sdkconfig" \
     -DSDKCONFIG_DEFAULTS="sdkconfig.defaults;$OVERLAY" build ) >/dev/null
 
-if [ ! -f "$FW/$BUILD/dbcanary.bin" ]; then
+if [ ! -f "$FW/$BUILD/canary.bin" ]; then
     echo "build produced no image" >&2
     exit 1
 fi
@@ -108,12 +108,12 @@ echo "--- assembling flash image"
     0x0 bootloader/bootloader.bin \
     0x8000 partition_table/partition-table.bin \
     0xf000 ota_data_initial.bin \
-    0x20000 dbcanary.bin ) >/dev/null
+    0x20000 canary.bin ) >/dev/null
 
 [ -f "$FW/$BUILD/qemu_efuse.bin" ] || dd if=/dev/zero of="$FW/$BUILD/qemu_efuse.bin" \
     bs=1 count=124 >/dev/null 2>&1
 
-LOG=${LOG:-/tmp/dbcanary-qemu.log}
+LOG=${LOG:-/tmp/canary-qemu.log}
 echo "--- booting (${SECONDS_TO_RUN}s) -> $LOG"
 
 "$QEMU" -M esp32s3 -m 32M \

@@ -1,4 +1,4 @@
-# AGENTS.md — bringing an LLM up to speed on dbCANary
+# AGENTS.md — bringing an LLM up to speed on CANary
 
 Orientation for an AI assistant (or a new human) picking this project up cold. There is no
 `CLAUDE.md` here; this is the entry point.
@@ -32,7 +32,7 @@ Before any board existed it had already executed *somewhere*, and that changed w
 
 - `firmware/hostsim` links the shipping C into a host process on real sockets, so the
   bridge, codec and CAN return path run as an assembled whole rather than as unit tests.
-- `firmware/qemu` boots the real `dbcanary.bin` on an emulated ESP32-S3, which exercises
+- `firmware/qemu` boots the real `canary.bin` on an emulated ESP32-S3, which exercises
   the bootloader, partition table and `app_main` bring-up.
 
 Between them those found three real firmware bugs and one remotely triggerable parser
@@ -200,8 +200,8 @@ touching it — particularly §7, which lists exactly what is and is not proven.
   conventions and some tooling.
 - **amp-commander** — split out of this project. Key finding from that work: **CAN is a d&b
   idiosyncrasy**; no other manufacturer uses it, so a universal amp bridge's axis is the
-  *control protocol*, not the CAN dialect. Its KiCad project is a copy of dbCANary rev A
-  (renamed), and dbCANary's own project was deliberately left untouched.
+  *control protocol*, not the CAN dialect. Its KiCad project is a copy of CANary rev A
+  (renamed), and CANary's own project was deliberately left untouched.
 
 ## Diagnostics
 

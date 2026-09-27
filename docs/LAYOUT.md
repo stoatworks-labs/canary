@@ -1,4 +1,4 @@
-# dbCANary rev A — layout plan
+# CANary rev A — layout plan
 
 > ## ⚠ Historical. Placement and routing are **done**.
 >

@@ -2,7 +2,7 @@
  * ESP-IDF esp_log.h stand-in for the host build.
  *
  * Same call sites, same tags, same levels — written to stderr so the daemon's
- * stdout stays clean for machine-readable output. DBCANARY_LOG_LEVEL (0-5)
+ * stdout stays clean for machine-readable output. CANARY_LOG_LEVEL (0-5)
  * sets verbosity, defaulting to INFO, matching esp_log_level_t ordering.
  */
 #ifndef HOSTSIM_ESP_LOG_H

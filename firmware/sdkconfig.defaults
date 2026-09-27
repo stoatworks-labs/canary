@@ -1,4 +1,4 @@
-# dbCANary — ESP-IDF default config (target: esp32 / ESP32-WROOM-32E)
+# CANary — ESP-IDF default config (target: esp32 / ESP32-WROOM-32E)
 # Regenerate sdkconfig from these: `rm sdkconfig && idf.py reconfigure`
 
 CONFIG_IDF_TARGET="esp32s3"
@@ -20,7 +20,7 @@ CONFIG_ESPTOOLPY_FLASHSIZE="8MB"
 # #if ladder in components/selftest/selftest_console.c. This used to be
 # CONFIG_ESP_CONSOLE_UART_DEFAULT with USB_SERIAL_JTAG only as the *secondary*
 # console -- and the secondary console is OUTPUT ONLY. The effect was that over
-# the USB-C port you saw the banner and the `dbcanary> ` prompt, typed
+# the USB-C port you saw the banner and the `canary> ` prompt, typed
 # `selftest`, and nothing happened: input was being read from UART0 on GPIO43/44,
 # which is only reachable on J301. BENCH-BRINGUP 5.3 documents flashing and
 # monitoring over USB-C, so the documented procedure could not work.

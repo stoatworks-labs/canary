@@ -1,4 +1,4 @@
-# dbCANary
+# CANary
 
 An open-hardware **IP-to-CAN converter compatible with the d&b audiotechnik R70
 Ethernet-to-CAN interface**. It speaks the R70's network protocol, so **R1** can
@@ -9,7 +9,7 @@ hardware you can build yourself.
 Neutrik etherCONs**, in a one-piece 3D-printed case.
 
 <p align="center">
-  <img src="docs/renders/iso.png" width="700" alt="dbCANary rev A board render">
+  <img src="docs/renders/iso.png" width="700" alt="CANary rev A board render">
 </p>
 
 > **Status: prototype.** Rev A boards have been built. Board #1 passes its
@@ -26,7 +26,7 @@ Neutrik etherCONs**, in a one-piece 3D-printed case.
 |---|---|
 | [`hardware/`](hardware/) | Rev A board: KiCad 10 project (4 sheets, 100 × 81 mm, 4 layers), symbol/footprint library, fab outputs (Gerbers, BOM, pick-and-place, interactive BOM) and the design scripts that placed and routed it |
 | [`hardware/fab/test/`](hardware/fab/test/) | Bench bring-up procedure, functional test spec, probe points, and the bring-up log of board #1 |
-| [`hardware/enclosure/`](hardware/enclosure/) | The one-piece **tube** case: parametric generator (CadQuery), STEP and STL for the body, end plates, LED window insert and switch cover, and ready-sliced Bambu Lab plates |
+| [`hardware/enclosure/`](hardware/enclosure/) | The one-piece **tube** case: parametric generator (CadQuery), STEP and STL for the body, end plates, LED window insert and switch cover, ready-sliced Bambu Lab plates, and a jig for pressing the heat-set inserts |
 | [`firmware/`](firmware/) | ESP-IDF 5.5 firmware: the Ethernet bridge, discovery responder, CAN at dbCAN's fixed 100 kbit/s, status LEDs, and an optional USB network device with an on-device settings page |
 | [`tools/`](tools/) | Python reference implementation of the protocol, a host-side emulator you can point R1 at with no hardware, and the board acceptance test |
 | [`docs/`](docs/) | Protocol reference, user guide, API, design decisions, fab notes |
@@ -37,7 +37,7 @@ The R70 is a transparent bridge. It does not interpret d&b's amplifier
 parameters, it carries CAN frames. Its Ethernet side speaks the **RM Byte
 Command Protocol**, which RM Michaelides (now Proemion) publish. R1 finds
 interfaces with a small UDP discovery exchange on port 33333, documented here
-from captures of R1's discovery traffic and confirmed live. dbCANary implements
+from captures of R1's discovery traffic and confirmed live. CANary implements
 both, and nothing else. It has no knowledge of amplifier parameters and needs
 none.
 
@@ -53,7 +53,7 @@ document and what is inferred.
 
 ## Getting started
 
-**Flash a board from the browser.** The [dbCANary Flasher](https://dbcanary-flasher.stoatworks-labs.com)
+**Flash a board from the browser.** The [CANary Flasher](https://canary-flasher.stoatworks-labs.com)
 writes the current release over Web Serial (Chrome/Edge). Pick *Standard*
 (Ethernet only), or *USB network + config page*, which also makes the unit a USB
 network adapter at `192.168.7.1` with a settings page.
@@ -123,7 +123,7 @@ exceptions (fonts, the Stoatworks Labs mark).
 
 ## Disclaimer
 
-dbCANary is an independent implementation, built from published documentation
+CANary is an independent implementation, built from published documentation
 and observed network traffic. It contains no d&b audiotechnik or RM Michaelides
 code or firmware. Vendor manuals are not redistributed here; see
 [docs/SOURCES.md](docs/SOURCES.md) for where to get them.

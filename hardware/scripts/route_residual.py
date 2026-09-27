@@ -24,7 +24,7 @@ import sys
 
 import pcbnew
 
-BOARD = _REPO + "/hardware/dbcanary.kicad_pcb"
+BOARD = _REPO + "/hardware/canary.kicad_pcb"
 
 VIA_DIA, VIA_DRILL = 0.6, 0.3
 CLEAR = 0.25

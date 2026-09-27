@@ -42,8 +42,8 @@ sys.path.insert(0, str(ROOT / "tools"))
 
 import rmbcp  # noqa: E402
 
-TCP_PORT = int(os.environ.get("DBCANARY_TCP_PORT", "30020"))
-VCAN_PORT = int(os.environ.get("DBCANARY_VCAN_PORT", "35020"))
+TCP_PORT = int(os.environ.get("CANARY_TCP_PORT", "30020"))
+VCAN_PORT = int(os.environ.get("CANARY_VCAN_PORT", "35020"))
 
 PASSED = 0
 FAILED = 0
@@ -101,9 +101,9 @@ def drain(sock: socket.socket, seconds: float = 0.3) -> bytes:
 
 def main() -> int:
     rng = random.Random(20260731)  # deterministic: a failure is reproducible
-    env = dict(os.environ, DBCANARY_VCAN_PORT=str(VCAN_PORT))
+    env = dict(os.environ, CANARY_VCAN_PORT=str(VCAN_PORT))
     daemon = subprocess.Popen(
-        [str(HOSTSIM / "dbcanaryd"), "--ip", "127.0.0.1", "--port", str(TCP_PORT)],
+        [str(HOSTSIM / "canaryd"), "--ip", "127.0.0.1", "--port", str(TCP_PORT)],
         stdout=subprocess.PIPE, stderr=subprocess.DEVNULL, text=True, env=env)
 
     try:
@@ -111,8 +111,8 @@ def main() -> int:
         deadline = time.time() + 5
         while time.time() < deadline:
             line = daemon.stdout.readline()
-            if not line or "dbcanaryd ready" in line:
-                ready = "dbcanaryd ready" in (line or "")
+            if not line or "canaryd ready" in line:
+                ready = "canaryd ready" in (line or "")
                 break
         check("daemon.ready", ready, f"tcp {TCP_PORT}")
         if not ready:

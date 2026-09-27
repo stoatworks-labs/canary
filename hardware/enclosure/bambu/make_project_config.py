@@ -10,23 +10,23 @@ rewritten too. `print_compatible_printers` is the one that bites: leave the refe
 in place and the slicer answers `run 3002: process not compatible with printer`, however
 correct everything else is.
 
-The reference project is not in the repo. Point DBCANARY_H2C_REF_3MF at any 3MF you have
+The reference project is not in the repo. Point CANARY_H2C_REF_3MF at any 3MF you have
 sliced for an H2C in Bambu Studio itself (0.4 nozzle, PLA is what this was built against):
 
-    DBCANARY_H2C_REF_3MF=~/some-h2c-project.3mf ./build.sh
+    CANARY_H2C_REF_3MF=~/some-h2c-project.3mf ./build.sh
 """
 import json
 import os
 import sys
 import zipfile
 
-REF = os.environ.get('DBCANARY_H2C_REF_3MF', '')
+REF = os.environ.get('CANARY_H2C_REF_3MF', '')
 if not REF:
-    sys.exit("make_project_config.py: set DBCANARY_H2C_REF_3MF to a Bambu Studio-made H2C "
+    sys.exit("make_project_config.py: set CANARY_H2C_REF_3MF to a Bambu Studio-made H2C "
              "project (.3mf) to ground the config in -- see this file's docstring")
 REF = os.path.expanduser(REF)
 if not os.path.isfile(REF):
-    sys.exit(f"make_project_config.py: DBCANARY_H2C_REF_3MF={REF!r} is not a file")
+    sys.exit(f"make_project_config.py: CANARY_H2C_REF_3MF={REF!r} is not a file")
 SKIP = ('type', 'from', 'instantiation', 'name', 'compatible_printers',
         'compatible_printers_condition', 'description', 'setting_id', 'inherits',
         'compatible_prints', 'compatible_prints_condition',

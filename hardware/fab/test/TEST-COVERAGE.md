@@ -1,6 +1,6 @@
-# dbCANary rev A — Electrical Test Coverage
+# CANary rev A — Electrical Test Coverage
 
-Generated from the board file. Companion to `dbcanary.d356` (IPC-D-356A).
+Generated from the board file. Companion to `canary.d356` (IPC-D-356A).
 
 ## Netlist summary
 
@@ -58,8 +58,8 @@ the USB-C connector, which is by design and proves nothing.
 
 | File | What it is |
 |---|---|
-| `dbcanary-ODB++.zip` | what JLCPCB's PCBA flying-probe service asks for **if support agrees to run it** — it is a support-negotiated service with no published price, not a checkout option. Layers, drills, placement, and a CAD netlist with full untruncated net names |
-| `dbcanary.d356` | IPC-D-356A netlist — the portable industry standard. JLCPCB has no netlist upload field, but **their own blog suggests including one in the Gerber ZIP**; PCBWay and most Western fabs require it |
+| `canary-ODB++.zip` | what JLCPCB's PCBA flying-probe service asks for **if support agrees to run it** — it is a support-negotiated service with no published price, not a checkout option. Layers, drills, placement, and a CAD netlist with full untruncated net names |
+| `canary.d356` | IPC-D-356A netlist — the portable industry standard. JLCPCB has no netlist upload field, but **their own blog suggests including one in the Gerber ZIP**; PCBWay and most Western fabs require it |
 | `NETLIST-CROSSREF.csv` | truncated D-356 name → full hierarchical net name, with probe counts per net |
 | `FUNCTIONAL-TEST-SPEC.md` | functional test procedure (draft — never executed) |
 | `README.md` | **start here** — which file goes to which service |

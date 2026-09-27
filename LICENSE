@@ -1,4 +1,4 @@
-dbCANary is licensed in three parts. Full texts are in LICENSES/.
+CANary is licensed in three parts. Full texts are in LICENSES/.
 
   Board (hardware/*.kicad_*, hardware/lib/, hardware/fab/, hardware/scripts/
   design outputs, docs/renders/)

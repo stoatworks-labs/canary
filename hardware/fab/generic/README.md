@@ -1,4 +1,4 @@
-# dbCANary rev A — generic / vendor-neutral package
+# CANary rev A — generic / vendor-neutral package
 
 The raw board data, in standard formats, with **no fab-specific conventions
 applied**. Start here to quote a fab that has no folder of its own, or to build
@@ -6,12 +6,12 @@ a board by hand.
 
 | File | What it is |
 |---|---|
-| `dbcanary-gerbers.zip` | RS-274X gerbers + Excellon drill, the whole set |
+| `canary-gerbers.zip` | RS-274X gerbers + Excellon drill, the whole set |
 | `gerbers/` | the same files loose, for browsing (not tracked in git) |
-| `dbcanary-bom.csv` | every part on the board, one line per orderable part |
-| `dbcanary-cpl.csv` | centroid — one line per designator, both sides |
-| `dbcanary-netlist.ipc` | IPC-D-356 netlist, for bare-board electrical test |
-| `dbcanary-ibom.html` | interactive BOM — open in a browser to hand-place |
+| `canary-bom.csv` | every part on the board, one line per orderable part |
+| `canary-cpl.csv` | centroid — one line per designator, both sides |
+| `canary-netlist.ipc` | IPC-D-356 netlist, for bare-board electrical test |
+| `canary-ibom.html` | interactive BOM — open in a browser to hand-place |
 
 ## Board parameters
 
@@ -54,5 +54,5 @@ not a preference.
 ## Regenerating
 
 ```bash
-python3 hardware/scripts/fab_package.py hardware/dbcanary.kicad_pcb
+python3 hardware/scripts/fab_package.py hardware/canary.kicad_pcb
 ```

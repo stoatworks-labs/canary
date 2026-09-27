@@ -5,5 +5,5 @@ set -e
 cd "$(dirname "$0")"
 CC=${CC:-cc}
 "$CC" -std=c99 -Wall -Wextra -Werror -I../include ../rmbcp.c test_rmbcp.c \
-      -o /tmp/dbcanary_test_rmbcp
-exec /tmp/dbcanary_test_rmbcp
+      -o /tmp/canary_test_rmbcp
+exec /tmp/canary_test_rmbcp

@@ -1,4 +1,4 @@
-# dbCANary — Design Decisions (ADR-style)
+# CANary — Design Decisions (ADR-style)
 
 Defaults chosen so work can proceed. Flag any to change before the schematic is
 finalised.
@@ -16,7 +16,7 @@ finalised.
 | **D9** | Discovery | emulate UDP 33333 | require manual config in R1 | auto-detection is what makes it feel like a real R70; manual config is the documented fallback if the handshake resists | Low |
 | **D10** | Host tooling language | Python | Rust | this is an iterative protocol-cracking harness that must run wherever R1 runs; zero build beats a static binary here. Matches nanODE's `tools/` | Trivial |
 | **D11** | Firmware language | C (ESP-IDF) | Rust (esp-hal) | matches nanODE; TWAI + lwIP are first-class in ESP-IDF | Medium |
-| **D12** | Project name | **dbCANary** | (any) | dbCAN + canary; lowercase `dbcanary` for identifiers, hostnames and the CMake project | Trivial |
+| **D12** | Project name | **CANary** | (any) | dbCAN + canary; lowercase `canary` for identifiers, hostnames and the CMake project | Trivial |
 
 ## Hardware — MCU pivot (2026-07-23)
 
@@ -86,7 +86,7 @@ Two independent problems, both now properly diagnosed.
 **1. The symbol will not resolve — Konnect process cache.** Evidence: with the
 library registered globally, `list_symbol_libraries` returns it (that call reads
 `sym-lib-table` live from disk) while `add_schematic_component` reports
-"Library 'dbcanary' not found" (that path uses a list cached at Konnect
+"Library 'canary' not found" (that path uses a list cached at Konnect
 **process** start). `ethercon-repeater`, registered in an earlier session, resolves
 fine from the same table. MCP transport disconnect/reconnect does **not** clear it
 — verified across three reconnects and two days. **Needs a genuine restart of the
@@ -110,7 +110,7 @@ getting a confirmed land pattern from Silvertel before drawing the footprint.
 
 ### Resolved: the etherCON footprint is drawn from Neutrik's own DXF
 
-`dbcanary:Neutrik_etherCON_NE8FBH`, in `hardware/lib/dbcanary.pretty/`. **Pad
+`canary:Neutrik_etherCON_NE8FBH`, in `hardware/lib/canary.pretty/`. **Pad
 geometry is exact, not estimated** — it came out of Neutrik drawing 20003890 rev D,
 taking the DXF rather than reading the rendered PDF. Two things had to be handled:
 the DXF is at the drawing's **3:1 scale** (the 8 signal holes appear as Ø2.4, and

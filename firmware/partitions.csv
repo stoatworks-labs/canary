@@ -1,4 +1,4 @@
-# ESP-IDF partition table for dbCANary (dual OTA).
+# ESP-IDF partition table for CANary (dual OTA).
 # The module is an ESP32-S3-WROOM-1-N8 (8 MB). This table was laid out when the
 # config still said 4 MB and has not been resized since, so it ends at 0x3E0000
 # and the upper 4 MB is unallocated. That is deliberate for rev A bring-up:

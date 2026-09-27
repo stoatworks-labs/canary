@@ -9,7 +9,7 @@
 #
 #   idf.py -B build-selftest-uart -DSDKCONFIG=build-selftest-uart/sdkconfig \
 #          -DSDKCONFIG_DEFAULTS="sdkconfig.defaults;sdkconfig.uart-console" \
-#          build -DDBCANARY_SELFTEST=1
+#          build -DCANARY_SELFTEST=1
 #
 # -DSDKCONFIG was missing from this line until 2026-09-21. Without it the build
 # shares firmware/sdkconfig, which is only generated from SDKCONFIG_DEFAULTS

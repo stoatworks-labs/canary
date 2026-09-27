@@ -1,5 +1,5 @@
 /*
- * dbCANary bridge — R1 over Ethernet <-> dbCAN.
+ * CANary bridge — R1 over Ethernet <-> dbCAN.
  *
  * Owns the UDP 33333 discovery responder, the TCP data socket speaking the RM
  * Byte Command Protocol, and the forwarding between that socket and the CAN
@@ -14,7 +14,7 @@
 #include "esp_err.h"
 
 typedef struct {
-    const char *hostname;   /* shown in R1's interface list; R70 default "db-70" */
+    const char *hostname;   /* shown in R1's interface list; default "CANary" */
     uint8_t mac[6];         /* advertised in discovery; R1 never checks the OUI */
     uint16_t base_port;     /* socket 1, R70 default 30000 */
     uint8_t socket_count;   /* 0 -> 4, the number a real R70 offers */

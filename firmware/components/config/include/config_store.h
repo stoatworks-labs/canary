@@ -33,7 +33,7 @@ esp_err_t cfg_save(const cfg_t *cfg);
 esp_err_t cfg_reset(void);
 
 /* True if the settings in use came from NVS rather than from cfg_defaults().
- * The web UI says so, because "why is it called db-70 again" is otherwise a
+ * The web UI says so, because "why is it called CANary again" is otherwise a
  * long conversation. */
 bool cfg_is_stored(void);
 

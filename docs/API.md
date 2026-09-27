@@ -1,6 +1,6 @@
-# dbCANary — interfaces
+# CANary — interfaces
 
-What a dbCANary exposes, and what the tooling exposes. This is the **implementation** side:
+What a CANary exposes, and what the tooling exposes. This is the **implementation** side:
 what the firmware actually answers, in what shape.
 
 For the wire format itself — frame layout, checksums, the derivation of the discovery
@@ -35,7 +35,7 @@ Four sockets, base port **30000** (socket 1 = 30000, socket *n* = 30000 + n − 
 Frames arriving as CAN messages (`0x00`–`0x03`) are unwrapped and transmitted straight onto the
 bus with a 20 ms transmit timeout. Everything else is a gateway command, handled as follows.
 
-| Cmd | Name | dbCANary's answer |
+| Cmd | Name | CANary's answer |
 |---|---|---|
 | `0x00`–`0x03` | CAN 11/29-bit, ±timestamp | **Forwarded to the bus**, not answered |
 | `0x40` | Device ID | `"<host>-TCP-<port>"` NUL-terminated, then the 6 MAC bytes |
@@ -68,7 +68,7 @@ sets exactly this value on every connect. A request to run the bus at another ra
 not honoured — there is nothing to honour it with.
 
 **`0xA3` Block Time is echoed, not applied.** On a real R70, Block Time batches several frames
-into one TCP segment. dbCANary accepts the setting so R1 is satisfied, and does not implement
+into one TCP segment. CANary accepts the setting so R1 is satisfied, and does not implement
 the batching. Frames go out as they come.
 
 **Version is invented.** `01 00 00 01 00 01` is not a real R70's version triple. If anything
@@ -94,7 +94,7 @@ answer.
 
 Record layout (`r70_ddt.h` is the authority — offsets are named constants there):
 
-| Offset | Field | What dbCANary sends |
+| Offset | Field | What CANary sends |
 |---|---|---|
 | 0 | IPv4, big-endian | the interface's current address — DHCP lease, or the self-assigned 169.254 one |
 | 4 | service | `1` (server). `2` = client; **anything else and R1 drops the record** |
@@ -102,7 +102,7 @@ Record layout (`r70_ddt.h` is the authority — offsets are named constants ther
 | 6 | port | `30000` |
 | 8 | MAC | from the module's eFuse — unique per board |
 | 14 | tag | |
-| 36 | hostname | `db-70`, max 27 chars + NUL |
+| 36 | hostname | `CANary` by default, max 27 chars + NUL |
 
 Four socket records are advertised (`R70_DDT_MAX_SOCKETS`). A real R70 offers four, and R1
 keeps its socket column read-only unless it sees them.
@@ -202,10 +202,10 @@ State mapping is in `main/status.c`, patterns in `components/led/`, pins in `com
 compiled in by a separate build:
 
 ```bash
-idf.py -B build-selftest build -DDBCANARY_SELFTEST=1
+idf.py -B build-selftest build -DCANARY_SELFTEST=1
 ```
 
-Prompt is `dbcanary>` over USB CDC at 115200.
+Prompt is `canary>` over USB CDC at 115200.
 
 | Command | Does |
 |---|---|

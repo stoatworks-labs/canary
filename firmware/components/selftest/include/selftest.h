@@ -10,7 +10,7 @@
  *                        product behaves. Its job is to put a line in the log
  *                        that says which board this is.
  *
- *   selftest_run_all()   Runs ONLY in the test build (-DDBCANARY_SELFTEST=1),
+ *   selftest_run_all()   Runs ONLY in the test build (-DCANARY_SELFTEST=1),
  *                        before anything else has claimed a peripheral. It
  *                        drives the SPI bus and the CAN controller directly,
  *                        so it must run first and the bridge must not run at
@@ -39,7 +39,7 @@
 #include "esp_err.h"
 #endif
 
-#define SELFTEST_SCHEMA   "dbcanary.selftest/1"
+#define SELFTEST_SCHEMA   "canary.selftest/1"
 #define SELFTEST_MAX      24
 #define SELFTEST_DETAIL   72
 

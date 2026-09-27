@@ -1,6 +1,6 @@
 # The configuration UI
 
-Plug a dbCANary into a laptop, open `http://192.168.7.1/`, and you get status,
+Plug a CANary into a laptop, open `http://192.168.7.1/`, and you get status,
 settings, a firmware update and the diagnostics bundle. No app, no driver, no
 toolchain.
 
@@ -41,7 +41,7 @@ still nothing but a bridge.
 
 | Setting | Default | Notes |
 |---|---|---|
-| Name shown in R1 | `db-70` | The R70 factory default. Two units on defaults appear in R1 as two identical entries, which is the main reason this exists. Max 27 characters — the discovery record's capacity. |
+| Name shown in R1 | `CANary` | Our own name; a real R70 ships as `db-70`. Two units on defaults appear in R1 as two identical entries, which is the main reason this exists. Max 27 characters — the discovery record's capacity. |
 | Data port | `30000` | Socket 1. R70 default. |
 | Sockets advertised | `4` | What a real R70 offers. R1 leaves its socket column read-only below two. |
 | LAN jack address | Automatic | DHCP, falling back to link-local. Or a static address, mask and optional gateway. |
@@ -65,7 +65,7 @@ namespace outright.
 
 ## 3. Firmware updates
 
-Upload a `dbcanary.bin`; it goes into the spare OTA slot, is verified by
+Upload a `canary.bin`; it goes into the spare OTA slot, is verified by
 `esp_ota_end()` before anything points at it, and the unit reboots into it. A
 corrupt file, a wrong-target image or a pulled cable all leave the running
 firmware untouched.

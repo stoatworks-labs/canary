@@ -2,7 +2,7 @@
 """
 Generate the bring-up probe-point catalogue and its annotated board drawings.
 
-Everything here is derived from dbcanary.kicad_pcb, so a probe point can never
+Everything here is derived from canary.kicad_pcb, so a probe point can never
 drift away from the board: the table below names a designator and a pad, and
 the coordinates, layer and net come out of the board file at run time. If a pad
 is renamed or a part moves, this script fails loudly rather than printing a
@@ -43,7 +43,7 @@ import pcbnew
 HERE = Path(__file__).resolve().parent
 HW = HERE.parent
 REPO = HW.parent
-BOARD_FILE = HW / "dbcanary.kicad_pcb"
+BOARD_FILE = HW / "canary.kicad_pcb"
 TEST_DIR = HW / "fab" / "test"
 RENDER_DIR = REPO / "docs" / "renders"
 
@@ -527,7 +527,7 @@ def build_svg(title: str, subtitle: str, artwork: str, probes: list[Probe],
   <text x="{x0 + margin:.2f}" y="{key_top + row_h * 1.35:.2f}" font-size="{row_h * 0.32:.2f}"
         font-family="{FONT}" fill="#777777">{_esc(subtitle)}</text>
   <text x="{x0 + margin:.2f}" y="{key_top + row_h * 1.85:.2f}" font-size="{row_h * 0.30:.2f}"
-        font-family="{FONT}" fill="#999999">Component side, viewed from above. Pads shown are solder-mask openings. Generated from dbcanary.kicad_pcb.</text>
+        font-family="{FONT}" fill="#999999">Component side, viewed from above. Pads shown are solder-mask openings. Generated from canary.kicad_pcb.</text>
 {"".join(rows)}
 </svg>
 """
@@ -543,7 +543,7 @@ def _esc(s: str) -> str:
 # them, and a check below refuses to finish if any point is missing from every
 # detail view.
 VIEWS = [
-    ("probe-overview", "dbCANary rev A - bring-up probe points",
+    ("probe-overview", "CANary rev A - bring-up probe points",
      "Every probe point in the bench bring-up procedure.",
      (19.9, 18.9, 120.1, 100.1), 15),
     ("probe-power", "Power corner - USB-C, CH224K PD, AP63200 buck",
@@ -570,8 +570,8 @@ def main() -> None:
     RENDER_DIR.mkdir(parents=True, exist_ok=True)
 
     catalogue = {
-        "board": "dbCANary rev A",
-        "source": "hardware/dbcanary.kicad_pcb",
+        "board": "CANary rev A",
+        "source": "hardware/canary.kicad_pcb",
         "generated_by": "hardware/scripts/probe_points.py",
         "warning": "Values marked 'predicted' have never been measured on a board.",
         "isolated_domain_refs": iso_refs,

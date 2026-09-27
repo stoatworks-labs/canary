@@ -457,7 +457,7 @@ static esp_err_t diagnostics_get(httpd_req_t *req)
     }
     httpd_resp_set_type(req, "application/json");
     httpd_resp_set_hdr(req, "Content-Disposition",
-                       "attachment; filename=\"dbcanary-diagnostics.json\"");
+                       "attachment; filename=\"canary-diagnostics.json\"");
     const esp_err_t err = httpd_resp_sendstr(req, bundle);
     free(bundle);
     return err;
@@ -481,7 +481,7 @@ static esp_err_t coredump_get(httpd_req_t *req)
     }
     httpd_resp_set_type(req, "application/octet-stream");
     httpd_resp_set_hdr(req, "Content-Disposition",
-                       "attachment; filename=\"dbcanary-coredump.elf\"");
+                       "attachment; filename=\"canary-coredump.elf\"");
 
     /* Chunked, because the image is tens of kilobytes and must not be brought
      * into RAM in one piece - diag.h says so and means it. */

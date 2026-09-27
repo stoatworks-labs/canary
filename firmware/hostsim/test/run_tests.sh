@@ -22,7 +22,7 @@ else
     PY=$(command -v python3)
 fi
 
-echo "--- building dbcanaryd"
+echo "--- building canaryd"
 "$HOSTSIM/build.sh" >/dev/null
 
 echo

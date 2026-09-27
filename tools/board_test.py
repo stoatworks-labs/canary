@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """
-dbCANary board test — the acceptance runner for a physical unit.
+CANary board test — the acceptance runner for a physical unit.
 
-One command that exercises everything a dbCANary board is supposed to do and
+One command that exercises everything a CANary board is supposed to do and
 writes a parametric test record keyed to a serial number:
 
     tools/board_test.py --serial-number 0001 --port /dev/cu.usbmodem101
@@ -12,7 +12,7 @@ bring-up you rarely have all five working at once and a runner that refuses to
 report anything until everything passes is useless on a bench.
 
   console   Drive the board's own self-test over USB and read its verdicts.
-            Needs the SELF-TEST firmware build (idf.py build -DDBCANARY_SELFTEST=1)
+            Needs the SELF-TEST firmware build (idf.py build -DCANARY_SELFTEST=1)
             and pyserial. This is the only stage that sees inside the board.
 
   discover  Send R1's real discovery probe on UDP 33333 and check the answer.
@@ -187,7 +187,7 @@ def run_console(run: Run, port: str, baud: int, timeout: float) -> dict:
     if not results:
         run.add(stage, "selftest", FAIL,
                 "no RESULT lines - is this the self-test build? "
-                "(idf.py build -DDBCANARY_SELFTEST=1)")
+                "(idf.py build -DCANARY_SELFTEST=1)")
         return {"transcript": text}
 
     for r in results:
@@ -547,7 +547,7 @@ class Simulator:
 # ===========================================================================
 def build_record(args, run: Run, console: dict) -> dict:
     return {
-        "schema": "dbcanary.board-test/1",
+        "schema": "canary.board-test/1",
         "serial_number": args.serial_number,
         "timestamp": time.strftime("%Y-%m-%dT%H:%M:%S%z"),
         "operator": args.operator,
@@ -562,7 +562,7 @@ def build_record(args, run: Run, console: dict) -> dict:
 
 def main(argv: list | None = None) -> int:
     p = argparse.ArgumentParser(
-        description="dbCANary board acceptance test",
+        description="CANary board acceptance test",
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="Run with --simulate to exercise the runner with no hardware.",
     )

@@ -1,5 +1,5 @@
 /*
- * dbCANary — application entry point.
+ * CANary — application entry point.
  *
  * An open IP-to-CAN converter compatible with the d&b R70 Ethernet-to-CAN
  * interface's protocol, so R1 can reach dbCAN amplifiers (D6, D12, E-PAC) over a network.
@@ -35,11 +35,11 @@
 #include "webui.h"
 #include "config_store.h"
 
-static const char *TAG = "dbcanary";
+static const char *TAG = "canary";
 
 /* Build the bench test firmware instead of the product:
  *
- *     idf.py build -DDBCANARY_SELFTEST=1
+ *     idf.py build -DCANARY_SELFTEST=1
  *
  * That image runs the full self-test and then a command console, and does NOT
  * start the bridge. Keeping it a separate image rather than a runtime mode is
@@ -49,26 +49,26 @@ static const char *TAG = "dbcanary";
  *
  * The product image still runs selftest_post() - identity only, no peripheral
  * claims - so the log says which board this is. */
-#ifndef DBCANARY_SELFTEST
-#define DBCANARY_SELFTEST 0
+#ifndef CANARY_SELFTEST
+#define CANARY_SELFTEST 0
 #endif
 
 /* TODO: move to NVS/provisioning once the hardware exists. */
-#ifndef DBCANARY_WIFI_SSID
-#define DBCANARY_WIFI_SSID "set-me"
+#ifndef CANARY_WIFI_SSID
+#define CANARY_WIFI_SSID "set-me"
 #endif
-#ifndef DBCANARY_WIFI_PASS
-#define DBCANARY_WIFI_PASS "set-me"
+#ifndef CANARY_WIFI_PASS
+#define CANARY_WIFI_PASS "set-me"
 #endif
 
 /* CAN pins come from board.h - the rev A board fixes them in hardware
  * (ADM3053 on GPIO4/5). Nothing here should hard-code a pin number. */
 
-/* Set DBCANARY_USE_WIFI to build the devkit path instead of wired Ethernet.
+/* Set CANARY_USE_WIFI to build the devkit path instead of wired Ethernet.
  * The rev A board has no Wi-Fi in its signal path: the LAN jack is fed by the
  * W5500 on SPI2, and the S3 has no internal EMAC. */
-#ifndef DBCANARY_USE_WIFI
-#define DBCANARY_USE_WIFI 0
+#ifndef CANARY_USE_WIFI
+#define CANARY_USE_WIFI 0
 #endif
 
 void app_main(void)
@@ -93,7 +93,7 @@ void app_main(void)
     cfg_t cfg;
     cfg_load(&cfg);
 
-#if DBCANARY_SELFTEST
+#if CANARY_SELFTEST
     /* Test image. Nothing else may run: the tests below drive SPI2 and TWAI
      * directly and must be the only owner of both. */
     ESP_LOGW(TAG, "SELF-TEST BUILD - the bridge is not started");
@@ -157,9 +157,9 @@ void app_main(void)
         }
     }
 
-#if DBCANARY_USE_WIFI
+#if CANARY_USE_WIFI
     ESP_LOGW(TAG, "Wi-Fi build - devkit only, not the rev A board");
-    ESP_ERROR_CHECK(net_start_sta(DBCANARY_WIFI_SSID, DBCANARY_WIFI_PASS));
+    ESP_ERROR_CHECK(net_start_sta(CANARY_WIFI_SSID, CANARY_WIFI_PASS));
 #else
     const net_ipv4_static_t static_ipv4 = {
         .ip = cfg.eth_ip, .netmask = cfg.eth_netmask, .gw = cfg.eth_gw,
@@ -195,9 +195,9 @@ void app_main(void)
 #endif
 
     /* These were compile-time constants until components/config existed. The
-     * defaults are unchanged - "db-70", 30000, four sockets, the R70's own -
-     * so a unit that has never been configured behaves exactly as it always
-     * did. bridge_start() copies the host name: `cfg` is on this task's
+     * defaults are the R70's own - 30000 and four sockets - except the name,
+     * which is "CANary" rather than the R70's "db-70", so R1 lists the unit as
+     * what it is. bridge_start() copies the host name: `cfg` is on this task's
      * stack, which is freed when app_main returns. */
     bridge_config_t bridge_cfg = {
         .hostname = cfg.hostname,
@@ -208,7 +208,7 @@ void app_main(void)
     };
     /* R1 never validates the OUI, so our own address is fine. Using the ESP32's
      * factory MAC keeps every unit unique without buying an OUI. */
-#if DBCANARY_USE_WIFI
+#if CANARY_USE_WIFI
     ESP_ERROR_CHECK(esp_read_mac(bridge_cfg.mac, ESP_MAC_WIFI_STA));
 #else
     /* Must match the MAC actually programmed into the W5500, or R1's interface
@@ -246,7 +246,7 @@ void app_main(void)
                      esp_err_to_name(ota_err));
         }
     }
-    ESP_LOGI(TAG, "dbCANary up — in R1: scan, go Offline, tick the interface, "
+    ESP_LOGI(TAG, "CANary up — in R1: scan, go Offline, tick the interface, "
                   "then back Online");
-#endif /* DBCANARY_SELFTEST */
+#endif /* CANARY_SELFTEST */
 }

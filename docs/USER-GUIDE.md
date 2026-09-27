@@ -1,6 +1,6 @@
-# dbCANary — User Guide
+# CANary — User Guide
 
-Flashing, configuring and operating a dbCANary, and what to check when R1 won't see it.
+Flashing, configuring and operating a CANary, and what to check when R1 won't see it.
 
 ---
 
@@ -40,7 +40,7 @@ An IP-to-CAN converter compatible with the **d&b R70 Ethernet-to-CAN interface**
 control d&b amplifiers (D6, D12, E-PAC) over a network through hardware you can build yourself.
 
 ```
-R1 (Mac/PC) ──Ethernet──▶ [ J401 LAN ]  dbCANary  [ J201 / J202 CAN ] ──▶ D6 / D12 / E-PAC
+R1 (Mac/PC) ──Ethernet──▶ [ J401 LAN ]  CANary  [ J201 / J202 CAN ] ──▶ D6 / D12 / E-PAC
 ```
 
 It is a **transparent bridge** — exactly what the R70 is. It carries CAN frames faithfully and
@@ -51,7 +51,7 @@ one.
 
 ## 2. What you need
 
-- a dbCANary rev A board with the three etherCON jacks hand-soldered
+- a CANary rev A board with the three etherCON jacks hand-soldered
 - a USB-C cable and a 5 V PD-capable supply (rev A is USB-C powered; PoE is deferred to rev B)
 - ESP-IDF **v5.5.5** — the firmware targets `esp32s3`
 - a network — a DHCP server if you have one, but §4 explains what happens when you don't
@@ -93,7 +93,7 @@ reflashing.
 
 | Setting | Value | Changeable |
 |---|---|---|
-| Hostname shown in R1 | `db-70` (the R70 factory default) | edit `app_main.c` |
+| Hostname shown in R1 | `CANary` | the web UI, over the USB cable ([WEBUI.md](WEBUI.md)) |
 | TCP base port | `30000` (R70 socket 1) | edit `app_main.c` |
 | Socket count | `4` | edit `app_main.c` |
 | MAC address | from the module's eFuse | automatic, unique per board |
@@ -131,7 +131,7 @@ Wi-Fi STA exists in the source so the bridge can be exercised on a plain ESP32-S
 boards exist:
 
 ```bash
-idf.py build -DDBCANARY_USE_WIFI=1 -DDBCANARY_WIFI_SSID=my-ssid -DDBCANARY_WIFI_PASS=my-pass
+idf.py build -DCANARY_USE_WIFI=1 -DCANARY_WIFI_SSID=my-ssid -DCANARY_WIFI_PASS=my-pass
 ```
 
 > **⚠ These flags stick.** `idf.py -D` writes to the CMake cache, so a later plain `idf.py
@@ -139,11 +139,11 @@ idf.py build -DDBCANARY_USE_WIFI=1 -DDBCANARY_WIFI_SSID=my-ssid -DDBCANARY_WIFI_
 > so explicitly:
 >
 > ```bash
-> idf.py -DDBCANARY_USE_WIFI=0 build
+> idf.py -DCANARY_USE_WIFI=0 build
 > ```
 >
 > Check which variant you actually built:
-> `grep -c DBCANARY_USE_WIFI=1 build/compile_commands.json` — `1` means Wi-Fi, `0` means
+> `grep -c CANARY_USE_WIFI=1 build/compile_commands.json` — `1` means Wi-Fi, `0` means
 > Ethernet.
 
 On the real board the LAN jack is fed entirely by the W5500 over SPI and the ESP32-S3 has no
@@ -156,7 +156,7 @@ internal EMAC, so wired Ethernet is the only sensible path.
 Identical to the host emulator, because R1 cannot tell them apart:
 
 1. Patch **J401** (the LAN etherCON) to the same network as the R1 machine.
-2. In R1: **Extras > Options > CAN > Refresh**. `db-70` should appear.
+2. In R1: **Extras > Options > CAN > Refresh**. `CANary` should appear.
 3. Go **Offline**, tick the interface's activation checkbox, then go back **Online**.
 
 ### ⚠ Step 3 is not optional and not obvious
@@ -268,7 +268,7 @@ For anything more detailed than the panel, the serial log on USB or J301 is the 
 | Symptom | Cause |
 |---|---|
 | **R1's Refresh finds nothing** | No address at all (LAN LED at 4 Hz, ERR = 2) — check the cable. Or the board is on a link-local `169.254` address and R1's machine is not (§4). Or R1 is on a different broadcast domain — discovery is a UDP broadcast and does not cross subnets. Or R1 is in a NATted VM (§5). |
-| **R1 lists several `db-70` entries** | Something is answering on multiple interfaces. On the host emulator, use `--answer-from`. |
+| **R1 lists several `CANary` entries** | Something is answering on multiple interfaces. On the host emulator, use `--answer-from`. |
 | **R1 lists it but won't connect** | The activation checkbox was never ticked — and it *can't* be ticked while Online (§5). |
 | **Initialisation stalls after `0xA4`** | Same thing: R1 is Online, box not activated. Almost never a bridge fault. |
 | **It connected, then R1 hung** | If you have modified the firmware to *answer* commands `0x44` or `0xA4`, undo that. Their silence is load-bearing — answering them is what made R1 loop during bring-up. |
@@ -276,7 +276,7 @@ For anything more detailed than the panel, the serial log on USB or J301 is the 
 | **CAN LED off** | TWAI isn't running — ERR = 4, a firmware fault. Serial log. |
 | **CAN bus-off (ERR = 3)** | Short, mis-termination, or a device at the wrong bit rate. dbCAN is 100 k and nothing else. |
 | **Board doesn't enumerate over USB** | Force ROM download mode: hold SW302, tap SW301, release SW302 (§3). If that fails, use J301. |
-| **Built for Ethernet, got Wi-Fi** | The `-DDBCANARY_USE_WIFI=1` flag stuck in the CMake cache (§4). |
+| **Built for Ethernet, got Wi-Fi** | The `-DCANARY_USE_WIFI=1` flag stuck in the CMake cache (§4). |
 | **A rate change didn't take** | Expected. The bus is 100 k and the gateway reports 100 k regardless of what was asked (§4). |
 | **Block Time setting had no effect** | Expected. It is accepted and echoed, not applied — frames go out as they arrive. |
 | **All three LEDs inverted** | `BOARD_LED_ACTIVE_LEVEL` (§7). One constant, nothing else. |
@@ -296,11 +296,11 @@ A **separate firmware image**, so the shipping unit keeps no command interface:
 
 ```bash
 cd firmware
-idf.py -B build-selftest build -DDBCANARY_SELFTEST=1
+idf.py -B build-selftest build -DCANARY_SELFTEST=1
 idf.py -B build-selftest -p <port> flash monitor
 ```
 
-At the `dbcanary>` prompt, `selftest` runs everything and prints machine-readable `RESULT` lines
+At the `canary>` prompt, `selftest` runs everything and prints machine-readable `RESULT` lines
 plus a JSON record. Full command list in [API.md §5](API.md#5-self-test-console).
 
 Two checks carry most of the value: **`eth.versionr`** (one SPI read proves the bus both ways,
@@ -340,7 +340,7 @@ logic-analyser appendices. Every expected value is tagged `[spec]`, `[derived]` 
 so you can tell a datasheet number from a guess.
 
 Probe points are in `hardware/fab/test/PROBE-POINTS.{json,csv}` and drawn on the board in
-`docs/renders/probe-*.svg`. Both are generated from `dbcanary.kicad_pcb` by
+`docs/renders/probe-*.svg`. Both are generated from `canary.kicad_pcb` by
 `hardware/scripts/probe_points.py`, which **refuses to run if a probe's designator, pad or net
 no longer matches** — so a marker cannot quietly drift off its pad.
 

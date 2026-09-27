@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-dbCANary — host-side d&b R70 emulator and discovery prober.
+CANary — host-side d&b R70 emulator and discovery prober.
 
 Purpose: everything the R70 does on the wire is publicly documented EXCEPT the
 UDP 33333 discovery exchange that makes R1 list the interface. This tool cracks

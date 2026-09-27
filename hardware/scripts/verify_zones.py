@@ -16,7 +16,7 @@ import sys
 
 import pcbnew
 
-BOARD = _REPO + "/hardware/dbcanary.kicad_pcb"
+BOARD = _REPO + "/hardware/canary.kicad_pcb"
 BAR_TOP, BAR_BOT, BAR_RIGHT = 66.5, 73.5, 80.5
 MOAT = 2.03
 CHASSIS_ISLAND = (82.03, 83.03, 113.97, 99.5)

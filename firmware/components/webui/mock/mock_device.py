@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""A mock dbCANary, so the REAL page can be driven in a browser without a board.
+"""A mock CANary, so the REAL page can be driven in a browser without a board.
 
 WHY: components/webui only ever runs on a unit with a USB host attached, and
 nothing has ever enumerated this device. Without this, the page could only be
@@ -35,7 +35,7 @@ PAGE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "www",
 START = time.time()
 
 STATE = {
-    "hostname": "db-70", "base_port": 30000, "socket_count": 4,
+    "hostname": "CANary", "base_port": 30000, "socket_count": 4,
     "eth_mode": "dhcp", "eth_ip": "", "eth_netmask": "", "eth_gw": "",
     "stored": False, "hostname_max": 27,
 }
@@ -111,7 +111,7 @@ class H(http.server.BaseHTTPRequestHandler):
             self._send(200, json.dumps({"saved": True,
                                         "note": "takes effect at the next boot"}))
         elif path == "/api/config/reset":
-            STATE.update({"hostname": "db-70", "base_port": 30000,
+            STATE.update({"hostname": "CANary", "base_port": 30000,
                           "socket_count": 4, "eth_mode": "dhcp",
                           "eth_ip": "", "eth_netmask": "", "eth_gw": "",
                           "stored": False})
@@ -136,6 +136,6 @@ if __name__ == "__main__":
     args = ap.parse_args()
     socketserver.TCPServer.allow_reuse_address = True
     with socketserver.TCPServer(("127.0.0.1", args.port), H) as srv:
-        print("mock dbCANary on http://127.0.0.1:%d/  "
+        print("mock CANary on http://127.0.0.1:%d/  "
               "(scenarios: /scenario/nolease etc.)" % args.port)
         srv.serve_forever()

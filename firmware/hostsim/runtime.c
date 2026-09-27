@@ -36,7 +36,7 @@ int hostsim_log_level(void)
 {
     static int cached = -1;
     if (cached < 0) {
-        const char *env = getenv("DBCANARY_LOG_LEVEL");
+        const char *env = getenv("CANARY_LOG_LEVEL");
         cached = env ? atoi(env) : 3; /* INFO */
     }
     return cached;

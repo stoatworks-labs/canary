@@ -6,7 +6,7 @@ This is what closes the loop. Until now the proven chain stopped at "R1
 discovers and connects to the interface". With the hub, the host build of the
 firmware and this, the whole chain runs in software:
 
-    R1  <--TCP/UDP-->  dbcanaryd (the shipping C)  <--vcan-->  vamp.py
+    R1  <--TCP/UDP-->  canaryd (the shipping C)  <--vcan-->  vamp.py
 
 **Scope warning, inherited from dbcan_device.py and just as important here.**
 dbCAN's *identifier* layout is documented; its *application layer* — what the

@@ -488,7 +488,7 @@
     "pinned_symbol_libs": []
   },
   "meta": {
-    "filename": "dbcanary.kicad_pro",
+    "filename": "canary.kicad_pro",
     "version": 3
   },
   "net_settings": {
@@ -643,8 +643,8 @@
     "subpart_id_separator": 0,
     "top_level_sheets": [
       {
-        "filename": "dbcanary.kicad_sch",
-        "name": "dbcanary",
+        "filename": "canary.kicad_sch",
+        "name": "canary",
         "uuid": "00000000-0000-0000-0000-000000000000"
       }
     ],
