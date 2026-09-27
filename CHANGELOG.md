@@ -33,6 +33,6 @@ The prototype, published as it stands.
 - **Firmware `main-60a871f`**: Ethernet bridge (RM Byte Command Protocol on TCP
   30000, discovery on UDP 33333, dbCAN at 100 kbit/s), status LEDs, a bench
   self-test image, and the optional USB network device with its settings page.
-  Also available from the [dbCANary Flasher](https://dbcanary-flasher.stoatworks-labs.com).
+  Also available from the [dbCANary Flasher](https://canary-flasher.stoatworks-labs.com).
 - **Host tools**: Python reference implementation, an emulator you can point R1 at
   with no hardware, and the board acceptance test.
