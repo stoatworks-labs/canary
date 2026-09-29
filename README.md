@@ -1,5 +1,8 @@
 # CANary
 
+> **AI-assisted project.** This codebase was created with [Claude](https://claude.com/claude-code)
+> (Anthropic), directed and reviewed by a human author.
+
 An open-hardware **IP-to-CAN converter compatible with the d&b audiotechnik R70
 Ethernet-to-CAN interface**. It speaks the R70's network protocol, so **R1** can
 find it, connect to it and reach CAN-era d&b amplifiers (D6, D12, E-PAC) through
@@ -134,4 +137,3 @@ affiliated with, endorsed by, or supported by d&b audiotechnik or Proemion.
 Using it with d&b equipment is at your own risk, and may affect that
 equipment's warranty or support status.
 
-*Portions of this project were developed with AI assistance.*
