@@ -90,8 +90,8 @@ before powering one. The three etherCONs are physically identical and two of
 them are CAN. Rev A has no PoE, and a passive PoE injector will destroy it.
 
 **Print a case.** [`hardware/enclosure/`](hardware/enclosure/). The body prints
-standing on its end in ABS-GF with no support (about 4 h 20 m, 126 g on a 0.4 mm
-nozzle). The LED window inserts and switch covers are white PLA.
+standing on its end in ABS-GF with no support (about 5 h and 131 g with both end plates,
+on a 0.4 mm nozzle). The LED window inserts and switch covers are white PLA.
 
 Full instructions: [docs/USER-GUIDE.md](docs/USER-GUIDE.md).
 

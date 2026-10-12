@@ -230,7 +230,7 @@ a better oracle than a stub.
 
 ## 6. Host support
 
-Untested everywhere. What can be said from the specifications:
+Only macOS has been tried (§7). What can be said from the specifications:
 
 - **macOS** has an in-box NCM driver and binds by class.
 - **Linux** has `cdc_ncm`, likewise.

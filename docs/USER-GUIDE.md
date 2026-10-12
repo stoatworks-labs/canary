@@ -13,8 +13,9 @@ it, connects on TCP 30000 and drives the bus. The codec is pinned to the vendor'
 examples. That is strong evidence about the wire and none about the board.
 
 So everything below is the **intended procedure, written from the schematic and the source**.
-Treat every step as unverified until a board exists. Where something is known not to work, it
-says so.
+Only board #1 has been through any of it, so treat every step as unverified unless its bring-up
+log, or [USB-NIC.md](USB-NIC.md) §7 for the USB image, says it's been done. Where something is
+known not to work, it says so.
 
 **It has also never been tested against real amplifiers** — only against R1, and against a
 placeholder virtual device on the bus.
@@ -348,15 +349,17 @@ no longer matches** — so a marker cannot quietly drift off its pad.
 
 ## 10. What does not exist yet
 
-- **A web UI anyone has opened.** There is one — plug the unit into a laptop and
-  `http://192.168.7.1/` gives status, settings, firmware updates and diagnostics — but it
-  lives on the USB link, which no computer has yet enumerated. Treat it as untried.
-  [WEBUI.md](WEBUI.md).
+- **A web UI anyone has used.** There is one — plug the unit into a laptop and
+  `http://192.168.7.1/` gives status, settings, firmware updates and diagnostics. On board #1
+  (2026-09-26) a Mac reached it over the USB link and got the page back. Nothing past that has
+  been recorded on a board, so treat it as untried. [WEBUI.md](WEBUI.md).
 - **A USB network device you can rely on.** The code exists (2026-09-21): built with the
   `sdkconfig.usb-ncm` overlay, the unit appears to a laptop as a second Ethernet adapter at
-  `192.168.7.1` and R1 reaches it over the USB cable with no LAN at all. **No computer has
-  enumerated it yet**, so treat it as untried — and note that on that image the USB-C port is
-  no longer a serial port, so the console moves to J301 and reflashing needs BOOT held.
+  `192.168.7.1` and R1 reaches it over the USB cable with no LAN at all. **Only a Mac has
+  enumerated it** (2026-09-26: a lease and the 19-check acceptance run over USB). Discovery by
+  the control application over USB, and Windows, haven't been tried, so treat those as untried
+  — and note that on that image the USB-C port is no longer a serial port, so the console moves
+  to J301 and reflashing needs BOOT held.
   [USB-NIC.md](USB-NIC.md).
 - **R60 emulation.** The same protocol over a USB *serial* port. No code exists.
 - **The dbCAN application layer.** The bridge is transparent, which is all a real R70 does, so

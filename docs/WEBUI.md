@@ -5,9 +5,9 @@ settings, a firmware update and the diagnostics bundle. No app, no driver, no
 toolchain.
 
 > **Status: written, builds, boots, and the page itself has been driven in a
-> browser against a mock device. Nothing has run on hardware** — it needs a USB
-> host, and nothing has ever enumerated this unit. See
-> [What is proven](#6-what-is-proven).
+> browser against a mock device. On hardware, all that's recorded is board #1
+> serving `http://192.168.7.1/` to a Mac over the USB link** on 2026-09-26
+> ([USB-NIC.md](USB-NIC.md) §7). See [What is proven](#6-what-is-proven).
 
 ---
 
@@ -133,16 +133,17 @@ need a board.
 
 **What is not proven — everything that needs a board:**
 
-- no browser has ever talked to `webui.c`; the C has only been compiled;
-- the USB-subnet check in `webui_open()` has never refused anything;
+- `webui.c` has served the page to a Mac on board #1 (2026-09-26), and nothing
+  past that has been recorded on hardware;
+- the USB-subnet check in `webui_open()` has never refused a connection from off
+  the USB link (it refused the USB host itself, by mistake, until the dual-stack
+  fix in [USB-NIC.md](USB-NIC.md) §7);
 - no firmware has been written over the air, and the rollback has never
   reverted anything;
 - no setting has ever survived a reboot on real hardware;
 - the coredump endpoint has never streamed a real dump;
-- and it all sits on top of a USB network device that has itself never
-  enumerated. **Prove NCM first** — [USB-NIC.md](USB-NIC.md) §7 has the bench
-  order. Until a laptop gets an address over that cable, none of this page is
-  reachable.
+- and it all sits on top of a USB network device that has only been proven on
+  a Mac ([USB-NIC.md](USB-NIC.md) §7).
 
 ---
 

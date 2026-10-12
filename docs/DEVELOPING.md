@@ -121,7 +121,7 @@ firmware/  components/rmbcp     protocol codec (C), host tests
            components/board     pin map — the single source of board truth
            components/led       status LED patterns (C), host tests
            components/selftest  board self-test + bench console (test build only)
-           main/app_main.c      builds; never run on hardware
+           main/app_main.c      runs on rev A board #1
            main/status.c        maps link / lease / R1 / CAN state to the LEDs
 
 hardware/  canary.kicad_*  rev A, 4 sheets, 100 × 81 mm, 4-layer

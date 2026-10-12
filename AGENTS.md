@@ -22,7 +22,7 @@ that would move a control surface onto the LAN jack is a different decision and 
 deliberately.
 
 Target hardware: **ESP32-S3 + W5500 Ethernet + ADM3053 isolated CAN**, USB-C PD powered (PoE
-deferred to rev B). Private repo.
+deferred to rev B). Public repo.
 
 ## 2. The single most important status fact
 
@@ -179,12 +179,13 @@ Two lessons that generalise:
   The R60 speaks the same RM Byte Command Protocol, so the codec is already there.
 - PoE — deferred to rev B by design.
 
-**The configuration UI is written but no browser has opened it** (2026-09-21).
+**The configuration UI is written, and on hardware it has only been seen serving its page** (to
+a Mac over USB on board #1, 2026-09-26).
 `components/webui` + `components/config` give the unit settings in NVS (host name, port,
 socket count, static IP) and a page to set them, plus OTA firmware updates with rollback and
 the diagnostics endpoints `diag.c` had been advertising to nobody. The page itself IS verified
 — `components/webui/mock/mock_device.py` serves the real HTML so it can be driven in a browser
-— but `webui.c` has only ever been compiled. Read [docs/WEBUI.md](docs/WEBUI.md) §6.
+— but nothing past serving that page is recorded for `webui.c` on hardware. Read [docs/WEBUI.md](docs/WEBUI.md) §6.
 
 **USB-NIC is written and proven on a macOS host** (2026-09-26; R1 over USB not yet tried). `components/usbnet` brings up
 TinyUSB, CDC-NCM, its own netif and a DHCP server, so the unit appears to a laptop as a second

@@ -1,7 +1,23 @@
 # CANary hardware
 
 KiCad 10 project for the R70-compatible IP-to-CAN bridge.
-Architecture and the reasoning behind every part choice: [../docs/DECISIONS.md](../docs/DECISIONS.md) (H1–H13).
+Architecture and the reasoning behind every part choice: [../docs/DECISIONS.md](../docs/DECISIONS.md) (H1–H19).
+
+> ## ⚠ Written at the schematic stage
+>
+> This README is from before layout, and before PoE was dropped from rev A, so its status and
+> the PoE parts of the Power and Ethernet sections are out of date. Where it disagrees with the
+> board files, the board files win:
+>
+> | This README says | Rev A as built |
+> |---|---|
+> | PCB not started; nothing laid out, routed, DRC'd or fabricated | routed with DRC 0 errors and 0 unconnected, and built turnkey from `d9a725d` ([`../docs/FAB.md`](../docs/FAB.md)) |
+> | PoE + USB-C, OR'd by Schottky; U101 still to place | USB-C PD only. PoE is deferred to rev B (DECISIONS.md H19), U101 isn't fitted and the OR-ing diodes are gone (H19a) |
+> | etherCON footprint is a placeholder | `canary:Neutrik_etherCON_NE8FBH` on J201, J202 and J401 |
+> | `POE_MODEA_*` / `POE_MODEB_*` nets | `ETH_CT_TD` / `ETH_CT_RD` / `ETH_SPARE_1/2` (H19c) |
+>
+> For the board as built, see [`../docs/FAB.md`](../docs/FAB.md) and
+> [`fab/test/BRINGUP-LOG-0001.md`](fab/test/BRINGUP-LOG-0001.md).
 
 ## Status
 
