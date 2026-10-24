@@ -1,7 +1,16 @@
 # Changelog
 
-## Unreleased (2026-09-27)
+## 0.2.0 — 2026-10-19
 
+The changes below were made on 2026-09-27 and released as 0.2.0 on 2026-10-19.
+
+- **Firmware `main-ff4110d`**, the first build under the CANary name, in the release as
+  one zip (`canary-firmware-main-ff4110d.zip`): both variants with their flash offsets and
+  SHA-256 checksums in a `manifest.json`, so tools that write the firmware themselves can
+  fetch it. It's the build the [CANary Flasher](https://canary-flasher.stoatworks-labs.com)
+  serves, byte for byte, and differs from 0.1.0's `main-60a871f` only in its names.
+  **`main-ff4110d` hasn't been flashed onto a board yet**; the last build proven on one is
+  still `main-60a871f`.
 - **Renamed dbCANary → CANary** across the docs, firmware, tools, enclosure and KiCad
   project (files and footprint library nickname: `canary:`). The firmware's settings
   namespace keeps its old name, so a configured unit keeps its settings through an update.
