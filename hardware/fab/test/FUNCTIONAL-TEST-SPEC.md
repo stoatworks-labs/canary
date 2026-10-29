@@ -5,9 +5,9 @@
 | Product | CANary rev A — ESP32-S3 IP-to-CAN converter |
 | Board | 100 × 81 mm, 4-layer |
 | Document | FTS-CANARY-A, **revision 0.1 — DRAFT** |
-| Status | partly executed on board #1 (see [BRINGUP-LOG-0001.md](BRINGUP-LOG-0001.md)); the CAN-bus sections never |
+| Status | **not executed as written.** Board #1 ran the self-test firmware it calls for and parts of `BENCH-BRINGUP.md` ([BRINGUP-LOG-0001.md](BRINGUP-LOG-0001.md)); its CAN-bus sections never |
 
-> **Read before use.** No CANary board exists yet. Every limit below is
+> **Read before use.** Only board #1 has been tested, and not to this document. Every limit below is
 > predicted from the design, not measured. The first article tests this
 > document as much as it tests the board. Re-issue as revision A, with real
 > measured limits, before using it for production acceptance.
@@ -214,7 +214,8 @@ isolation barrier is the one defect that is invisible in normal operation.
 
 ## Known gaps
 
-- Nothing here has been executed; no board exists.
+- Nothing here has been executed as written (see Status). CAN met real amplifiers on
+  2026-10-28 outside this document (BRINGUP-LOG-0001 §12).
 - Current limits (A.3) are predicted, not measured — deliberately loose.
 - No test fixture exists. Probe points are named; no pogo layout is drawn.
 - No test points on the board; probing is on component pads.
@@ -224,7 +225,8 @@ isolation barrier is the one defect that is invisible in normal operation.
 - **The test firmware referenced in A.6 and B.2 now exists.**
   `firmware/components/selftest/` builds with
   `idf.py -B build-selftest build -DCANARY_SELFTEST=1` and gives a board-side
-  self-test plus a command console. It has still never run on hardware.
+  self-test plus a command console. It ran on board #1: 6/6 on 2026-09-09, and again on
+  2026-10-28 (BRINGUP-LOG-0001 §3, §12).
 - **Part B is superseded in-house by [`BENCH-BRINGUP.md`](BENCH-BRINGUP.md)** —
   the same checks in step-by-step form, with derived expected values, annotated
   board drawings and instrument-specific appendices. Part B stays here because

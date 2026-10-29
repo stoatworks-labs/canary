@@ -18,10 +18,15 @@ Neutrik etherCONs**, in a one-piece 3D-printed case.
 > **Status: prototype.** Rev A boards have been built. Board #1 passes its
 > self-test, takes a DHCP lease, and is discovered and listed by R1 over
 > Ethernet. The host-side acceptance run passes 19/19 over Ethernet and over the
-> USB network link. **Not yet done:**
-> the CAN side has only talked to itself across its isolation barrier. It has
-> never been on a real amplifier bus, and R1 has not yet driven an amplifier
-> through the board. Treat it as a development platform, not show equipment.
+> USB network link. On 2026-10-28 it went on a real bus with two d&b amplifiers:
+> both answered through the isolation barrier on both CAN jacks, and the control
+> application connected through the board and drove mute and gain in both
+> directions ([bring-up log §12](hardware/fab/test/BRINGUP-LOG-0001.md)).
+> **Not yet done:** after a CAN cable pull the CAN side stayed deaf until the
+> board was reset. A fix exists in development firmware, but it is not yet in
+> this repository or any release, and has not been re-run on a board. LAN pulls,
+> amplifier power cycles and long runs are untested, and only one board has been
+> tried. Treat it as a development platform, not show equipment.
 
 ## What is in this repo
 
@@ -110,7 +115,11 @@ your own assumption proves nothing.
 
 ## Roadmap
 
-- [ ] CAN on a real amplifier bus, and R1 driving amplifiers through the board
+- [x] CAN on a real amplifier bus, and R1 driving amplifiers through the board —
+      board #1, 2026-10-28 ([bring-up log §12](hardware/fab/test/BRINGUP-LOG-0001.md)),
+      with one fault: the CAN side did not recover from a cable pull until reset
+- [ ] Recovery after a CAN cable pull, on a board (fixed in development firmware, not yet
+      here); amplifier power cycles, LAN pulls and long runs
 - [ ] R1 discovering a unit over USB; Windows hosts for the USB network image
 - [ ] Rev B: PoE, Ethernet ESD/TVS, silkscreen cleanup
 - [ ] R60-compatible USB serial mode

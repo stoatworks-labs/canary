@@ -9,8 +9,10 @@ handshake, the dbCAN identifier packing, provenance of every claim — read
 
 > Everything below is read from the source and verified on a host, against a real R1 (V3.46)
 > talking to the *Python emulator* in `tools/`, and on rev A board #1 (discovery, the TCP session,
-> the LEDs' logic, the USB network link). What board #1 has not done is carry CAN to a real
-> amplifier bus.
+> the LEDs' logic, the USB network link), and on 2026-10-28 carrying CAN to two real amplifiers
+> and back (bring-up log §12). **The firmware here recovers from bus-off only on `0x58`** (§1),
+> which the control application never sent, so after a CAN cable pull that day the CAN side
+> stayed deaf until the board was reset.
 
 | § | Interface | Source |
 |---|---|---|

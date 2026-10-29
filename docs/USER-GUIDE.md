@@ -6,19 +6,20 @@ Flashing, configuring and operating a CANary, and what to check when R1 won't se
 
 ## 0. Read this before you trust it
 
-Rev A boards were fabricated and assembled turnkey from commit `d9a725d` (before the final USB-C re-route, which board #1 proved survivable). Board #1 passes its self-test 6/6, took a DHCP lease on a live switch, passes the 19-check host-side acceptance run over Ethernet and over USB, and is discovered and listed by R1. **Still unproven:** CAN on a real amplifier bus, R1 driving amplifiers through a board, the skipped bench-supply and isolation measurements, and the LED/PD-pin eyeball checks. Record: [`hardware/fab/test/BRINGUP-LOG-0001.md`](../hardware/fab/test/BRINGUP-LOG-0001.md).
+Rev A boards were fabricated and assembled turnkey from commit `d9a725d` (before the final USB-C re-route, which board #1 proved survivable). Board #1 passes its self-test 6/6, took a DHCP lease on a live switch, passes the 19-check host-side acceptance run over Ethernet and over USB, and is discovered and listed by R1. On 2026-10-28 it went on a real bus with two d&b amplifiers: both answered on both CAN jacks, and the control application drove mute and gain through the board in both directions. **Still unproven:** recovery after a CAN cable pull (it failed on 10-28, and the firmware here has the same fault — see §8), LAN pulls, amplifier power cycles and long runs, the skipped bench-supply and isolation measurements, and the LED/PD-pin eyeball checks. One board of the batch has been touched. Record: [`hardware/fab/test/BRINGUP-LOG-0001.md`](../hardware/fab/test/BRINGUP-LOG-0001.md).
 
 What *is* solid: the protocol. A real R1 (V3.46) discovers the host emulator in `tools/`, lists
 it, connects on TCP 30000 and drives the bus. The codec is pinned to the vendor's own worked
-examples. That is strong evidence about the wire and none about the board.
+examples. That is strong evidence about the wire; what the board has done is in its bring-up log.
 
 So everything below is the **intended procedure, written from the schematic and the source**.
 Only board #1 has been through any of it, so treat every step as unverified unless its bring-up
 log, or [USB-NIC.md](USB-NIC.md) §7 for the USB image, says it's been done. Where something is
 known not to work, it says so.
 
-**It has also never been tested against real amplifiers** — only against R1, and against a
-placeholder virtual device on the bus.
+**It has been tested against real amplifiers once**: two of them, on one board, for one
+afternoon, on development firmware newer than any release (bring-up log §12). Treat it as a
+development platform, not show equipment.
 
 ### Safety — read before touching a board
 
@@ -88,17 +89,18 @@ UART0_TXD, UART0_RXD, BOOT, EN`) is the only way to watch the boot log.
 
 ## 4. Configuration
 
-**Everything is compile-time.** There is no web UI, no NVS-backed settings, no console on the
-shipping image. Changing any of the below means editing `firmware/main/app_main.c` and
-reflashing.
+**Settings live in NVS, and the configuration page is the only way to change them.** The page
+exists only on an image built with the USB network device, and only over the USB cable
+([WEBUI.md](WEBUI.md)). An Ethernet-only image runs on whatever is stored, or on the defaults
+below. A change takes effect at the next boot. There is no console on the shipping image.
 
 | Setting | Value | Changeable |
 |---|---|---|
 | Hostname shown in R1 | `CANary` | the web UI, over the USB cable ([WEBUI.md](WEBUI.md)) |
-| TCP base port | `30000` (R70 socket 1) | edit `app_main.c` |
-| Socket count | `4` | edit `app_main.c` |
+| TCP base port | `30000` (R70 socket 1) | the web UI |
+| Socket count | `4` | the web UI |
 | MAC address | from the module's eFuse | automatic, unique per board |
-| IP address | **DHCP**, falling back to link-local `169.254.x.x` | no |
+| IP address | **DHCP**, falling back to link-local `169.254.x.x` | a static address, from the web UI |
 | CAN bitrate | **100 kbit/s** | **no — dbCAN is 100 k, full stop** |
 
 ### A rig with no DHCP server still works
@@ -276,6 +278,7 @@ For anything more detailed than the panel, the serial log on USB or J301 is the 
 | **LAN LED steady but no amps respond** | The bridge is carrying traffic and the problem is downstream: CAN wiring, termination (SW201), or addressing. Check ERR for 3 blinks. |
 | **CAN LED off** | TWAI isn't running — ERR = 4, a firmware fault. Serial log. |
 | **CAN bus-off (ERR = 3)** | Short, mis-termination, or a device at the wrong bit rate. dbCAN is 100 k and nothing else. |
+| **Amplifiers gone after a CAN lead was pulled and refitted** | A known fault in the firmware here and in both releases: the CAN side does not recover by itself, and ERR may stay dark while it is stuck (bring-up log §12). Power-cycle the unit. A fix exists in development firmware; it is not yet in this repository and has not been re-run on a board. |
 | **Board doesn't enumerate over USB** | Force ROM download mode: hold SW302, tap SW301, release SW302 (§3). If that fails, use J301. |
 | **Built for Ethernet, got Wi-Fi** | The `-DCANARY_USE_WIFI=1` flag stuck in the CMake cache (§4). |
 | **A rate change didn't take** | Expected. The bus is 100 k and the gateway reports 100 k regardless of what was asked (§4). |
@@ -286,10 +289,10 @@ For anything more detailed than the panel, the serial log on USB or J301 is the 
 
 ## 9. Testing a board
 
-Three pieces, meant to be used together. All three were used on board #1 (the self-test,
-the acceptance run, and the procedure up to §5; the bench-supply steps were skipped), but most
-limits they carry are still derived from the schematic and the datasheets, not measured across
-a batch.
+Three pieces, meant to be used together. All three have been used on board #1 — the self-test
+and the acceptance run in full, the bench procedure in part (its bench-supply, rail and PD steps,
+§1–§4, were skipped) — but most limits they carry are still derived from the schematic and the
+datasheets, not measured across a batch.
 
 ### 1. The board tests itself
 
@@ -323,6 +326,10 @@ It reads the board's own self-test over USB, discovers the board with **R1's own
 discovery probe**, walks the RMBCP command set — including confirming the two commands that must
 stay unanswered — and optionally drives a real CAN frame through an isolated adapter. Writes a
 JSON record and exits non-zero on failure.
+
+**With an amplifier on the bus, skip the `rmbcp` stage** (`--skip console,rmbcp`). It puts a
+test frame, `0x123 55 AA`, on the CAN wire, and nothing but the control application's own traffic
+belongs near someone else's amplifier (bring-up log §12).
 
 It can be proven before any board exists:
 
@@ -365,7 +372,10 @@ no longer matches** — so a marker cannot quietly drift off its pad.
 - **The dbCAN application layer.** The bridge is transparent, which is all a real R70 does, so
   this is only needed to *emulate* an amplifier rather than to bridge to real ones.
 - **PoE.** Deferred to rev B, along with Ethernet ESD/TVS.
-- **Any use with real amplifiers.** Verified against real R1 only.
+- **Amplifiers over a long run, or through a fault.** Two amplifiers have been driven through
+  one board for an afternoon (bring-up log §12). After a CAN cable pull the firmware here does
+  not recover by itself (§8); LAN pulls, amplifier power cycles and anything longer have not
+  been tried.
 
 ---
 

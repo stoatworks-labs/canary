@@ -26,7 +26,7 @@ deferred to rev B). Public repo.
 
 ## 2. The single most important status fact
 
-**It runs on one board, and has never touched a real CAN bus.** Rev A boards were fabricated and assembled turnkey from commit `d9a725d` (before the final USB-C re-route, which board #1 proved survivable). Board #1 passes its self-test 6/6, took a DHCP lease on a live switch, passes the 19-check host-side acceptance run over Ethernet and over USB, and is discovered and listed by R1. **Still unproven:** CAN on a real amplifier bus, R1 driving amplifiers through a board, the skipped bench-supply and isolation measurements, and the LED/PD-pin eyeball checks. Record: [`hardware/fab/test/BRINGUP-LOG-0001.md`](hardware/fab/test/BRINGUP-LOG-0001.md).
+**It runs on one board, and has been on a real CAN bus for one afternoon.** Rev A boards were fabricated and assembled turnkey from commit `d9a725d` (before the final USB-C re-route, which board #1 proved survivable). Board #1 passes its self-test 6/6, took a DHCP lease on a live switch, passes the 19-check host-side acceptance run over Ethernet and over USB, and is discovered and listed by R1. On 2026-10-28, with two d&b amplifiers on its CAN jacks, both answered through the isolation barrier and the control application drove them through the board in both directions (bring-up log §12). **Still unproven:** recovery after a CAN cable pull (it failed on 10-28: the CAN side stayed deaf until reset; a fix exists in development firmware, not in this repository, and has not been re-run on a board), LAN pulls, amplifier power cycles and long runs, the skipped bench-supply and isolation measurements, and the LED/PD-pin eyeball checks. Record: [`hardware/fab/test/BRINGUP-LOG-0001.md`](hardware/fab/test/BRINGUP-LOG-0001.md).
 
 Before any board existed it had already executed *somewhere*, and that changed what we knew:
 
@@ -36,8 +36,8 @@ Before any board existed it had already executed *somewhere*, and that changed w
   the bootloader, partition table and `app_main` bring-up.
 
 Between them those found three real firmware bugs and one remotely triggerable parser
-overflow — see §9. Rev A prototypes are being made. Until one boots, treat every claim
-about peripherals and timing as unproven on silicon and say so in any summary you write.
+overflow — see §9. One board is not a batch: treat timing, recovery and anything the
+bring-up log does not record as unproven on silicon, and say so in any summary you write.
 
 ## 3. What *is* solved, and how solidly
 
@@ -143,6 +143,11 @@ firmware compiles warning-free under `-Werror` from clean. Keep all of those tru
   been exercised, and it was built one commit before the current fab files.
   If you change the board, regenerate *every* fab package — a stale package in one vendor
   folder is how a wrong board gets ordered.
+- **Opening the USB console resets a product image**, even with DTR and RTS held low. If a
+  fault test needs the log, attach the console before the fault, never after: that is how
+  the 10-28 CAN-recovery fault lost its evidence (bring-up log §12).
+- **`board_test.py`'s `rmbcp` stage transmits `0x123 55 AA` onto the CAN wire.** Skip it
+  (`--skip console,rmbcp`) whenever a real amplifier is on the bus.
 - A full **bench bring-up rig exists** — board self-test image, `board_test.py` (with a
   `--simulate` mode so it can be exercised without a board) and `BENCH-BRINGUP.md`, plus
   generated probe-point renders.

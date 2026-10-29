@@ -57,8 +57,11 @@ The LED suite is not padding: it counts real rising edges rather than checking
 the formula, and it caught the 4 Hz pattern running at 4.17 Hz because 250 ms is
 12.5 ticks at the tick rate originally chosen.
 
-**It runs on rev A board #1** (Ethernet and USB, discovered by R1), but `dbcan` has only
-talked to itself across the isolation barrier, never to an amplifier bus. `dbcan`, `net`,
+**It runs on rev A board #1** (Ethernet and USB, discovered by R1). On 2026-10-28 development
+firmware newer than this tree carried the control application's traffic to two d&b amplifiers
+and back (`hardware/fab/test/BRINGUP-LOG-0001.md` §12), and showed that `dbcan` does not recover
+after a CAN cable pull: recovery runs only on the gateway's CAN-reset command (`0x58`), which the
+control application never sends. The code here has the same recovery path. `dbcan`, `net`,
 `led` and `bridge` mirror `tools/r70_emu.py`, which is proven end to end against R1 V3.46 —
 treat the Python emulator as the reference implementation where the two disagree.
 

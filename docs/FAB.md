@@ -4,7 +4,7 @@ Status: **routed, checked, and ready to upload.** DRC reports **0 errors and 0
 unconnected items** (31 accepted silkscreen warnings). Every fab package was
 regenerated from the routed board on 2026-08-04.
 
-> Rev A boards were fabricated and assembled turnkey from commit `d9a725d` (before the final USB-C re-route, which board #1 proved survivable). Board #1 passes its self-test 6/6, took a DHCP lease on a live switch, passes the 19-check host-side acceptance run over Ethernet and over USB, and is discovered and listed by R1. **Still unproven:** CAN on a real amplifier bus, R1 driving amplifiers through a board, the skipped bench-supply and isolation measurements, and the LED/PD-pin eyeball checks. Record: [`hardware/fab/test/BRINGUP-LOG-0001.md`](../hardware/fab/test/BRINGUP-LOG-0001.md).
+> Rev A boards were fabricated and assembled turnkey from commit `d9a725d` (before the final USB-C re-route, which board #1 proved survivable). Board #1 passes its self-test 6/6, took a DHCP lease on a live switch, passes the 19-check host-side acceptance run over Ethernet and over USB, and is discovered and listed by R1. On 2026-10-28 it carried the control application's traffic to two d&b amplifiers and back. **Still unproven:** recovery after a CAN cable pull (it failed on 10-28), LAN pulls, amplifier power cycles and long runs, the skipped bench-supply and isolation measurements, and the LED/PD-pin eyeball checks. Only board #1 has been touched. Record: [`hardware/fab/test/BRINGUP-LOG-0001.md`](../hardware/fab/test/BRINGUP-LOG-0001.md).
 > The files here are regenerated from the routed board, i.e. one commit later than
 > what was built.
 

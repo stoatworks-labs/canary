@@ -175,6 +175,7 @@ ODB++ has no such limit and keeps full names.
 - Prices are as published and will drift; both "FCT" and the older name
   "Power-on Testing" are live on their site simultaneously, so quote either
   term to support.
-- **No CANary board exists.** Nothing in the functional spec has been run,
-  and nothing in `BENCH-BRINGUP.md` has been executed. Its `[predicted]` values
-  are hypotheses, not acceptance limits.
+- **Only board #1 has been tested** (`BRINGUP-LOG-0001.md`). Nothing in the
+  functional spec has been run as written, and `BENCH-BRINGUP.md`'s supply,
+  rail and PD steps were skipped. Its `[predicted]` values are hypotheses, not
+  acceptance limits.

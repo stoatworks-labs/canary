@@ -3,13 +3,15 @@
 | | |
 |---|---|
 | Board | CANary rev A, 100 × 81 mm, 4-layer |
-| Document | BBU-CANARY-A, **revision 0.1 — DRAFT, never executed** |
+| Document | BBU-CANARY-A, **revision 0.1 — DRAFT, worked through in part on board #1 only** |
 | Equipment assumed | bench PSU with current limit, DMM, network switch, PC |
 | Equipment optional | oscilloscope, logic analyser, insulation tester |
 | Companion documents | [`FUNCTIONAL-TEST-SPEC.md`](FUNCTIONAL-TEST-SPEC.md) (production), [`PROBE-POINTS.csv`](PROBE-POINTS.csv), [`TEST-COVERAGE.md`](TEST-COVERAGE.md) |
-| Per-board records | [`BRINGUP-LOG-0001.md`](BRINGUP-LOG-0001.md) — board #1, 2026-09-09, the first time this firmware ran on hardware |
+| Per-board records | [`BRINGUP-LOG-0001.md`](BRINGUP-LOG-0001.md) — board #1, 2026-09-09, the first time this firmware ran on hardware; §12 is 2026-10-28, with two amplifiers |
 
-> **No CANary board has ever existed.** Every number below is derived from
+> **One board has been through part of this** — board #1, with §1–§4 skipped
+> ([`BRINGUP-LOG-0001.md`](BRINGUP-LOG-0001.md)), so no supply, rail or PD figure here has
+> been measured yet. Every number below is derived from
 > `canary.kicad_pcb`, the schematic and the component datasheets. Values are
 > tagged **[spec]** (from a datasheet), **[derived]** (our arithmetic on the
 > schematic, shown so you can check it) or **[predicted]** (an educated guess

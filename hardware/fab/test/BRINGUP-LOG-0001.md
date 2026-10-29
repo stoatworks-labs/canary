@@ -175,6 +175,10 @@ ignores you, which reads exactly like a dead board.
 
 ## 6. Firmware bug found and NOT fixed: we advertise ourselves as a UDP client
 
+> **Settled 2026-10-28 (§12.4): no fix needed.** The control application still labels
+> the board `CANary-UDP-CLIENT-30000`, and then connects over TCP 30000 and drives two
+> amplifiers through it. Leave the constants alone.
+
 **This one is open and is the next thing to do.**
 
 R1 V3.46.1 **does** discover the board. It is listed in *Devices > Interfaces* as
@@ -231,6 +235,10 @@ mapping.** That is what turned this from a suspicion into a fact.
 ---
 
 ## 7. The other reason nothing appears: R1 must be Offline to activate an interface
+
+> **Settled 2026-10-28 (§12.4).** Offline → Active → Online, and the control
+> application connected over TCP 30000, initialised the gateway, listed two amplifiers
+> within about 5 s and drove them both ways. The end-to-end path is proven, on board #1.
 
 Separate from §6, and it bites first. The **Active** checkbox on the R70 row is
 greyed out while R1 is Online, and R1 was Online. Until it is ticked there is no
@@ -330,6 +338,10 @@ worth knowing before blaming the board on a multi-homed machine.
 
 ## 11. Next actions
 
+> **Overtaken 2026-10-28 (§12).** 1 needs no fix (§6), 2 passed (§7), and 3 passed
+> with one fault, a CAN side that did not recover after a cable pull. 4 and 5 are
+> still open. The current list is §12.7.
+
 1. **Fix the service/protocol values** (§6) across the four places listed, then
    confirm against R1 by reading the label.
 2. **Do the Offline → tick Active → Online sequence** and find out whether R1
@@ -341,3 +353,107 @@ worth knowing before blaming the board on a multi-homed machine.
 4. **LED polarity and PD_PG** — both need a person looking at the board.
 5. **Bring up board #2 properly through §1–§4** so the parametric record exists
    at least once.
+
+---
+
+## 12. 2026-10-28: two real amplifiers, and the control application through the board
+
+| | |
+|---|---|
+| Date | 2026-10-28 |
+| Board | #1 (`0001`) |
+| Firmware | development firmware `main-bbf8de5`, newer than any release here (0.2.0 ships `main-ff4110d`): its self-test image for stage A, its product image after that |
+| Amplifiers | two d&b amplifiers on CAN subnet 1, powered throughout. Loudspeakers connected, **no input signal** |
+| Bus | one lead from CANary to the amplifiers: J201 for stage A, J202 after. Shield type, SW201 position and the far-end termination not recorded |
+| Control application | on a Mac, new empty project |
+| Operator | Stoatworks Labs (with Claude driving the bench tooling and, from stage C, the control application) |
+
+**The board works with a real bus and the control application, both ways.** Stages A,
+B and C passed. Stage D found one firmware fault (§12.5) and stopped there.
+
+### 12.1 Stage A — the board, the wire and two amplifiers (self-test image)
+
+On both CAN jacks: nothing on the bus in 10 s of listening (the amplifiers do not
+speak until asked), every identification request the board sent was acknowledged,
+both amplifiers answered through the isolation barrier within about 400 ms, and
+`bus_err` stayed 0. The only frame the board sent was the control application's own
+identification request. Boot self-test 6/6, as on 2026-09-09.
+
+### 12.2 Stage B — the product image, then the bridge
+
+- **The product image boots and comes up without DHCP.** No stored settings, so the
+  defaults; no DHCP server on the bench, so a link-local address once the link was up.
+- **`board_test.py`: 18 passed, 0 failed, 2 skipped.** The skips are the CAN-adapter
+  stage (no adapter on the bench) and `rmbcp.alive-after-can-frame`, because **that
+  check puts a test frame, `0x123 55 AA`, on the CAN wire**, and nothing but the
+  control application's own traffic belongs near someone else's amplifier. With an
+  amplifier on the bus, run it with `--skip console,rmbcp`.
+- **A bridge check passed 19 of 19, twice** (development tooling, not in this
+  repository). It replays the control application's start-up and scan through the
+  board: the gateway initialisation was answered as the application needs, both
+  amplifiers answered in 3 of 3 rounds, and the link survived the scan.
+- Discovery missed one probe in five; the other four were answered within 2 ms. Not
+  chased.
+
+### 12.3 The test Mac's network
+
+Not the board's fault, but it will catch someone else too. With Wi-Fi up, macOS
+sent `255.255.255.255` and `169.254.255.255` out of Wi-Fi rather than the adapter
+the board was on, and a router on the Wi-Fi network answered ARP for link-local
+addresses, so even unicast traffic for the board left by Wi-Fi. Neither the tools nor
+the control application found the board by broadcast. Pinning the tools' sockets to
+the board's adapter worked, and so did giving the application the board's address as
+a fixed scan address, which shows this build answers a unicast discovery probe. (An
+older development build found on the board that morning did not; the released builds
+were not tried.)
+
+### 12.4 Stage C — the control application drives both amplifiers through CANary
+
+| Step | Result |
+|---|---|
+| Label | **`CANary-UDP-CLIENT-30000`**, as predicted. §6 needs no fix |
+| Connect | Offline → Active → Online: connected **over TCP 30000** and listed both amplifiers within about 5 s |
+| Look | read every channel's configuration; firmware version and mute states matched both front panels |
+| Application → amplifier | a channel mute, and a +0.5 dB gain change, showed on that amplifier's front panel. Both were put back |
+| Amplifier → application | a mute pressed on the other amplifier's front panel showed in the application at once |
+| Status | interface active, green, bus load 31 % |
+
+Everything was left as found: all channels unmuted, at 0.0 dB.
+
+### 12.5 FAULT — after a CAN cable pull the CAN side never comes back
+
+The CAN lead was pulled from J202 for under two minutes and refitted, latched at
+both ends. The control application marked both amplifiers missing within 30–85 s,
+as it should. After the refit **no frame came back from either amplifier for 9
+minutes**, while the application kept sending. ERR stayed dark throughout; the CAN
+LED was dark or steady, never flickering. Opening the USB console to read the log
+reset the board (§9 again), and the stuck state went with it. The application then
+reconnected by itself, 36 s after the reset, and both amplifiers answered at once:
+the fault was on the board, not the amplifiers. (One more thing that reset showed: the
+application needed a pop-up cleared before it showed the amplifiers green again.)
+
+**Why, from the code.** The firmware starts bus-off recovery, or restarts a stopped
+CAN controller, only when a master sends the gateway's CAN-reset command (`0x58`),
+and the control application sent none all session. The status LEDs show nothing
+while the controller is recovering. **The firmware in this repository, and in both
+releases, has the same recovery path**, so expect the same: after a CAN lead has
+been pulled, power-cycle the unit.
+
+**Fixed in development firmware the same day — not yet in this repository or any
+release, and not yet re-run on a board.** The CAN driver now recovers by itself
+about once a second, logs every state change with its error counters, and blinks
+ERR 3 while recovering. It is proven in a host simulation that injects bus-off,
+which also showed that a single `0x58` never recovered the controller either.
+
+### 12.6 Not done
+
+The rest of stage D: an amplifier power cycle, a LAN pull, 30 minutes of running,
+and a repeat of the cable pull. The LED map and the identify ("wink") function. The
+bench-supply and isolation measurements of §10, still. Only board #1 has been tried.
+
+### 12.7 Next actions
+
+1. **The cable pull again, on firmware with the fix**, with the console attached
+   before the pull. Then the power cycle, the LAN pull and the long run.
+2. **The LED map**, with someone looking at the board.
+3. **Board #2 through §1–§4**, as in §11.
