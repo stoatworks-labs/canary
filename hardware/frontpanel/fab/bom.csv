@@ -1,0 +1,10 @@
+Designators,Qty,Value,Footprint
+"C1,C2",2,100nF,Capacitor_SMD:C_0603_1608Metric
+D1,1,ON green,LED_THT:LED_D3.0mm
+D2,1,LAN green,LED_THT:LED_D3.0mm
+D3,1,CAN green,LED_THT:LED_D3.0mm
+D4,1,ERR red,LED_THT:LED_D3.0mm
+J1,1,FROM MAIN J501,Connector_IDC:IDC-Header_2x08_P2.54mm_Vertical
+R1-R4,4,1k,Resistor_SMD:R_0603_1608Metric
+SW1,1,RESET,Button_Switch_THT:SW_PUSH_6mm_H7.3mm
+SW2,1,BOOT,Button_Switch_THT:SW_PUSH_6mm_H9.5mm

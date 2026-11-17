@@ -3,6 +3,13 @@
 KiCad 10 project for the R70-compatible IP-to-CAN bridge.
 Architecture and the reasoning behind every part choice: [../docs/DECISIONS.md](../docs/DECISIONS.md) (H1–H19).
 
+The KiCad files in this folder are **rev A** (**CANary**), the board that was built.
+**Rev B** (**CANary Dev Edition**: front-panel header, port pads, PoE with a priority power
+mux, mounting holes, the N8R2 module) is in [`rev-b/`](rev-b/REV-B.md), and the rack
+front-panel board that goes with it is in [`frontpanel/`](frontpanel/README.md). Both are
+designed, routed and packaged for fab, and neither has been ordered, built or powered.
+Both use the symbol and footprint library in [`lib/`](lib/).
+
 > ## ⚠ Written at the schematic stage
 >
 > This README is from before layout, and before PoE was dropped from rev A, so its status and

@@ -8,6 +8,13 @@ regenerated from the routed board on 2026-08-04.
 > The files here are regenerated from the routed board, i.e. one commit later than
 > what was built.
 
+This document is about rev A (**CANary**). Rev B (**CANary Dev Edition**) has its own
+packages, generic and JLCPCB, in [`../hardware/rev-b/fab/`](../hardware/rev-b/fab/), with
+how they are made and what to check before ordering in
+[`../hardware/rev-b/REV-B.md`](../hardware/rev-b/REV-B.md#fab-package). The rack front-panel
+board's Gerbers, BOM, CPL and panel drilling drawing are in
+[`../hardware/frontpanel/fab/`](../hardware/frontpanel/fab/). Neither has been ordered.
+
 ## Where the files actually are
 
 This document is background. The operational documents live next to the files:

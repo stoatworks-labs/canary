@@ -1,5 +1,27 @@
 # Changelog
 
+## Unreleased
+
+- **Two variants of one design.** The README now presents **CANary** (rev A), the simple
+  board: USB-C PD powered, self-contained, made for the desktop tube case; and the
+  **CANary Dev Edition** (rev B), with a table comparing them. Rev A is the one that has
+  been built.
+- **Hardware rev B, the CANary Dev Edition** (`hardware/rev-b/`, write-up `REV-B.md`): rev A
+  plus a keyed 16-way front-panel header (J501: buffered LED sinks, RESET, BOOT, I2C, two
+  spare GPIOs), DNP pads for CAN, the termination switch, USB data and a 5 V aux input,
+  802.3af PoE (SDAPO DP9900M-5V) with a TPS2116 power mux giving it priority over USB-C,
+  four M3 mounting holes, and the ESP32-S3-WROOM-1-N8R2 module (2 MB of PSRAM). KiCad
+  project, generic and JLCPCB fab packages, and the scripts that generate the board from
+  rev A's routed one. ERC 0 errors; DRC 0 errors and 0 unconnected items.
+  **Never ordered, built or powered.**
+- **Rack front-panel board** (`hardware/frontpanel/`): 84 × 26 mm, two layers, the four
+  status LEDs and the RESET and BOOT buttons, on a 16-way ribbon from rev B's J501. Fab
+  files and a panel drilling drawing. DRC clean with schematic parity. **Never ordered or
+  built.**
+- **Library:** `canary:SDAPO_DP9900M` footprint and `DP9900M-5V` symbol, for rev B's PoE
+  module. The footprint is drawn from SDAPO's package drawing and has not been checked
+  against a real module. Rev A's schematic and board files are unchanged.
+
 ## 0.2.0 — 2026-10-19
 
 The changes below were made on 2026-09-27 and released as 0.2.0 on 2026-10-19.

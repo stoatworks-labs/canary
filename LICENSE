@@ -1,7 +1,9 @@
 CANary is licensed in three parts. Full texts are in LICENSES/.
 
   Board (hardware/*.kicad_*, hardware/lib/, hardware/fab/, hardware/scripts/
-  design outputs, docs/renders/)
+  design outputs, docs/renders/; and for rev B and its front panel, the
+  KiCad projects, library tables and fab/ outputs under hardware/rev-b/ and
+  hardware/frontpanel/)
       CERN Open Hardware Licence Version 2 - Strongly Reciprocal
       (CERN-OHL-S-2.0)                        LICENSES/CERN-OHL-S-2.0.txt
 

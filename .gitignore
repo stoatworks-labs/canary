@@ -75,3 +75,7 @@ hardware/enclosure/bambu/work/
 hardware/enclosure/bambu/presets/
 hardware/enclosure/bambu/project_settings.json
 hardware/enclosure/bambu/result.json
+
+# rev B and front-panel router scratch (DSN/SES, DRC json)
+hardware/rev-b/route/
+hardware/frontpanel/route/

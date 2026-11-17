@@ -1,0 +1,212 @@
+(footprint "SDAPO_DP9900M"
+	(version 20260206)
+	(generator "pcbnew")
+	(generator_version "10.0")
+	(layer "F.Cu")
+	(descr "SDAPO DP9900M PoE PD module, 8-pin gull-wing SMD, body 21.19x14.00 mm, 13.35 mm tall (datasheet section 4.1). Pins 1-4 output side, 5-8 PoE input side. Pads 5.4-8.9 mm from centre: lead exits 5.69, foot tip 8.46.")
+	(property "Reference" "REF**"
+		(at 0 -10.15 0)
+		(layer "F.SilkS")
+		(uuid "2b2058de-bd53-4342-b582-41ae49f65121")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Value" "SDAPO_DP9900M"
+		(at 0 10.15 0)
+		(layer "F.Fab")
+		(uuid "98d34902-8424-4cc8-8b39-6bc421ffea73")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Datasheet" ""
+		(at 0 0 0)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "badf00ab-7e36-4667-9e73-fd63f9207465")
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+		)
+	)
+	(property "Description" ""
+		(at 0 0 0)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "e7db6fef-12e9-43eb-9651-2ea82934d0c1")
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+		)
+	)
+	(attr smd)
+	(duplicate_pad_numbers_are_jumpers no)
+	(fp_line
+		(start -10.71 -7.11)
+		(end -10.71 7.11)
+		(stroke
+			(width 0.12)
+			(type default)
+		)
+		(layer "F.SilkS")
+		(uuid "4283eee2-96b8-4ab5-bf1e-e62ae1a1efdb")
+	)
+	(fp_line
+		(start -10.71 7.11)
+		(end -10.71 8.9)
+		(stroke
+			(width 0.12)
+			(type default)
+		)
+		(layer "F.SilkS")
+		(uuid "437af55f-544f-4a9f-b148-75341b129e4a")
+	)
+	(fp_line
+		(start -5.8 -7.11)
+		(end 5.8 -7.11)
+		(stroke
+			(width 0.12)
+			(type default)
+		)
+		(layer "F.SilkS")
+		(uuid "82570129-76bd-44a3-96ba-0a245d5f3842")
+	)
+	(fp_line
+		(start -5.8 7.11)
+		(end 5.8 7.11)
+		(stroke
+			(width 0.12)
+			(type default)
+		)
+		(layer "F.SilkS")
+		(uuid "f40513fb-fe4b-433d-8e18-aa148f0d0037")
+	)
+	(fp_line
+		(start 10.71 -7.11)
+		(end 10.71 7.11)
+		(stroke
+			(width 0.12)
+			(type default)
+		)
+		(layer "F.SilkS")
+		(uuid "d49c735e-1ea0-4267-88e9-8221b1ffe986")
+	)
+	(fp_line
+		(start -10.85 -9.2)
+		(end 10.85 -9.2)
+		(stroke
+			(width 0.05)
+			(type default)
+		)
+		(layer "F.CrtYd")
+		(uuid "2f00acb0-7791-417e-b2db-5f63579d127a")
+	)
+	(fp_line
+		(start -10.85 9.2)
+		(end -10.85 -9.2)
+		(stroke
+			(width 0.05)
+			(type default)
+		)
+		(layer "F.CrtYd")
+		(uuid "9ba4df77-3dcb-4c3e-9c30-a6ab709df313")
+	)
+	(fp_line
+		(start 10.85 -9.2)
+		(end 10.85 9.2)
+		(stroke
+			(width 0.05)
+			(type default)
+		)
+		(layer "F.CrtYd")
+		(uuid "6c68f67b-f4c9-4da0-a085-da9c11a630d4")
+	)
+	(fp_line
+		(start 10.85 9.2)
+		(end -10.85 9.2)
+		(stroke
+			(width 0.05)
+			(type default)
+		)
+		(layer "F.CrtYd")
+		(uuid "e2798e55-97e5-4e52-9c67-7581131a4575")
+	)
+	(fp_poly
+		(pts
+			(xy -10.595 -7) (xy 10.595 -7) (xy 10.595 7) (xy -9.595 7) (xy -10.595 6)
+		)
+		(stroke
+			(width 0.1)
+			(type solid)
+		)
+		(fill no)
+		(layer "F.Fab")
+		(uuid "74475e26-aa17-4544-b8d8-e0587e41c1d9")
+	)
+	(pad "1" smd roundrect
+		(at -9.325 7.15)
+		(size 1.5 3.5)
+		(layers "F.Cu" "F.Mask" "F.Paste")
+		(roundrect_rratio 0.25)
+		(uuid "c7e7493f-eab7-4590-8e93-cf0377cdc19c")
+	)
+	(pad "2" smd roundrect
+		(at -6.785 7.15)
+		(size 1.5 3.5)
+		(layers "F.Cu" "F.Mask" "F.Paste")
+		(roundrect_rratio 0.25)
+		(uuid "0f7e2af3-225b-4cdc-9f50-93fb21aff073")
+	)
+	(pad "3" smd roundrect
+		(at 6.785 7.15)
+		(size 1.5 3.5)
+		(layers "F.Cu" "F.Mask" "F.Paste")
+		(roundrect_rratio 0.25)
+		(uuid "8d648859-951b-4a26-9c7f-5bbe058c49d3")
+	)
+	(pad "4" smd roundrect
+		(at 9.325 7.15)
+		(size 1.5 3.5)
+		(layers "F.Cu" "F.Mask" "F.Paste")
+		(roundrect_rratio 0.25)
+		(uuid "e7dfd1da-d3b9-4e2b-a46d-334062e339a2")
+	)
+	(pad "5" smd roundrect
+		(at 9.325 -7.15)
+		(size 1.5 3.5)
+		(layers "F.Cu" "F.Mask" "F.Paste")
+		(roundrect_rratio 0.25)
+		(uuid "e321be0c-2126-4a11-92fb-5b479c6dde84")
+	)
+	(pad "6" smd roundrect
+		(at 6.785 -7.15)
+		(size 1.5 3.5)
+		(layers "F.Cu" "F.Mask" "F.Paste")
+		(roundrect_rratio 0.25)
+		(uuid "fa0e23a5-6cd7-415f-b266-27e4900a571d")
+	)
+	(pad "7" smd roundrect
+		(at -6.785 -7.15)
+		(size 1.5 3.5)
+		(layers "F.Cu" "F.Mask" "F.Paste")
+		(roundrect_rratio 0.25)
+		(uuid "5a941b8c-f942-4301-a935-ac4edb7f9a98")
+	)
+	(pad "8" smd roundrect
+		(at -9.325 -7.15)
+		(size 1.5 3.5)
+		(layers "F.Cu" "F.Mask" "F.Paste")
+		(roundrect_rratio 0.25)
+		(uuid "36d46446-68c5-458b-a10f-62f907d0246e")
+	)
+	(embedded_fonts no)
+)
