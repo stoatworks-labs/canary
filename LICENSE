@@ -24,7 +24,8 @@ Exceptions:
     under the SIL Open Font License 1.1 (hardware/enclosure/lettering/OFL.txt).
   - The Stoatworks Labs name and mark (including
     hardware/enclosure/lettering/stoatworks-mark.geojson and the mark as
-    engraved on the case) are NOT licensed under any of the above. Remove or
+    engraved on the case and on the 10-inch rack panel) are NOT licensed under
+    any of the above. Remove or
     replace them in anything you make and distribute yourself.
   - Third-party components fetched at build time (ESP-IDF, esp_tinyusb,
     TinyUSB) keep their own licences.

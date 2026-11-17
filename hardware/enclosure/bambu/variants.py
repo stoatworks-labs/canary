@@ -205,6 +205,23 @@ VARIANTS = {
                    "bridge_no_support": "1",
                    "detect_overhang_wall": "1"},
     ),
+    "absgf-0.4-rack": dict(
+        geometry="rack",
+        machine="Bambu Lab H2C 0.4 nozzle",
+        process="0.24mm Standard @BBL H2C",
+        filament="Bambu ABS-GF @BBL H2C 0.4 nozzle",
+        nozzle="0.4", filament_id="GFB50", filament_type="ABS-GF",
+        process_name="0.24mm CANary Rack ABS-GF @BBL H2C 0.4",
+        note="the 2U rack plates (gen_rack_3dp.py): pieces print face down, nothing "
+             "overhangs -- pocket opens upward, ribs and pads are walls, seam bolts are "
+             "teardrops and the nut traps stand on a vertex. ABS-GF like the tube: a "
+             "rack runs warm and the plates carry the etherCONs' panel screws",
+        overrides={**COMMON, **_walls(0.42),
+                   "brim_width": "8",
+                   "enable_support": "0",
+                   "bridge_no_support": "1",
+                   "detect_overhang_wall": "1"},
+    ),
     "asa-0.6": dict(
         machine="Bambu Lab H2C 0.6 nozzle",
         process="0.30mm Standard @BBL H2C 0.6 nozzle",

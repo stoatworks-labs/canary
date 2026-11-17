@@ -5,3 +5,6 @@ prints standing on its rear end, plus two flush end plates screwed to it (8 × M
 heat-set inserts), the LED window insert and the switch cover. Documented in
 [`../3dp/README.md`](../3dp/README.md); sliced as `../canary-case-absgf-0.4-tube.3mf`
 (`bambu/build.sh absgf-0.4-tube`).
+
+To put tubes in a rack, see [`../rack/`](../rack/README.md): 2U panels (19-inch, three
+units; 10-inch, one) whose slots take the front plate's place.

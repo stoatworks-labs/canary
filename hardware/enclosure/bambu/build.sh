@@ -11,6 +11,8 @@
 #                                         # per body of the 4-up bed
 #   ./build.sh absgf-0.4-tube-x4 tube-x4  # four bodies + eight end plates, one bed
 #   ./build.sh pla-0.4-jig jig            # the heat-set insert jig for the press
+#   ./build.sh absgf-0.4-rack rack19      # the 19-inch 2U rack panel, three pieces
+#   ./build.sh absgf-0.4-rack rack10      # the 10-inch 2U rack panel
 #   ./build.sh absgf-0.4-flat       # the flat-section case, from print-flat/
 #   ./build.sh absgf-0.4-tube       # the one-piece body + end plates, from print-tube/
 #
@@ -40,6 +42,8 @@ PRINT=print
 [ "$G" = tube ] && PRINT=print-tube
 # The insert jig is not the case: gen_insert_jig.py writes its parts print-ready to ../jig.
 [ "$G" = jig ] && PRINT=../jig
+# Nor are the rack plates: gen_rack_3dp.py writes them print-ready (face down) to ../rack.
+[ "$G" = rack ] && PRINT=../rack
 test -d "$PRINT" || { echo "run orient_for_print.py first (no $PRINT/ dir)"; exit 1; }
 
 # The one-piece body is three parts, not four.
@@ -77,7 +81,13 @@ case "$PARTSET" in
               STEM="canary-insert-jig" ;;
   ends)       STLS="$PRINT/canary_end_front.stl $PRINT/canary_end_rear.stl"
               STEM="canary-ends" ;;
-  *) echo "unknown part set '$PARTSET' (all | ends | frontplate | rearplate | ledinsert | switchcover | white-x4 | tube-x4 | jig)"; exit 1 ;;
+  rack19)     # the 19-inch 2U panel, three slots: all three pieces fit one bed
+              STLS="$PRINT/canary_rack19_left.stl $PRINT/canary_rack19_centre.stl $PRINT/canary_rack19_right.stl"
+              STEM="canary-rack19" ;;
+  rack10)     # the 10-inch 2U panel, one slot, one piece
+              STLS="$PRINT/canary_rack10.stl"
+              STEM="canary-rack10" ;;
+  *) echo "unknown part set '$PARTSET' (all | ends | frontplate | rearplate | ledinsert | switchcover | white-x4 | tube-x4 | jig | rack19 | rack10)"; exit 1 ;;
 esac
 
 M=$(python3 -c "import json;print(json.load(open('presets/paths.json'))['machine'])")

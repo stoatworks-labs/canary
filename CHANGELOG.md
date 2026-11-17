@@ -2,6 +2,14 @@
 
 ## Unreleased
 
+- **Rack plates for the tube** (`hardware/enclosure/rack/`, generator
+  `gen_rack_3dp.py`): 2U panels whose slots are the tube's front plate, so a tube screws
+  in with its own four M3 and the etherCONs' panel screws. A 19-inch panel for three
+  units, in three pieces that bolt together through ribs (it will not fit a 320 mm bed in
+  one), and a 10-inch panel for one unit, plus blanks. STEP, STL and two sliced Bambu Lab
+  plates (`bambu/build.sh absgf-0.4-rack rack19` / `rack10`). The generator checks every
+  slot against the front plate and the tube's fit before it writes anything.
+  **Not printed yet.**
 - **Two variants of one design.** The README now presents **CANary** (rev A), the simple
   board: USB-C PD powered, self-contained, made for the desktop tube case; and the
   **CANary Dev Edition** (rev B), with a table comparing them. Rev A is the one that has
