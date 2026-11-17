@@ -11,8 +11,8 @@
 #                                         # per body of the 4-up bed
 #   ./build.sh absgf-0.4-tube-x4 tube-x4  # four bodies + eight end plates, one bed
 #   ./build.sh pla-0.4-jig jig            # the heat-set insert jig for the press
-#   ./build.sh absgf-0.4-rack rack19      # the 19-inch 2U rack panel, three pieces
-#   ./build.sh absgf-0.4-rack rack10      # the 10-inch 2U rack panel
+#   ./build.sh absgf-0.4-rack rack19      # the 19-inch 2U rack panel: one unit, three pieces
+#   ./build.sh absgf-0.4-rack rack10      # the 10-inch 2U rack panel: one unit, one piece
 #   ./build.sh absgf-0.4-flat       # the flat-section case, from print-flat/
 #   ./build.sh absgf-0.4-tube       # the one-piece body + end plates, from print-tube/
 #
@@ -42,7 +42,7 @@ PRINT=print
 [ "$G" = tube ] && PRINT=print-tube
 # The insert jig is not the case: gen_insert_jig.py writes its parts print-ready to ../jig.
 [ "$G" = jig ] && PRINT=../jig
-# Nor are the rack plates: gen_rack_3dp.py writes them print-ready (face down) to ../rack.
+# Nor is the rack panel: gen_rack_3dp.py writes its pieces print-ready (face down) to ../rack.
 [ "$G" = rack ] && PRINT=../rack
 test -d "$PRINT" || { echo "run orient_for_print.py first (no $PRINT/ dir)"; exit 1; }
 
@@ -81,10 +81,10 @@ case "$PARTSET" in
               STEM="canary-insert-jig" ;;
   ends)       STLS="$PRINT/canary_end_front.stl $PRINT/canary_end_rear.stl"
               STEM="canary-ends" ;;
-  rack19)     # the 19-inch 2U panel, three slots: all three pieces fit one bed
+  rack19)     # the 19-inch 2U panel: collar + two wings, all three on one bed
               STLS="$PRINT/canary_rack19_left.stl $PRINT/canary_rack19_centre.stl $PRINT/canary_rack19_right.stl"
               STEM="canary-rack19" ;;
-  rack10)     # the 10-inch 2U panel, one slot, one piece
+  rack10)     # the 10-inch 2U panel: collar and wings in one piece
               STLS="$PRINT/canary_rack10.stl"
               STEM="canary-rack10" ;;
   *) echo "unknown part set '$PARTSET' (all | ends | frontplate | rearplate | ledinsert | switchcover | white-x4 | tube-x4 | jig | rack19 | rack10)"; exit 1 ;;

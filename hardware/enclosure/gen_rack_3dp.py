@@ -1,38 +1,37 @@
 #!/usr/bin/env python3
-"""Build 3D-printable rack plates for the CANary one-piece tube and export STEP/STL.
+"""Build a 3D-printable rack panel for one CANary tube and export STEP/STL.
 
-The tube (`gen_case_3dp.py --tube`) is 137 x 45 mm in section and 93.5 mm long. Its front
-end plate is a flat 2.5 mm slab that carries the three etherCONs and is screwed to the
-body with four M3 into heat-set inserts. A rack plate takes that plate's place: the same
-2.5 mm skin, with the same connector bores, panel-screw holes and body-screw holes made by
-the same functions, at the floor of a pocket the tube's front end sits in. To rack a unit,
-take its front plate off and screw the body and the three etherCONs to the rack plate
-instead. Nothing on the tube or the board changes, and the plate it came with goes back
-on when the unit goes back on a desk.
+The tube (`gen_case_3dp.py --tube`) is 137 x 45 mm in section and 93.5 mm long, with flush
+end plates screwed on by four M3 x 8 into heat-set inserts. The panel holds the whole unit,
+front plate and all, in a collar round its body:
+
+  * a RING that goes all the way round, D_RING deep behind the face;
+  * behind the ring, a TROUGH: the same wall under the tube and over both curved
+    shoulders, the tube's full length. It leaves the middle of the lid open, where the
+    LED window, the service pinholes, the switch cover and the lettering are;
+  * at the face, a LIP round the tube's front end and two CHEEKS over its left and right
+    ends, where the front plate's four screws are. The tube slides in from behind until
+    its front plate meets them, and four M3 x 12 go through the cheeks, the front plate
+    and into the tube's own inserts, in place of its four M3 x 8. Between the cheeks the
+    face is open: the three etherCONs and their labels are seen and reached as on a desk.
 
 Why 2U: the tube is 45.0 mm tall and a 1U panel is 43.66 mm (44.45 less the EIA 0.8 mm
-gap). So the panels are 2U, 88.1 mm, with the tube centred.
+gap). So the panel is 2U, 88.1 mm, with the tube centred.
 
-    19-inch  three slots on a 148 mm pitch. 482.6 mm does not fit a 320 mm bed, so the
-             panel is three pieces, one slot each, the two end pieces carrying the ears.
-             The pieces bolt together through ribs behind each seam: 2 x M3 x 12 and a
-             nut per seam, the nut captive in the right-hand piece's pad. The front edges
-             are chamfered, so each seam reads as a V-groove rather than a crack.
-    10-inch  one slot, one piece, with the Stoatworks mark beside it.
+    19-inch  the unit in the middle and a flat blank to each side. 482.6 mm does not fit
+             a 320 mm bed, so the panel is three pieces: the centre (the collar) and two
+             wings carrying the ears. They bolt together through ribs behind each seam:
+             2 x M3 x 12 and a nut per seam, the nut captive in the higher-x piece's pad.
+             The front edges are chamfered, so a seam reads as a V-groove, not a crack.
+    10-inch  the same collar with short wings, one piece, and the Stoatworks mark.
 
-Every piece prints FACE DOWN: the front face on the plate, everything else growing up
-from it. Nothing overhangs -- the pocket opens upward, the flanges, ribs and pads are
-vertical walls, the seam bolts are teardrops pointing up and the nut traps stand on a
-vertex. Blanks (same pieces, no slot) close an empty position.
+Every piece prints FACE DOWN: the front face on the plate, everything else growing up from
+it. Nothing overhangs -- the collar, flanges, ribs and pads are vertical walls, the seam
+bolts are teardrops pointing up and the nut traps stand on a vertex.
 
-Behind the face each piece is a shallow tray: return flanges along the top and bottom
-edge, a rib at each seam and at each side of the rack opening. Nothing behind the face
-reaches past the rack's clear opening, so the ears sit flat on the rails.
-
-What is NOT verified: none of this has been printed. The pocket fit (0.35 mm a side) and
-the seam bolts are numbers, not trials. The tube is cantilevered off the panel on its
-four M3 screws, which is fine for a ~250 g unit in a static rack and has not been tried
-in a touring one. In a rack the lid's LEDs face the unit above, not the front.
+What is NOT verified: none of this has been printed. The collar fit (0.4 mm a side), the
+seam bolts and the ear slots are numbers, not trials. In a rack the lid's LEDs face the
+unit above, not the front.
 
 Run:  <venv>/bin/python hardware/enclosure/gen_rack_3dp.py [outdir]
 """
@@ -50,8 +49,8 @@ import gen_case_3dp as case                             # noqa: E402
 OUT = pathlib.Path(_ARGV[0] if _ARGV else "hardware/enclosure/rack")
 
 # Frame: the tube generator's PHYSICAL frame (its export mirror applied). x across, y from
-# back to front (the etherCON end is +y), z up. Read from the front, your right is -x, so
-# unit 1 -- the left-hand slot as you face the rack -- is at +x.
+# back to front (the etherCON end is +y), z up, the tube centred on the origin. Read from
+# the front, your right is -x.
 
 # ---- the rack (EIA-310 / the common 10-inch size) ----------------------------
 U = 44.45
@@ -60,28 +59,40 @@ PANEL_H = UNITS * U - 0.8                 # 88.1: n x U less the standard 0.8 mm
 HOLE_Z = (-(U - 6.35), +(U - 6.35))       # +/-38.1: the outer hole of each U, 3 in apart
 RACKS = {
     # width over the ears, ear-hole centres, clear opening between the rails
-    "19": dict(width=482.6, holes=465.1, opening=450.85,
-               slots=(+148.0, 0.0, -148.0), seams=(+74.0, -74.0)),
-    "10": dict(width=254.0, holes=236.5, opening=222.25,
-               slots=(0.0,), seams=()),
+    "19": dict(width=482.6, holes=465.1, opening=450.85),
+    "10": dict(width=254.0, holes=236.5, opening=222.25),
 }
 EAR_SLOT = (9.5, 6.5)                     # horizontal stadium: M5/M6/10-32 with play
+W_CENTRE = 160.0                          # the 19-inch centre piece; the wings are the rest
 
 # ---- the panel ----------------------------------------------------------------
-T_FACE = 5.0                              # face thickness outside the pockets
-SKIN = case.END_T                         # = the front plate it replaces: 2.5
-POCKET_FIT = 0.35                         # per side, tube outline vs pocket
-YF = case.OUTER_L / 2.0                   # front face: where the plate's outer face was
-YR = YF - T_FACE                          # back of the face
-Y_SKIN = YF - SKIN                        # pocket floor = the tube's front end face
+T_FACE = 4.0                              # face = cheek: the screws grow by this, 8 -> 12
+YR = case.OUTER_L / 2.0                   # back of the face = the tube's front face
+YF = YR + T_FACE                          # front face
 DEPTH = 16.0                              # flanges and ribs, back from YR
 FLANGE_T = 3.0
 RIB_T = 3.0
 RIB_CLEAR = 0.75                          # side rib's outer face inside the clear opening
 CHAMFER = 0.6                             # every front-face edge: seams become V-grooves
 
-# ---- the seam bolts -----------------------------------------------------------
-SEAM_BOLT_Z = 33.0                        # above and below the tube (its top is z 22.5)
+# ---- the collar ---------------------------------------------------------------
+FIT = 0.4                                 # per side, tube outline vs collar
+WALL_C = 3.0                              # collar wall (7 lines at 0.42)
+D_RING = 12.0                             # full ring, back from the face; the lid's
+                                          # lettering starts 14.4 mm back, its switch
+                                          # pocket's notch 17 mm
+D_TROUGH = case.OUTER_L                   # the trough runs the tube's whole length
+X_SHOULDER = 54.0                         # the trough covers the lid only outboard of
+                                          # this; the LED window's rebate ends at 48.5
+LIP = 1.5                                 # face over the front end, inside the outline
+X_CHEEK = 44.0                            # the face is open between +/- this; the
+                                          # etherCON flanges reach 40.5, the screws 47
+
+# ---- fasteners ----------------------------------------------------------------
+SCREW_STOCK = 8.0                         # the tube's own end-plate screws, M3 x 8
+SCREW_RACK = SCREW_STOCK + T_FACE         # = 12: same thread engagement through a cheek
+HEAD_D = case.SCREW_HEAD_D                # 6.2: button head 5.7 with margin
+SEAM_BOLT_Z = 33.0                        # above and below the collar (its top is 25.9)
 PAD_T = 3.0                               # pad on the rib round each bolt
 PAD_Z0 = 28.0                             # pad from here out to the flange
 BOLT_D = 3.4                              # M3 clearance
@@ -90,10 +101,10 @@ NUT_DEPTH = 2.6                           # nut 2.4 thick
 BOLT_Y = YR - DEPTH / 2.0
 
 # ---- lettering ----------------------------------------------------------------
-LABEL_CAP = 5.0                           # "CANary 1" above each slot
+LABEL_CAP = 5.0                           # the name above the unit
 LABEL_BASE = 28.5
-MARK_W = 30.0                             # the mark on the 10-inch panel
-MARK_X = 92.0                             # its centre, physical x (your left of the slot)
+MARK_W = 30.0
+MARK_X = {"19": 110.0, "10": 92.0}        # physical x, your left of the unit
 
 
 # ===========================================================================
@@ -127,7 +138,7 @@ def ystadium(w, h, x, z, y0, y1):
             .slot2D(w, h).extrude(y1 - y0))
 
 
-def on_face(solid, u0, x_origin):
+def on_face(solid, x_origin):
     """Place a page-frame solid (u right, v up, extruded +z) on the front face.
 
     Read from the front, u runs to -x and v up z; the page's +z goes out through the face.
@@ -143,53 +154,47 @@ def face_slab(outside):
     return box(-400, 400, YF - d, YF + outside, -100, 100)
 
 
+def screws_physical():
+    """[(x, z)] of the tube's front-plate screws, in this (mirrored) frame."""
+    return [(-x, z) for (x, z) in case.tube_screws()]
+
+
 # ===========================================================================
-# The slot: what the tube's front plate carried, at the floor of a pocket
+# The collar
 # ===========================================================================
-def slot_holes(xs):
-    """The front plate's through-holes, built as the plate's are, mirrored as it is."""
-    y0, y1 = Y_SKIN - 1.0, YF + 1.0
+def collar():
+    """Ring + trough, rooted 0.5 mm into the face so the union is a real overlap."""
+    a, b = case.OUTER_A + FIT, case.OUTER_B + FIT
+    y0, y1 = YR - D_TROUGH, YR + 0.5
+    yc, L = (y0 + y1) / 2.0, y1 - y0
+    shell = case.section_prism(a + WALL_C, b + WALL_C, L, yc).cut(
+        case.section_prism(a, b, L + 2.0, yc))
+    # Behind the ring, open the lid between the shoulders. The cutter's floor at z 0 is in
+    # air (the wall there is at |x| > 68), so it shares no face with the shell.
+    return shell.cut(box(-X_SHOULDER, X_SHOULDER, y0 - 1.0, YR - D_RING, 0.0, 60.0))
+
+
+def aperture():
+    """The window in the face: inside the lip, between the cheeks, through the face."""
+    y0, y1 = YR - 1.0, YF + 1.0
+    return case.section_prism(case.OUTER_A - LIP, case.OUTER_B - LIP, y1 - y0,
+                              (y0 + y1) / 2.0).intersect(
+        box(-X_CHEEK, X_CHEEK, y0 - 1.0, y1 + 1.0, -50.0, 50.0))
+
+
+def cheek_holes():
     c = None
-    for x in case.ETHERCON_X:
-        n = case.neutrik_cut(case.bx(x), case.Z_AXIS, y0, y1, diag=case.ETHERCON_DIAG)
-        c = n if c is None else c.union(n)
-    for (x, z) in case.tube_screws():
-        c = c.union(case.ybore(case.SCREW_CLEAR_D, x, z, y0, y1))
-    return c.mirror("YZ").translate((xs, 0, 0))
-
-
-def slot_pocket(xs):
-    y0, y1 = YR - 1.0, Y_SKIN
-    return case.section_prism(case.OUTER_A + POCKET_FIT, case.OUTER_B + POCKET_FIT,
-                              y1 - y0, (y0 + y1) / 2.0).translate((xs, 0, 0))
-
-
-def slot_lettering(xs, unit):
-    """CAN 1 / CAN 2 / ETH where the front plate has them, and the unit's number above."""
-    h = 10.0
-    s = None
-    for x, label in zip(case.ETHERCON_X, case.PORT_LABELS):
-        t = case.text_page(label, case.PORT_CAP, case.FONT_BOLD, case.bx(x),
-                           case.PORT_LABEL_Z - case.PORT_CAP / 2.0, h)
-        s = t if s is None else s.union(t)
-    if unit is not None:
-        s = s.union(case.text_page(f"{case.NAME} {unit}".strip(), LABEL_CAP,
-                                   case.FONT_BOLD, 0.0, LABEL_BASE, h))
-    return on_face(s, 0.0, xs)
-
-
-def mark_lettering():
-    m, _ = case.mark_page(MARK_W, -MARK_X, 0.0, 10.0)
-    bb = m.val().BoundingBox()
-    m = m.translate((0, -(bb.ymin + bb.ymax) / 2.0, 0))       # centred on z 0
-    return on_face(m, 0.0, 0.0)
+    for (x, z) in screws_physical():
+        h = case.ybore(case.SCREW_CLEAR_D, x, z, YR - 1.0, YF + 1.0)
+        c = h if c is None else c.union(h)
+    return c
 
 
 # ===========================================================================
 # A piece
 # ===========================================================================
-def build_piece(rack, x0, x1, slots, units, mark=False):
-    """The panel between x0 and x1 (x0 > x1 is not allowed), with the given slots."""
+def build_piece(rack, x0, x1, unit):
+    """The panel between x0 and x1, with the collar if unit."""
     r = RACKS[rack]
     W = r["width"] / 2.0
     oh = r["opening"] / 2.0 - RIB_CLEAR          # nothing behind the face past this
@@ -236,19 +241,20 @@ def build_piece(rack, x0, x1, slots, units, mark=False):
                 xp = xs + reach
                 part = part.cut(xhex(NUT_AF, BOLT_Y, z, xp - NUT_DEPTH, xp + 1.0))
 
-    # The slots.
-    for xs in slots:
-        part = part.cut(slot_pocket(xs)).cut(slot_holes(xs))
+    if unit:
+        part = part.union(collar()).cut(aperture()).cut(cheek_holes())
     return part
 
 
-def lettering_for(slots, units, mark):
+def lettering_for(rack, unit, mark):
     s = None
-    for xs, u in zip(slots, units):
-        t = slot_lettering(xs, u)
-        s = t if s is None else s.union(t)
+    if unit:
+        s = on_face(case.text_page(case.NAME, LABEL_CAP, case.FONT_BOLD, 0.0, LABEL_BASE,
+                                   10.0), 0.0)
     if mark:
-        m = mark_lettering()
+        m, _ = case.mark_page(MARK_W, -MARK_X[rack], 0.0, 10.0)
+        bb = m.val().BoundingBox()
+        m = on_face(m.translate((0, -(bb.ymin + bb.ymax) / 2.0, 0)), 0.0)   # on z 0
         s = m if s is None else s.union(m)
     return s
 
@@ -276,31 +282,29 @@ def engrave(name, part, letters, errs):
 # Layouts
 # ===========================================================================
 def pieces():
-    """[(name, rack, x0, x1, slots, units, mark)] for every piece written."""
-    out = []
-    r = RACKS["19"]
-    W = r["width"] / 2.0
-    edges = [W] + list(r["seams"]) + [-W]        # from your left (+x) to your right
-    names = ("left", "centre", "right")
-    for i, (hi, lo) in enumerate(zip(edges, edges[1:])):
-        xs = r["slots"][i]
-        out.append((f"canary_rack19_{names[i]}", "19", lo, hi, (xs,), (i + 1,), False))
-        out.append((f"canary_rack19_{names[i]}_blank", "19", lo, hi, (), (), False))
+    """[(name, rack, x0, x1, unit, mark)] for every piece written."""
+    W = RACKS["19"]["width"] / 2.0
+    c = W_CENTRE / 2.0
     W10 = RACKS["10"]["width"] / 2.0
-    out.append(("canary_rack10", "10", -W10, W10, (0.0,), ("",), True))
-    out.append(("canary_rack10_blank", "10", -W10, W10, (), (), False))
-    return out
+    return [
+        # your left as you face the rack is +x
+        ("canary_rack19_left", "19", c, W, False, True),
+        ("canary_rack19_centre", "19", -c, c, True, False),
+        ("canary_rack19_right", "19", -W, -c, False, False),
+        ("canary_rack10", "10", -W10, W10, True, True),
+    ]
 
 
 # ===========================================================================
 # Verification
 # ===========================================================================
-def tube_physical():
-    return case.build_tube().mirror("YZ")
-
-
-def front_plate_physical(xs):
-    return case.build_end("front").mirror("YZ").translate((xs, YF - SKIN / 2.0, 0))
+def unit_physical():
+    """The tube with both end plates on, as it goes into the collar."""
+    y = case.TUBE_L / 2.0 + case.END_T / 2.0
+    tube = case.build_tube().mirror("YZ")
+    front = case.build_end("front").mirror("YZ").translate((0, +y, 0))
+    rear = case.build_end("rear").mirror("YZ").translate((0, -y, 0))
+    return tube, front, rear
 
 
 def vol(a, b):
@@ -310,46 +314,73 @@ def vol(a, b):
         return 0.0
 
 
-def verify_slot(name, part, xs, tube, errs, step=1.0):
-    """The slot IS the front plate, the tube sits on the pocket floor, and nothing else."""
-    # 1. Point for point across the outline, at mid-skin: material in the piece exactly
-    #    where the front plate has material. Lettering is 0.6 deep and does not reach
-    #    mid-skin, so the two must agree everywhere.
-    plate = front_plate_physical(xs).val()
-    local = part.intersect(box(xs - case.OUTER_A, xs + case.OUTER_A, Y_SKIN + 0.3,
-                               YF - 0.3, -case.OUTER_B, case.OUTER_B)).val()
-    y = YF - SKIN / 2.0
-    a, b = case.OUTER_A - 0.6, case.OUTER_B - 0.6
-    n = bad = 0
-    z = -b
-    while z <= b:
-        x = -a
-        while x <= a:
-            if case.inside(x, z, a, b):
-                p = cq.Vector(xs + x, y, z)
-                n += 1
-                if local.isInside(p, 1e-4) != plate.isInside(p, 1e-4):
-                    bad += 1
-            x += step
-        z += step
-    if bad:
-        errs.append(f"{name}: slot at x {xs:+.0f} differs from the tube's front plate at "
-                    f"{bad} of {n} points")
-    # 2. The tube, posed in the slot: no interference, and its front end on the floor.
-    posed = tube.translate((xs, 0, 0))
-    v = vol(part, posed)
-    if v > 0.5:
-        errs.append(f"{name}: the tube runs into the panel ({v:.1f} mm3)")
-    for dx, dz in ((0.25, 0), (-0.25, 0), (0, 0.25), (0, -0.25)):
-        v = vol(part, posed.translate((dx, 0, dz)))
-        if v > 0.5:
-            errs.append(f"{name}: under 0.25 mm of pocket clearance toward "
-                        f"({dx:+.2f}, {dz:+.2f}) ({v:.1f} mm3)")
-    v = vol(part, posed.translate((0, 0.3, 0)))
+def verify_unit(name, part, unit, errs):
+    tube, front, rear = unit
+    whole = tube.union(front).union(rear)
+    # 1. The unit in the collar: no interference, still none 0.3 mm off in any direction
+    #    across the section, and its front plate against the lip and cheeks.
+    v = vol(part, whole)
+    if v > 0.01:
+        errs.append(f"{name}: the unit runs into the panel ({v:.2f} mm3)")
+    d, k = 0.3, 0.3 / math.sqrt(2.0)
+    for dx, dz in ((d, 0), (-d, 0), (0, d), (0, -d), (k, k), (k, -k), (-k, k), (-k, -k)):
+        v = vol(part, whole.translate((dx, 0, dz)))
+        if v > 0.01:
+            errs.append(f"{name}: under 0.3 mm of collar clearance toward "
+                        f"({dx:+.2f}, {dz:+.2f}) ({v:.2f} mm3)")
+    v = vol(part, whole.translate((0, 0.3, 0)))
     if v < 50.0:
-        errs.append(f"{name}: the tube's end is not on the pocket floor "
+        errs.append(f"{name}: the front plate is not against the lip and cheeks "
                     f"(0.3 mm further forward overlaps only {v:.1f} mm3)")
-    return n
+    # 2. Each M3 x 12, through cheek, front plate and into the tube's insert pilot: a
+    #    3.0 mm rod down its axis meets no material, so the holes line up.
+    for (x, z) in screws_physical():
+        rod = case.ybore(3.0, x, z, YF - SCREW_RACK, YF + 2.0)
+        for what, s in (("panel", part), ("front plate", front), ("tube", tube)):
+            v = vol(s, rod)
+            if v > 0.01:
+                errs.append(f"{name}: the screw at ({x:+.1f}, {z:+.1f}) hits the {what} "
+                            f"({v:.2f} mm3)")
+        # and its head lands wholly on the cheek
+        head = case.ybore(HEAD_D, x, z, YF - 0.5, YF).cut(
+            case.ybore(case.SCREW_CLEAR_D + 0.2, x, z, YF - 1.0, YF + 1.0))
+        v_h = head.val().Volume()
+        v_in = vol(part, head)
+        if v_in < v_h - 0.05:
+            errs.append(f"{name}: the screw head at ({x:+.1f}, {z:+.1f}) overhangs the "
+                        f"cheek ({v_in:.2f} of {v_h:.2f} mm3 on material)")
+    engage = SCREW_RACK - T_FACE - case.END_T
+    if engage > case.INSERT_DEPTH - 1.0 or engage < case.INSERT_LEN:
+        errs.append(f"{name}: M3 x {SCREW_RACK:.0f} engages {engage:.1f} mm in the tube")
+    # 3. The lid stays clear: no collar over any lid opening or the lid's lettering. Up to
+    #    the collar's top only: the panel's top flange is 18 mm above the lid and its
+    #    rear edge is over the lettering's front end, which hides nothing.
+    cuts, _ = case.lettering_cuts()
+    bb = cuts["canary_tube"][0].val().BoundingBox()
+    lid = [(o, "a lid opening") for o in case.lid_openings()]
+    lid.append(((bb.xmin, bb.xmax, bb.ymin, bb.ymax), "the lid's lettering"))
+    z_top = case.OUTER_B + FIT + WALL_C + 1.0
+    for (bx0, bx1, by0, by1), what in lid:
+        prism = box(-bx1, -bx0, by0, by1, 0.0, z_top)           # board x -> physical
+        v = vol(part, prism)
+        if v > 0.01:
+            errs.append(f"{name}: the collar covers {what} at y {by0:+.1f}..{by1:+.1f} "
+                        f"({v:.1f} mm3)")
+    # 4. The front stays clear: nothing in front of an etherCON flange (1 mm round it) or
+    #    the front plate's labels.
+    fr = []
+    for x in case.ETHERCON_X:
+        cx = -case.bx(x)
+        w = case.NE8FBH_PLATE_W / 2.0 + 1.0
+        fr.append(((cx - w, cx + w, case.Z_AXIS - case.NE8FBH_PLATE_BELOW - 1.0,
+                    case.Z_AXIS + case.NE8FBH_PLATE_ABOVE + 1.0), "an etherCON flange"))
+    bb = cuts["canary_end_front"][0].val().BoundingBox()
+    fr.append(((-bb.xmax, -bb.xmin, bb.zmin, bb.zmax), "the front plate's labels"))
+    for (fx0, fx1, fz0, fz1), what in fr:
+        v = vol(part, box(fx0, fx1, YR - 1.0, YF + 5.0, fz0, fz1))
+        if v > 0.01:
+            errs.append(f"{name}: the face covers {what} at x {fx0:+.1f}..{fx1:+.1f} "
+                        f"({v:.1f} mm3)")
 
 
 def verify_piece(name, rack, x0, x1, part, errs):
@@ -362,7 +393,7 @@ def verify_piece(name, rack, x0, x1, part, errs):
     oh = r["opening"] / 2.0
     for sx in (-1, 1):
         lo, hi = sorted((sx * oh, sx * 400.0))
-        v = vol(part, box(lo, hi, YR - DEPTH - 5.0, YR - 0.01, -60, 60))
+        v = vol(part, box(lo, hi, YR - D_TROUGH - 5.0, YR - 0.01, -60, 60))
         if v > 0.01:
             errs.append(f"{name}: {v:.1f} mm3 behind the ear, where the rail is")
     if not part.val().isValid() or len(part.val().Solids()) != 1:
@@ -371,7 +402,7 @@ def verify_piece(name, rack, x0, x1, part, errs):
 
 def verify_layout(built, errs):
     # the 19-inch pieces meet and do not overlap, and together are the full panel
-    p19 = [(n, p) for (n, rk, *_), p in built if rk == "19" and not n.endswith("_blank")]
+    p19 = [(n, p) for (n, rk, *_), p in built if rk == "19"]
     for i in range(len(p19)):
         for j in range(i + 1, len(p19)):
             v = vol(p19[i][1], p19[j][1])
@@ -381,19 +412,10 @@ def verify_layout(built, errs):
     xe = sorted(p.val().BoundingBox().xmax for _, p in p19)
     if abs(xe[-1] - xs[0] - RACKS["19"]["width"]) > 0.01:
         errs.append(f"19-inch panel is {xe[-1] - xs[0]:.2f} wide")
-    # every unit's etherCON flanges (25 x 25.6) sit on one piece's face, clear of a seam
-    for (n, rk, x0, x1, slots, *_), _ in built:
-        for xs in slots:
-            for x in case.ETHERCON_X:
-                cx = xs - case.bx(x)
-                if not (x0 + CHAMFER < cx - case.NE8FBH_PLATE_W / 2.0 and
-                        cx + case.NE8FBH_PLATE_W / 2.0 < x1 - CHAMFER):
-                    errs.append(f"{n}: an etherCON flange at x {cx:.1f} crosses an edge")
-    # the outer tubes pass between the rails, with the side ribs
-    oh = RACKS["19"]["opening"] / 2.0
-    reach = max(abs(s) for s in RACKS["19"]["slots"]) + case.OUTER_A
-    if reach > oh - RIB_CLEAR - RIB_T - 1.0:
-        errs.append(f"the outer tubes reach x {reach:.1f}: too near the opening ({oh:.1f})")
+    # the collar stands clear of the seam ribs and pads
+    reach = case.OUTER_A + FIT + WALL_C
+    if reach > W_CENTRE / 2.0 - RIB_T - 1.0:
+        errs.append(f"the collar reaches x {reach:.1f}: into the seam ribs")
 
 
 def print_pose(part):
@@ -402,23 +424,22 @@ def print_pose(part):
 
 
 def main():
-    print(f"CANary rack plates -- 2U ({PANEL_H:.1f} mm), tube "
-          f"{2 * case.OUTER_A:.0f} x {2 * case.OUTER_B:.0f} in section")
+    print(f"CANary rack panel -- 2U ({PANEL_H:.1f} mm), one tube "
+          f"{2 * case.OUTER_A:.0f} x {2 * case.OUTER_B:.0f} x {case.OUTER_L:.1f} mm, "
+          f"held by M3 x {SCREW_RACK:.0f}")
     errs = []
-    assert abs(Y_SKIN - case.TUBE_L / 2.0) < 1e-9, "pocket floor is not the tube's end"
-    tube = tube_physical()
+    unit = unit_physical()
     built = []
     for spec in pieces():
-        name, rack, x0, x1, slots, units, mark = spec
-        part = build_piece(rack, x0, x1, slots, units, mark)
+        name, rack, x0, x1, has_unit, mark = spec
+        part = build_piece(rack, x0, x1, has_unit)
         verify_piece(name, rack, x0, x1, part, errs)
-        pts = 0
-        for xs in slots:
-            pts += verify_slot(name, part, xs, tube, errs)
-        part = engrave(name, part, lettering_for(slots, units, mark), errs)
+        if has_unit:
+            verify_unit(name, part, unit, errs)
+        part = engrave(name, part, lettering_for(rack, has_unit, mark), errs)
         built.append((spec, part))
-        print(f"  {name:28s} x {x0:+7.2f} .. {x1:+7.2f}"
-              + (f"  slot checked at {pts} points" if pts else ""))
+        print(f"  {name:24s} x {x0:+7.2f} .. {x1:+7.2f}" + ("  unit checked" if has_unit
+                                                            else ""))
     verify_layout(built, errs)
     for e in errs:
         print(f"  ! {e}")
@@ -437,21 +458,17 @@ def main():
             print(f"  ! {name}.stl {leak}")
             return 1
         bb = solid.val().BoundingBox()
-        print(f"  {name:28s} {bb.xlen:6.1f} x {bb.ylen:5.1f} x {bb.zlen:4.1f} mm (as printed)"
+        print(f"  {name:24s} {bb.xlen:6.1f} x {bb.ylen:5.1f} x {bb.zlen:4.1f} mm (as printed)"
               f"  {solid.val().Volume() / 1000.0:6.1f} cm3")
 
-    # The assembled 19-inch panel with its three tubes, in rack orientation, for reference.
+    # The assembled 19-inch panel with its tube, in rack orientation, for reference.
+    tube, front, rear = unit
     asm = cq.Assembly(name="canary_rack19")
-    rear = case.build_end("rear").mirror("YZ").translate((0, -YF + SKIN / 2.0, 0))
-    for (name, rack, x0, x1, slots, *_), part in built:
-        if rack != "19" or name.endswith("_blank"):
-            continue
-        asm.add(part, name=name, color=cq.Color(0.15, 0.15, 0.16))
-        for xs in slots:
-            asm.add(tube.translate((xs, 0, 0)), name=f"tube_{xs:+.0f}",
-                    color=cq.Color(0.93, 0.45, 0.12))
-            asm.add(rear.translate((xs, 0, 0)), name=f"rear_{xs:+.0f}",
-                    color=cq.Color(0.93, 0.45, 0.12))
+    for (name, rack, *_), part in built:
+        if rack == "19":
+            asm.add(part, name=name, color=cq.Color(0.15, 0.15, 0.16))
+    for n, s in (("tube", tube), ("end_front", front), ("end_rear", rear)):
+        asm.add(s, name=n, color=cq.Color(0.93, 0.45, 0.12))
     asm.export(str(OUT / "canary_rack19_assembly.step"))
     print(f"  wrote {len(built)} pieces + canary_rack19_assembly.step -> {OUT}")
     return 0

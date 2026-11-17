@@ -70,7 +70,7 @@ compared with a real module.
 | [`hardware/rev-b/`](hardware/rev-b/) | Rev B board (**CANary Dev Edition**): KiCad 10 project (5 sheets), generic and JLCPCB fab packages, the scripts that generate it from rev A's board, and the write-up, [REV-B.md](hardware/rev-b/REV-B.md) |
 | [`hardware/frontpanel/`](hardware/frontpanel/) | The Dev Edition's rack front-panel board (84 × 26 mm, 2 layers): four LEDs, RESET and BOOT on a 16-way ribbon, with its fab files and a panel drilling drawing |
 | [`hardware/fab/test/`](hardware/fab/test/) | Bench bring-up procedure, functional test spec, probe points, and the bring-up log of board #1 |
-| [`hardware/enclosure/`](hardware/enclosure/) | The one-piece **tube** case: parametric generator (CadQuery), STEP and STL for the body, end plates, LED window insert and switch cover, ready-sliced Bambu Lab plates, a jig for pressing the heat-set inserts, and 2U [rack plates](hardware/enclosure/rack/README.md) (19-inch for three tubes, 10-inch for one) |
+| [`hardware/enclosure/`](hardware/enclosure/) | The one-piece **tube** case: parametric generator (CadQuery), STEP and STL for the body, end plates, LED window insert and switch cover, ready-sliced Bambu Lab plates, a jig for pressing the heat-set inserts, and a 2U [rack panel](hardware/enclosure/rack/README.md) that holds a tube in a collar (19-inch or 10-inch) |
 | [`firmware/`](firmware/) | ESP-IDF 5.5 firmware: the Ethernet bridge, discovery responder, CAN at dbCAN's fixed 100 kbit/s, status LEDs, and an optional USB network device with an on-device settings page |
 | [`tools/`](tools/) | Python reference implementation of the protocol, a host-side emulator you can point R1 at with no hardware, and the board acceptance test |
 | [`docs/`](docs/) | Protocol reference, user guide, API, design decisions, fab notes |
@@ -136,9 +136,9 @@ has been ordered yet.
 **Print a case.** [`hardware/enclosure/`](hardware/enclosure/). The body prints
 standing on its end in ABS-GF with no support (about 5 h and 131 g with both end plates,
 on a 0.4 mm nozzle). The LED window inserts and switch covers are white PLA.
-To rack tubes, [`hardware/enclosure/rack/`](hardware/enclosure/rack/README.md) has 2U
-panels whose slots replace the tube's front plate: a 19-inch panel for three units, in
-three pieces that bolt together, and a 10-inch panel for one. Not printed yet.
+To rack one, [`hardware/enclosure/rack/`](hardware/enclosure/rack/README.md) has a 2U
+panel that holds the tube whole in a collar, with a flat blank to each side: 19-inch in
+three pieces that bolt together, or 10-inch in one. Not printed yet.
 
 Full instructions: [docs/USER-GUIDE.md](docs/USER-GUIDE.md).
 

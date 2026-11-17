@@ -6,5 +6,5 @@ heat-set inserts), the LED window insert and the switch cover. Documented in
 [`../3dp/README.md`](../3dp/README.md); sliced as `../canary-case-absgf-0.4-tube.3mf`
 (`bambu/build.sh absgf-0.4-tube`).
 
-To put tubes in a rack, see [`../rack/`](../rack/README.md): 2U panels (19-inch, three
-units; 10-inch, one) whose slots take the front plate's place.
+To put a tube in a rack, see [`../rack/`](../rack/README.md): a 2U panel (19-inch or
+10-inch) that holds it whole in a collar, screwed through its front plate.

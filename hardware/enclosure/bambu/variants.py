@@ -212,10 +212,10 @@ VARIANTS = {
         filament="Bambu ABS-GF @BBL H2C 0.4 nozzle",
         nozzle="0.4", filament_id="GFB50", filament_type="ABS-GF",
         process_name="0.24mm CANary Rack ABS-GF @BBL H2C 0.4",
-        note="the 2U rack plates (gen_rack_3dp.py): pieces print face down, nothing "
-             "overhangs -- pocket opens upward, ribs and pads are walls, seam bolts are "
+        note="the 2U rack panel (gen_rack_3dp.py): pieces print face down, nothing "
+             "overhangs -- the collar, flanges, ribs and pads are walls, seam bolts are "
              "teardrops and the nut traps stand on a vertex. ABS-GF like the tube: a "
-             "rack runs warm and the plates carry the etherCONs' panel screws",
+             "rack runs warm and the collar carries the unit",
         overrides={**COMMON, **_walls(0.42),
                    "brim_width": "8",
                    "enable_support": "0",
